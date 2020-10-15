@@ -5,6 +5,7 @@ function Juego(){
 		if (this.partidas[cod]){
 			this.partidas[cod].agregarUsuario(nick);
 		}
+		return this.partidas[cod];
 
 	}
 
@@ -70,7 +71,7 @@ function Partida(num,owner){
 		this.fase.iniciarPartida(this);
 	}
 	this.abandonarPartida=function(nick){
-		this.fase.abandonarPartida(nick,partida);
+		this.fase.abandonarPartida(nick,this);
 	}
 	this.eliminarUsuario=function(nick) {
 		delete this.usuarios[nick];
@@ -154,7 +155,10 @@ function Usuario(nick,juego){
 		this.partida.iniciarPartida();
 	}
 	this.abandonarPartida=function(){
-		this.partida.iniciarPartida();
+		this.partida.abandonarPartida(this.nick);
+	}
+	this.unirAPartida=function(cod){
+		this.partida = this.juego.unirAPartida(cod, this.nick);
 	}
 }
 
