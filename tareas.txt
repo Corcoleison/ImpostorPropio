@@ -1,0 +1,4 @@
+jardines
+calles
+mobiliario
+basuras

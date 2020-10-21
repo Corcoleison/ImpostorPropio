@@ -9,18 +9,25 @@ function Juego(){
 
 	}
 
+	this.eliminarPartida=function(cod){
+		if (this.partidas[cod]){
+			delete this.partidas[cod];
+		}
+	}
+
 	this.crearPartida=function(num,owner){
 		//comprobar límites de num
-		if(!(num<4 || num>10)){
+		if(numeroValido(num)){
 			let codigo=this.obtenerCodigo();
 				if (!this.partidas[codigo]){
-					this.partidas[codigo]=new Partida(num,owner.nick);
+					this.partidas[codigo]=new Partida(num,owner.nick,codigo);
 					owner.partida=this.partidas[codigo];
 				}
 			return codigo;
 		}else{
-			console.log("la partida debe ser de entre 4 y 10 jugadores");
-			throw "tamaño partida";
+			//throw "Error tamaño partida";
+			let codigo = "Error";
+			return codigo;
 		}
 	}
 
@@ -34,11 +41,13 @@ function Juego(){
 		}
 		return codigo.join('');
 	}
+
 }
 
-function Partida(num,owner){
+function Partida(num,owner,codigo){
 	this.maximo=num;
 	this.nickOwner=owner;
+	this.codigo=codigo;
 	this.fase=new Inicial();
 	this.usuarios={};
 	this.encargos=["jardines","calles","mobiliario","basuras"];
@@ -66,6 +75,10 @@ function Partida(num,owner){
 
 		}
 
+	this.numJugadores=function(){
+		return Object.keys(this.usuarios).length
+	}
+
 	this.comprobarMinimo=function () {
 		return Object.keys(this.usuarios).length >= 4
 	}
@@ -80,18 +93,61 @@ function Partida(num,owner){
 	this.abandonarPartida=function(nick){
 		this.fase.abandonarPartida(nick,this);
 	}
+	this.puedeAbandonarPartida=function(nick){
+		this.eliminarUsuario(nick);
+		if (!this.comprobarMinimo()){
+			this.fase=new Inicial();
+		}
+	}
 	this.eliminarUsuario=function(nick) {
 		delete this.usuarios[nick];
 	}
 	this.puedeIniciarPartida=function() {
-		this.nicks=Object.keys(this.usuarios);
+		this.asignarEncargos();
+		this.asignarImpostor();
+		this.fase=new Jugando();
+	}
+	this.asignarEncargos=function(){
 		for(var usr in this.usuarios){
 			i=0;
 			this.usuarios[usr].encargo=this.encargos[i];
 			i+1;
 		}
+	}
+	this.asignarImpostor=function(){
+		this.nicks=Object.keys(this.usuarios);
 		this.usuarios[this.nicks[randomInt(0,this.nicks.length)]].impostor=true;
 	}
+	this.atacar=function(nick){
+		if(this.usuarios[nick]){
+			this.fase.atacar(nick,this);
+		}else{
+			console.log("ese usuario no existe");
+		}
+		
+	}
+	this.puedeAtacar=function(nick){
+		this.usuarios[nick].esAtacado();
+	}
+	this.numCiudadanosVivos=function(){
+		var i = 0;
+		for(var usr in this.usuarios){
+			if (this.usuarios[usr].impostor == false && this.usuarios[usr].estado.nombre == "vivo"){
+				i++;
+			}
+		}
+		return i
+	}
+	this.numImpostoresVivos=function(){
+		var i=0;
+		for(var usr in this.usuarios){
+			if (this.usuarios[usr].impostor == true && this.usuarios[usr].estado.nombre == "vivo"){
+				i++;
+			}
+		}
+		return i
+	}
+
 
 	this.agregarUsuario(owner);
 }
@@ -109,9 +165,14 @@ function Inicial(){
 		console.log("Faltan jugadores");
 	}
 	this.abandonarPartida=function(nick,partida){
-		partida.eliminarUsuario(nick);
+		partida.puedeAbandonarPartida(nick);
 		//comprobar si no quedan usuarios
+		
 	}
+	this.atacar=function(nick,partida){
+		//no puede atacar con la partida sin empezar
+	}
+
 }
 
 function Completado(){
@@ -120,7 +181,6 @@ function Completado(){
 		//llame a puedeIniciarPartida();
 		partida.puedeIniciarPartida();
 		//partida.fase=new Jugando();
-		partida.fase=new Jugando();
 		//asignar encargos: secuencialmente a todos los usuarios
 		//asignar impostor: dado el array (Object.keys) coges uno aleatorio y le asignas true
 	}
@@ -133,10 +193,11 @@ function Completado(){
 		
 	}
 	this.abandonarPartida=function(nick,partida){
-		partida.eliminarUsuario(nick);
-		if (!partida.comprobarMinimo()){
-			partida.fase=new Inicial();
-		}
+		partida.puedeAbandonarPartida(nick);
+		
+	}
+	this.atacar=function(nick,partida){
+		//no puede atacar con la partida sin empezar
 	}
 }
 
@@ -148,8 +209,10 @@ function Jugando(){
 	this.iniciarPartida=function(partida){
 	}
 	this.abandonarPartida=function(nick,partida){
-		partida.eliminarUsuario(nick);
-		//comprobar si termina la partida
+		partida.puedeAbandonarPartida(nick);
+	}
+	this.atacar=function(nick,partida){
+		partida.puedeAtacar(nick);
 	}
 }
 
@@ -163,12 +226,18 @@ function Final(){
 	this.abandonarPartida=function(nick,partida){
 		//esto es absurdo
 	}
+	this.atacar=function(nick,partida){
+		//no puede atacar con la partida terminada
+	}
 }
 
 function Usuario(nick,juego){
 	this.nick=nick;
 	this.juego=juego;
+	this.skips = 0;
+	this.votos = 0;
 	this.partida;
+	this.estado = new Vivo();
 	this.impostor=false;
 	this.encargo="ninguno";
 	this.crearPartida=function(num){
@@ -179,30 +248,65 @@ function Usuario(nick,juego){
 	}
 	this.abandonarPartida=function(){
 		this.partida.abandonarPartida(this.nick);
+		if (this.partida.numJugadores <= 0){
+			console.log(this.nick," era el ultimo jugador de la partida");
+			// this.juego.eliminarPartida(this.partida.codigo);
+		}
 	}
 	this.unirAPartida=function(cod){
 		this.partida = this.juego.unirAPartida(cod, this.nick);
 	}
+	this.atacar=function(nick){
+		if(this.impostor){
+			this.estado.atacar(nick, this.partida);
+		}
+	}
+	this.esAtacado=function(){
+		this.estado.esAtacado(this);
+	}
+}
+
+function Vivo(){
+	this.nombre="vivo";
+	this.atacar=function(nick,partida){
+		partida.atacar(nick);
+	}
+	this.esAtacado=function(atacado){
+		atacado.estado = new Muerto();
+	}
+}
+
+function Muerto(){
+	this.nombre="muerto";
+	this.atacar=function(nick,partida){
+		//un muerto no puede atacar
+	}
+	this.esAtacado=function(nick){
+		//no puedes atacar a un muerto
+	}
+
 }
 
 function randomInt(low, high) {
 	return Math.floor(Math.random() * (high - low) + low);
 }
 
+function numeroValido(num) {
+	if(!(num<4 || num>10)){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 function inicio(){
 	juego=new Juego();
 	var usr=new Usuario("pepe",juego);
-	try{
-		var codigo=usr.crearPartida(4);
+	var codigo=usr.crearPartida(4);
+	if (codigo != "Error"){
 		juego.unirAPartida(codigo,"luis");
 		juego.unirAPartida(codigo,"luisa");
 		juego.unirAPartida(codigo,"luisito");
-
 		usr.iniciarPartida();
-	}catch(err){
-		console.log(err);
 	}
-	
-
-
 }

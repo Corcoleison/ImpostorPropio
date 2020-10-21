@@ -3,7 +3,7 @@ describe("El juego del impostor", function() {
   var usr;
 
   beforeEach(function() {
-    juego=new Juego();
+    juego = new Juego();
     usr = new Usuario("pepe",juego);
   });
 
@@ -12,6 +12,10 @@ describe("El juego del impostor", function() {
     expect(usr.nick).toEqual("pepe");
     expect(usr.juego).not.toBe(undefined);
   });
+
+  it("Comprobar valores de la partida", function() {
+    var codigo=juego.crearPartida(3,usr);
+  });  
 
   describe("cuando el usuario pepe crea una partida", function() {
     beforeEach(function() {
@@ -104,20 +108,20 @@ describe("El juego del impostor", function() {
 		    	expect(partida.usuarios["pablo"]).not.toBe(undefined);
 		    	expect(partida.usuarios["tomas"]).not.toBe(undefined);
 		    	expect(partida.usuarios["jose"]).not.toBe(undefined);
+		    	expect(partida.fase.nombre=="completado").toBe(true);
 		    	usr.iniciarPartida();
 		    	expect(partida.fase.nombre=="jugando").toBe(true);
-		    	usrpablo.abandonarPartida();
-		    	usrtomas.abandonarPartida();
-		    	usrjose.abandonarPartida();
-		    	expect(partida.usuarios["pablo"]).toBe(undefined);
-		    	expect(partida.usuarios["tomas"]).toBe(undefined);
-		    	expect(partida.usuarios["jose"]).toBe(undefined);
+		    	partida.usuarios["pablo"].abandonarPartida();
+		    	expect(Object.keys(partida.usuarios).length==3).toBe(true);
+		    	partida.usuarios["tomas"].abandonarPartida();
+		    	expect(partida.fase.nombre=="inicial").toBe(true);
+		    	expect(Object.keys(partida.usuarios).length==2).toBe(true);
+		    	partida.usuarios["jose"].abandonarPartida();
+		    	partida.usuarios["pepe"].abandonarPartida();
+		    	expect(partida.numJugadores()).toEqual(0);
+		    	juego.eliminarPartida(codigo);
+		    	expect(juego.partidas[codigo]).toBe(undefined);
 		  	});
-
-
 		});
-  });
-
-  
-
+	}); 
 });
