@@ -251,7 +251,7 @@ function Final(){
 function Usuario(nick,juego){
 	this.nick=nick;
 	this.juego=juego;
-	this.skips = 0;
+	this.skips = false;
 	this.votos = 0;
 	this.partida;
 	this.estado = new Vivo();
