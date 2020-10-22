@@ -147,6 +147,23 @@ function Partida(num,owner,codigo){
 		}
 		return i
 	}
+	this.votar=function(nick) {
+		this.usuarios[nick].esVotado();
+	}
+	this.jugadorMasVotado=function(){
+		var votos = 0;
+		var masVotado;
+		for(var usr in this.usuarios){
+			if (this.usuarios[usr].votos > votos && this.usuarios[usr].estado.nombre == "vivo"){
+				votos = this.usuarios[usr].votos;
+				masVotado = this.usuarios[usr];
+			}
+		}
+		return masVotado
+	}
+	this.eliminarMasVotado=function(){
+		this.usuarios[this.jugadorMasVotado().nick].estado = new Muerto();
+	}
 
 
 	this.agregarUsuario(owner);
@@ -264,6 +281,12 @@ function Usuario(nick,juego){
 	this.esAtacado=function(){
 		this.estado.esAtacado(this);
 	}
+	this.votar=function(nick){
+		this.estado.votar(nick, this.partida);
+	}
+	this.esVotado=function(){
+		this.estado.esVotado(this);
+	}
 }
 
 function Vivo(){
@@ -274,6 +297,12 @@ function Vivo(){
 	this.esAtacado=function(atacado){
 		atacado.estado = new Muerto();
 	}
+	this.votar=function(nick, partida){
+		partida.votar(nick);
+	}
+	this.esVotado=function(votado){
+		votado.votos ++;
+	}
 }
 
 function Muerto(){
@@ -283,6 +312,12 @@ function Muerto(){
 	}
 	this.esAtacado=function(nick){
 		//no puedes atacar a un muerto
+	}
+	this.votar=function(nick, partida){
+		//los muertos no votan
+	}
+	this.esVotado=function(votado){
+		//no se le puede votar a los muertos
 	}
 
 }
