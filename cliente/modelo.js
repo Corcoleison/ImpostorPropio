@@ -148,6 +148,9 @@ function Partida(num,owner,codigo){
 		return i
 	}
 	this.votar=function(nick) {
+		this.fase.votar(nick,this);
+	}
+	this.puedeVotar=function(nick) {
 		this.usuarios[nick].esVotado();
 	}
 	this.jugadorMasVotado=function(){
@@ -162,9 +165,21 @@ function Partida(num,owner,codigo){
 		return masVotado
 	}
 	this.eliminarMasVotado=function(){
-		this.usuarios[this.jugadorMasVotado().nick].estado = new Muerto();
+		this.fase.eliminarMasVotado(this);
 	}
-
+	this.puedeEliminarMasVotado=function(){
+		this.usuarios[this.jugadorMasVotado().nick].estado = new Muerto();
+		this.terminarVotacion();
+	}
+	this.comenzarVotacion=function(){
+		this.fase.comenzarVotacion(this);
+	}
+	this.puedeComenzarVotacion=function(){
+		this.fase = new Votacion();
+	}
+	this.terminarVotacion=function(){
+		this.fase = new Jugando();
+	}
 
 	this.agregarUsuario(owner);
 }
@@ -188,6 +203,15 @@ function Inicial(){
 	}
 	this.atacar=function(nick,partida){
 		//no puede atacar con la partida sin empezar
+	}
+	this.votar=function(nick, partida) {
+		//no
+	}
+	this.comenzarVotacion=function(partida){
+		//
+	}
+	this.eliminarMasVotado=function(partida){
+		//
 	}
 
 }
@@ -216,6 +240,15 @@ function Completado(){
 	this.atacar=function(nick,partida){
 		//no puede atacar con la partida sin empezar
 	}
+	this.votar=function(nick, partida) {
+		//no
+	}
+	this.comenzarVotacion=function(partida){
+		//
+	}
+	this.eliminarMasVotado=function(partida){
+		//
+	}
 }
 
 function Jugando(){
@@ -231,6 +264,15 @@ function Jugando(){
 	this.atacar=function(nick,partida){
 		partida.puedeAtacar(nick);
 	}
+	this.votar=function(nick, partida) {
+		//
+	}
+	this.comenzarVotacion=function(partida){
+		partida.puedeComenzarVotacion();
+	}
+	this.eliminarMasVotado=function(partida){
+		//
+	}
 }
 
 function Final(){
@@ -245,6 +287,38 @@ function Final(){
 	}
 	this.atacar=function(nick,partida){
 		//no puede atacar con la partida terminada
+	}
+	this.votar=function(nick, partida) {
+		//no
+	}
+	this.comenzarVotacion=function(partida){
+		//
+	}
+	this.eliminarMasVotado=function(partida){
+		//
+	}
+}
+function Votacion(){
+	this.nombre="votacion";
+	this.agregarUsuario=function(nick,partida){
+		//
+	}
+	this.iniciarPartida=function(partida){
+	}
+	this.abandonarPartida=function(nick,partida){
+		//esto es absurdo
+	}
+	this.atacar=function(nick,partida){
+		//no puede atacar con la partida terminada
+	}
+	this.votar=function(nick, partida) {
+		partida.puedeVotar(nick);
+	}
+	this.comenzarVotacion=function(partida){
+		//
+	}
+	this.eliminarMasVotado=function(partida){
+		partida.puedeEliminarMasVotado();
 	}
 }
 
