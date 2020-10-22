@@ -180,6 +180,16 @@ function Partida(num,owner,codigo){
 	this.terminarVotacion=function(){
 		this.fase = new Jugando();
 	}
+	this.gananImpostores=function(){
+		return this.numImpostoresVivos >= this.numCiudadanosVivos
+		//en caso cierto: cambiar fase a Final
+	}
+	this.gananCiudadanos=function(){
+		//comprobar que el numero de impostores vivos es 0	
+		if (this.numImpostoresVivos == 0){
+			
+		}
+	}
 
 	this.agregarUsuario(owner);
 }
