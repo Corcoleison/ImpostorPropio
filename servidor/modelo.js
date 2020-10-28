@@ -11,13 +11,6 @@ function Juego(){
 
 	}
 
-	this.unirYDevolverPartida=function(cod, nick){
-		if (this.partidas[cod]){
-			this.partidas[cod].agregarUsuario(nick);
-		}
-		return this.partidas[cod];
-	}
-
 	this.eliminarPartida=function(cod){
 		if (this.partidas[cod]){
 			delete this.partidas[cod];
@@ -443,9 +436,9 @@ function Usuario(nick,juego){
 			// this.juego.eliminarPartida(this.partida.codigo);
 		}
 	}
-	this.unirAPartida=function(cod){
-		this.partida = this.juego.unirYDevolverPartida(cod);
-	}
+	// this.unirAPartida=function(cod){
+	// 	this.partida = this.juego.unirYDevolverPartida(cod);
+	// }
 	this.atacar=function(nick){
 		if(this.impostor && nick != this.nick){ //He puesto esta ultima condicion porque sino se podria matar a si mismo
 			this.estado.atacar(nick, this.partida);

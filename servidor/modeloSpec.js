@@ -74,11 +74,11 @@ describe("El juego del impostor", function() {
 			});
 
 			it("Se crean 3 usuarios y se unen con usr.unirAPartida(codigo)", function() {
-				usrpablo.unirAPartida(codigo);
+				juego.unirAPartida(codigo, "pablo");
 				expect(Object.keys(partida.usuarios).length==2).toBe(true);
-				usrtomas.unirAPartida(codigo);
+				juego.unirAPartida(codigo, "tomas");
 				expect(Object.keys(partida.usuarios).length==3).toBe(true);
-				usrjose.unirAPartida(codigo);
+				juego.unirAPartida(codigo, "jose");
 				expect(Object.keys(partida.usuarios).length==4).toBe(true);
 				expect(partida.usuarios["pablo"]).not.toBe(undefined);
 				expect(partida.usuarios["tomas"]).not.toBe(undefined);
@@ -89,29 +89,29 @@ describe("El juego del impostor", function() {
 			});
 
 			it("3 usuarios de una partida sin iniciar, la abandonan", function() {
-				usrpablo.unirAPartida(codigo);
+				juego.unirAPartida(codigo, "pablo");
 				expect(Object.keys(partida.usuarios).length==2).toBe(true);
-				usrtomas.unirAPartida(codigo);
+				juego.unirAPartida(codigo, "tomas");
 				expect(Object.keys(partida.usuarios).length==3).toBe(true);
-				usrjose.unirAPartida(codigo);
+				juego.unirAPartida(codigo, "jose");
 				expect(Object.keys(partida.usuarios).length==4).toBe(true);
 				expect(partida.usuarios["pablo"]).not.toBe(undefined);
 				expect(partida.usuarios["tomas"]).not.toBe(undefined);
 				expect(partida.usuarios["jose"]).not.toBe(undefined);
-				usrpablo.abandonarPartida();
-				usrtomas.abandonarPartida();
-				usrjose.abandonarPartida();
+				partida.usuarios["pablo"].abandonarPartida();
+				partida.usuarios["tomas"].abandonarPartida();
+				partida.usuarios["jose"].abandonarPartida();
 				expect(partida.usuarios["pablo"]).toBe(undefined);
 				expect(partida.usuarios["tomas"]).toBe(undefined);
 				expect(partida.usuarios["jose"]).toBe(undefined);
 			});
 
 			it("3 usuarios de una partida ya iniciada, la abandonan", function() {
-				usrpablo.unirAPartida(codigo);
+				juego.unirAPartida(codigo, "pablo");
 				expect(Object.keys(partida.usuarios).length==2).toBe(true);
-				usrtomas.unirAPartida(codigo);
+				juego.unirAPartida(codigo, "tomas");
 				expect(Object.keys(partida.usuarios).length==3).toBe(true);
-				usrjose.unirAPartida(codigo);
+				juego.unirAPartida(codigo, "jose");
 				expect(Object.keys(partida.usuarios).length==4).toBe(true);
 				expect(partida.usuarios["pablo"]).not.toBe(undefined);
 				expect(partida.usuarios["tomas"]).not.toBe(undefined);
