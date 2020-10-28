@@ -524,17 +524,17 @@ function numeroValido(num) {
 	}
 }
 
-function inicio(){
-	juego=new Juego();
-	var usr=new Usuario("pepe",juego);
-	var codigo=usr.crearPartida(4);
-	if (codigo != "Error"){
-		juego.unirAPartida(codigo,"luis");
-		juego.unirAPartida(codigo,"luisa");
-		juego.unirAPartida(codigo,"luisito");
-		usr.iniciarPartida();
-	}
-}
+// function inicio(){
+// 	juego=new Juego();
+// 	var usr=new Usuario("pepe",juego);
+// 	var codigo=usr.crearPartida(4);
+// 	if (codigo != "Error"){
+// 		juego.unirAPartida(codigo,"luis");
+// 		juego.unirAPartida(codigo,"luisa");
+// 		juego.unirAPartida(codigo,"luisito");
+// 		usr.iniciarPartida();
+// 	}
+// }
 
 module.exports.Juego=Juego;
 module.exports.Usuario=Usuario;

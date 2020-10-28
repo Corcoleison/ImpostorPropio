@@ -21,8 +21,29 @@ app.get('/', function (request, response) {
 	response.send(contenido);
 
 });
+// /nombre-ruta-api/:param1/:param2/:...
+// app.get('/nuevoUsuario/:nick', function(request, response){
+// 	var nick=request.params.nick;
+// 	var usr=new modelo.Usuario(nick);
+// });
 
-//'/usuarios'
+app.get('/crearPartida/:nick/:numero', function(request, response){
+	var nick=request.params.nick;
+	var num=parseInt(request.params.numero);
+	//ojo, nick nulo o numero
+	var usr=new modelo.Usuario(nick);
+	var codigo = juego.crearPartida(num,usr);
+
+	response.send({"codigo":codigo});
+});
+
+app.get('/unirAPartida/:codigo/:nick', function(request, response){
+	var nick=request.params.nick;
+	var codigo=request.params.codigo;
+	var res=juego.unirAPartida(codigo,nick);
+	response.send({"res":res});
+
+});
 
 server.listen(app.get('port'), function () {
 	console.log('Node esta escuchando en el puerto', app.get('port'));
