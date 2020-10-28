@@ -4,7 +4,7 @@
   "description": "trabajo de procesos",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jasmine-node servidor"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/Corcoleison/ImpostorPropio/issues"
   },
-  "homepage": "https://github.com/Corcoleison/ImpostorPropio#readme"
+  "homepage": "https://github.com/Corcoleison/ImpostorPropio#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jasmine-node": "^3.0.0"
+  }
 }
