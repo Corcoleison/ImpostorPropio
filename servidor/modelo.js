@@ -2,11 +2,20 @@ function Juego(){
 	this.partidas={};//que coleccion?
 	
 	this.unirAPartida=function(cod, nick){
+		var res = -1
+		if (this.partidas[cod]){
+			this.partidas[cod].agregarUsuario(nick);
+			var res = "Exito al agregar"
+		}
+		return res;
+
+	}
+
+	this.unirYDevolverPartida=function(cod, nick){
 		if (this.partidas[cod]){
 			this.partidas[cod].agregarUsuario(nick);
 		}
 		return this.partidas[cod];
-
 	}
 
 	this.eliminarPartida=function(cod){
@@ -435,7 +444,7 @@ function Usuario(nick,juego){
 		}
 	}
 	this.unirAPartida=function(cod){
-		this.partida = this.juego.unirAPartida(cod, this.nick);
+		this.partida = this.juego.unirYDevolverPartida(cod);
 	}
 	this.atacar=function(nick){
 		if(this.impostor && nick != this.nick){ //He puesto esta ultima condicion porque sino se podria matar a si mismo

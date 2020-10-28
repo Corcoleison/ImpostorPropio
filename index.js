@@ -41,8 +41,7 @@ app.get('/unirAPartida/:codigo/:nick', function(request, response){
 	var nick=request.params.nick;
 	var codigo=request.params.codigo;
 	var res=juego.unirAPartida(codigo,nick);
-	response.send({"res":res});
-
+	response.send({res:res});
 });
 
 server.listen(app.get('port'), function () {
