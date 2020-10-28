@@ -1,0 +1,22 @@
+{
+  "name": "impostorpropio",
+  "version": "1.0.0",
+  "description": "trabajo de procesos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Corcoleison/ImpostorPropio.git"
+  },
+  "keywords": [
+    "juego"
+  ],
+  "author": "Pablo Corcoles Molina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Corcoleison/ImpostorPropio/issues"
+  },
+  "homepage": "https://github.com/Corcoleison/ImpostorPropio#readme"
+}
