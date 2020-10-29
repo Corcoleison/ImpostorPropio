@@ -14,4 +14,9 @@ function ClienteRest(){
     		console.log(lista);
 		});
 	}
+	this.iniciarPartida=function(nick, codigo){
+		$.getJSON("/crearPartida/"+nick+"/"+codigo,function(data){    
+    		console.log(data);
+		});
+	}
 }
