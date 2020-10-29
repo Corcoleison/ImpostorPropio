@@ -526,17 +526,18 @@
 									"model": {
 										"$ref": "AAAAAAF05WhXRcGex/4="
 									},
-									"visible": false,
 									"font": "Arial;13;0",
-									"left": 394,
+									"left": 375,
 									"top": 171,
+									"width": 39.39990234375,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
 									"hostEdge": {
 										"$ref": "AAAAAAF05WhXR8Ghwpk="
 									},
-									"edgePosition": 2
+									"edgePosition": 2,
+									"text": "+juego"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -568,17 +569,18 @@
 									"model": {
 										"$ref": "AAAAAAF05WhXRcGex/4="
 									},
-									"visible": false,
 									"font": "Arial;13;0",
-									"left": 390,
+									"left": 387,
 									"top": 198,
+									"width": 7.22998046875,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
 									"hostEdge": {
 										"$ref": "AAAAAAF05WhXR8Ghwpk="
 									},
-									"edgePosition": 2
+									"edgePosition": 2,
+									"text": "1"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -3868,10 +3870,12 @@
 								"_parent": {
 									"$ref": "AAAAAAF05WhXRcGdu8A="
 								},
+								"name": "juego",
 								"reference": {
 									"$ref": "AAAAAAF05WZL5sFB2Zs="
 								},
-								"navigable": false
+								"navigable": false,
+								"multiplicity": "1"
 							},
 							"end2": {
 								"_type": "UMLAssociationEnd",
@@ -3883,6 +3887,7 @@
 								"reference": {
 									"$ref": "AAAAAAF05Wdui8Ftnq4="
 								},
+								"navigable": false,
 								"multiplicity": "*"
 							}
 						}

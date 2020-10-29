@@ -2,13 +2,12 @@ function Juego(){
 	this.partidas={};//que coleccion?
 	
 	this.unirAPartida=function(cod, nick){
-		var res = -1
+		//var res = -1
 		if (this.partidas[cod]){
 			this.partidas[cod].agregarUsuario(nick);
-			var res = "Exito al agregar"
+			//var res = "Exito al agregar"
 		}
-		return res;
-
+		//return res;
 	}
 
 	this.eliminarPartida=function(cod){
@@ -43,6 +42,20 @@ function Juego(){
 		}
 		return codigo.join('');
 	}
+
+	this.listarPartidas=function(){
+		var lista = [];
+		var huecos = 0;
+		for (var key in this.partidas){
+			var partida = this.partidas[key];
+			huecos=partida.obtenerHuecos();
+			if(huecos>0){
+				lista.push({"codigo":key,"huecos":huecos})
+			}
+		}
+		return lista;
+	}
+
 
 }
 
@@ -254,6 +267,17 @@ function Partida(num,owner,codigo){
 			elegido.esAtacado();
 		}
 	}
+	this.obtenerHuecos=function(){
+		return this.maximo - Object.keys(this.usuarios).length
+	}
+	this.devolverPartidasLibres=function(){
+		this.fase.devolverPartidasLibres(this);
+	}
+	this.puedeDevolverPartidasLibres=function(){
+		if(this.obtenerHuecos() > 0){
+			return this
+		}
+	}
 
 
 	this.agregarUsuario(owner);
@@ -290,6 +314,9 @@ function Inicial(){
 	}
 	this.skipear=function(usr){
 		//
+	}
+	this.devolverPartidasLibres=function(partida){
+		partida.puedeDevolverPartidasLibres();
 	}
 
 }
@@ -330,6 +357,9 @@ function Completado(){
 	this.skipear=function(usr){
 		//
 	}
+	this.devolverPartidasLibres=function(partida){
+		partida.puedeDevolverPartidasLibres();
+	}
 }
 
 function Jugando(){
@@ -355,6 +385,9 @@ function Jugando(){
 		//
 	}
 	this.skipear=function(usr){
+		//
+	}
+	this.devolverPartidasLibres=function(partida){
 		//
 	}
 }
@@ -385,6 +418,9 @@ function Final(){
 	this.skipear=function(usr){
 		//
 	}
+	this.devolverPartidasLibres=function(partida){
+		//
+	}
 }
 function Votacion(){
 	this.nombre="votacion";
@@ -410,6 +446,9 @@ function Votacion(){
 	}
 	this.skipear=function(usr){
 		usr.estado.skipear(usr);
+	}
+	this.devolverPartidasLibres=function(partida){
+		//
 	}
 }
 
@@ -437,7 +476,7 @@ function Usuario(nick,juego){
 		}
 	}
 	// this.unirAPartida=function(cod){
-	// 	this.partida = this.juego.unirYDevolverPartida(cod);
+	// 	this.partida = this.juego.unirYDevolverPartida(cod, this);
 	// }
 	this.atacar=function(nick){
 		if(this.impostor && nick != this.nick){ //He puesto esta ultima condicion porque sino se podria matar a si mismo

@@ -9,4 +9,9 @@ function ClienteRest(){
     		console.log(data);
 		});
 	}
+	this.listarPartidas=function(){
+		$.getJSON("/listarPartidas",function(lista){    
+    		console.log(lista);
+		});
+	}
 }
