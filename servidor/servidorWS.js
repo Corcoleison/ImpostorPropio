@@ -1,4 +1,4 @@
-function ServidorWS{
+function ServidorWS(){
 
 	this.enviarRemitente=function(socket,mens,datos){
         socket.emit(mens,datos);
