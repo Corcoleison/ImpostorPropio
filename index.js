@@ -3,7 +3,12 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var bodyParser = require("body-parser");
-var modelo=require("./servidor/modelo.js")
+var io = require('socket.io').listen(server);
+
+var modelo=require("./servidor/modelo.js");
+var wss=require("./servidor/servidorWS.js");
+var servidorWS=new wss.ServidorWS();
+
 
 
 app.set('port', process.env.PORT || 5000);
@@ -44,8 +49,8 @@ app.get('/unirAPartida/:codigo/:nick', function(request, response){
 	response.send({"res":res});
 });
 
-app.get('/listarPartidas', function(request, response){
-	var lista=juego.listarPartidas();
+app.get('/listarPartidasDisponibles', function(request, response){
+	var lista=juego.listarPartidasDisponibles();
 	response.send(lista);
 });
 
@@ -56,3 +61,5 @@ server.listen(app.get('port'), function () {
 // app.listen(app.get('port'), function () {
 //      console.log('Node app is running on port', app.get('port'));
 // });
+
+servidorWS.lanzarSocketSrv(io,juego);

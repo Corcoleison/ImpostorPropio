@@ -7,7 +7,7 @@ function Juego(){
 			this.partidas[cod].agregarUsuario(nick);
 			//var res = "Exito al agregar"
 		}
-		//return res;
+		return cod;
 	}
 
 	this.eliminarPartida=function(cod){
@@ -43,7 +43,7 @@ function Juego(){
 		return codigo.join('');
 	}
 
-	this.listarPartidas=function(){
+	this.listarPartidasDisponibles=function(){
 		var lista = [];
 		var huecos = 0;
 		for (var key in this.partidas){
