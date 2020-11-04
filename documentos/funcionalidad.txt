@@ -9,5 +9,6 @@ Funcionalidad:
 - Asignar el impostor
 - Atacar (tiempo entre ataques)
 - Votar al sospechoso o saltar la votacion
--
--
+
+
+

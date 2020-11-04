@@ -43,7 +43,6 @@ function pruebas(){
 		rest.unirAPartida(codigo,"juana");
 		rest.unirAPartida(codigo,"juanma");
 	});
-	rest.listarPartidasDisponibles();
 	
 //agregar otras partidas de 6, 7… hasta 10 jugadores
 }

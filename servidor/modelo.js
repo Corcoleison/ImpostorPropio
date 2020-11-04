@@ -466,7 +466,10 @@ function Usuario(nick,juego){
 		return this.juego.crearPartida(num,this);
 	}
 	this.iniciarPartida=function(){
-		this.partida.iniciarPartida();
+		if(this.partida.nickOwner == this.nick){
+			this.partida.iniciarPartida();
+			return this.partida.fase.nombre
+		}
 	}
 	this.abandonarPartida=function(){
 		this.partida.abandonarPartida(this.nick);
