@@ -2,36 +2,39 @@ var modelo=require("./modelo.js");
 
 describe("El juego del impostor", function() {
 	var juego;
-	var usr;
+	//var usr;
+	var nick;
 
 	beforeEach(function() {
 		juego = new modelo.Juego();
-		usr = new modelo.Usuario("pepe",juego);
+		//usr = new modelo.Usuario("pepe",juego);
+		nick="pepe";
 	});
 
 	it("Comprobar valores iniciales", function() {
 		expect(Object.keys(juego.partidas).length).toEqual(0);
-		expect(usr.nick).toEqual("pepe");
-		expect(usr.juego).not.toBe(undefined);
+		expect(nick).toEqual("pepe");
+		expect(juego).not.toBe(undefined);
 	});
 
 	it("Comprobar valores de la partida", function() {
-		codigo=usr.crearPartida(3);
+		codigo=juego.crearPartida(3, nick);
 		expect(codigo).toEqual("Error");
-		codigo=usr.crearPartida(11);
+		codigo=juego.crearPartida(11, nick);
 		expect(codigo).toEqual("Error");
 	});
 
 	describe("cuando el usuario pepe crea una partida de 4 jugadores", function() {
 		beforeEach(function() {
-			codigo=usr.crearPartida(4);
+			nick = "pepe";
+			codigo=juego.crearPartida(4, nick);
 			fase = new modelo.Inicial();
 			partida = juego.partidas[codigo];
 		});
 
 		it("el usr Pepe crea una partida de 4 jugadores", function() {
 			expect(codigo).not.toBe(undefined);
-			expect(partida.nickOwner==usr.nick).toBe(true);
+			expect(partida.nickOwner==nick).toBe(true);
 			expect(partida.fase.nombre=="inicial").toBe(true);
 			expect(partida.maximo==4).toBe(true);
 			expect(Object.keys(partida.usuarios).length==1).toBe(true);
@@ -59,13 +62,13 @@ describe("El juego del impostor", function() {
 			expect(Object.keys(partida.usuarios).length==3).toBe(true);
 			juego.unirAPartida(codigo, "pepe");
 			expect(Object.keys(partida.usuarios).length==4).toBe(true);
-			usr.iniciarPartida(codigo);
+			juego.iniciarPartida(codigo, nick);
 			expect(partida.fase.nombre=="jugando").toBe(true);
 		});
 
 		describe("Creacion de 3 usuarios, uniones y abandonos", function() {
 			beforeEach(function() {
-				codigo=usr.crearPartida(4);
+				codigo=juego.crearPartida(4, nick);
 				fase = new modelo.Inicial();
 				partida = juego.partidas[codigo];
 				usrpablo = new modelo.Usuario("pablo",juego);
@@ -98,12 +101,19 @@ describe("El juego del impostor", function() {
 				expect(partida.usuarios["pablo"]).not.toBe(undefined);
 				expect(partida.usuarios["tomas"]).not.toBe(undefined);
 				expect(partida.usuarios["jose"]).not.toBe(undefined);
+				expect(partida.usuarios["pepe"]).not.toBe(undefined);
 				partida.usuarios["pablo"].abandonarPartida();
 				partida.usuarios["tomas"].abandonarPartida();
 				partida.usuarios["jose"].abandonarPartida();
+				partida.usuarios["pepe"].abandonarPartida();
 				expect(partida.usuarios["pablo"]).toBe(undefined);
 				expect(partida.usuarios["tomas"]).toBe(undefined);
 				expect(partida.usuarios["jose"]).toBe(undefined);
+				expect(partida.usuarios["pepe"]).toBe(undefined);
+				//no existe
+				//expect(juego.partidas[codigo].numJugadores()).toEqual(0);
+				//juego.eliminarPartida(codigo);
+				//expect(partida).toBe(undefined);
 			});
 
 			it("3 usuarios de una partida ya iniciada, la abandonan", function() {
@@ -117,7 +127,7 @@ describe("El juego del impostor", function() {
 				expect(partida.usuarios["tomas"]).not.toBe(undefined);
 				expect(partida.usuarios["jose"]).not.toBe(undefined);
 				expect(partida.fase.nombre=="completado").toBe(true);
-				usr.iniciarPartida();
+				juego.iniciarPartida(codigo, nick);
 				expect(partida.fase.nombre=="jugando").toBe(true);
 				expect(partida.usuarios["pablo"].encargo).not.toEqual("ninguno");
 				expect(partida.usuarios["tomas"].encargo).not.toEqual("ninguno");
@@ -140,7 +150,7 @@ describe("El juego del impostor", function() {
 				juego.unirAPartida(codigo, "pablo");
 				juego.unirAPartida(codigo, "tomas");
 				juego.unirAPartida(codigo, "jose");
-				usr.iniciarPartida();
+				juego.iniciarPartida(codigo, nick);
 				usuarios = partida.codigo.usuarios;
 				numImpostores = partida.numImpostoresVivos(); //asi sabemos quien es el impostor
 				//he creado este metodo porque se podia atacar a si mismo y nadie moriria por la

@@ -11,9 +11,7 @@ function Juego(){
 	}
 
 	this.eliminarPartida=function(cod){
-		if (this.partidas[cod]){
 			delete this.partidas[cod];
-		}
 	}
 
 	this.crearPartida=function(num,owner){
@@ -21,8 +19,8 @@ function Juego(){
 		if(numeroValido(num)){
 			let codigo=this.obtenerCodigo();
 			if (!this.partidas[codigo]){
-				this.partidas[codigo]=new Partida(num,owner.nick,codigo);
-				owner.partida=this.partidas[codigo];
+				this.partidas[codigo]=new Partida(num,owner,codigo,this);
+				//owner.partida=this.partidas[codigo];
 			}
 			return codigo;
 		}else{
@@ -56,10 +54,29 @@ function Juego(){
 		return lista;
 	}
 
+	this.listarPartidas=function(){
+		var lista = [];
+		var huecos = 0;
+		for (var key in this.partidas){
+			var partida = this.partidas[key];
+			var owner=this.partidas[key].nickOwner;
+				lista.push({"codigo":key,"owner":owner})
+			}
+			return lista;
+		}
+
+	this.iniciarPartida=function(codigo, nick){
+		var owner=this.partidas[codigo].nickOwner;
+		if(nick==owner){
+			this.partidas[codigo].iniciarPartida();
+		}
+	}
+
 
 }
 
-function Partida(num,owner,codigo){
+function Partida(num,owner,codigo, juego){
+	this.juego = juego;
 	this.maximo=num;
 	this.nickOwner=owner;
 	this.codigo=codigo;
@@ -112,6 +129,9 @@ function Partida(num,owner,codigo){
 		this.eliminarUsuario(nick);
 		if (!this.comprobarMinimo()){
 			this.fase=new Inicial();
+		}
+		if (this.numJugadores()<=0){
+			this.juego.eliminarPartida();
 		}
 	}
 	this.eliminarUsuario=function(nick) {
@@ -466,10 +486,7 @@ function Usuario(nick,juego){
 		return this.juego.crearPartida(num,this);
 	}
 	this.iniciarPartida=function(){
-		if(this.partida.nickOwner == this.nick){
-			this.partida.iniciarPartida();
-			return this.partida.fase.nombre
-		}
+		this.partida.iniciarPartida();
 	}
 	this.abandonarPartida=function(){
 		this.partida.abandonarPartida(this.nick);

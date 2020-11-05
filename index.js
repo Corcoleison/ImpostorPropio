@@ -36,8 +36,8 @@ app.get('/crearPartida/:nick/:numero', function(request, response){
 	var nick=request.params.nick;
 	var num=parseInt(request.params.numero);
 	//ojo, nick nulo o numero
-	var usr=new modelo.Usuario(nick);
-	var codigo = juego.crearPartida(num,usr);
+	//var usr=new modelo.Usuario(nick);
+	var codigo = juego.crearPartida(num,nick);
 
 	response.send({"codigo":codigo});
 });
