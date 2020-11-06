@@ -103,17 +103,19 @@ describe("El juego del impostor", function() {
 				expect(partida.usuarios["jose"]).not.toBe(undefined);
 				expect(partida.usuarios["pepe"]).not.toBe(undefined);
 				partida.usuarios["pablo"].abandonarPartida();
+				expect(Object.keys(partida.usuarios).length==3).toBe(true);
 				partida.usuarios["tomas"].abandonarPartida();
+				expect(Object.keys(partida.usuarios).length==2).toBe(true);
 				partida.usuarios["jose"].abandonarPartida();
+				expect(Object.keys(partida.usuarios).length==1).toBe(true);
 				partida.usuarios["pepe"].abandonarPartida();
 				expect(partida.usuarios["pablo"]).toBe(undefined);
 				expect(partida.usuarios["tomas"]).toBe(undefined);
 				expect(partida.usuarios["jose"]).toBe(undefined);
 				expect(partida.usuarios["pepe"]).toBe(undefined);
 				//no existe
-				//expect(juego.partidas[codigo].numJugadores()).toEqual(0);
 				//juego.eliminarPartida(codigo);
-				//expect(partida).toBe(undefined);
+				expect(juego.partidas[codigo]).toBe(undefined);
 			});
 
 			it("3 usuarios de una partida ya iniciada, la abandonan", function() {

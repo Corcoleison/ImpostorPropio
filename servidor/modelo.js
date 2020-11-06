@@ -131,7 +131,7 @@ function Partida(num,owner,codigo, juego){
 			this.fase=new Inicial();
 		}
 		if (this.numJugadores()<=0){
-			this.juego.eliminarPartida();
+			this.juego.eliminarPartida(this.codigo);
 		}
 	}
 	this.eliminarUsuario=function(nick) {
@@ -421,7 +421,7 @@ function Final(){
 	this.iniciarPartida=function(partida){
 	}
 	this.abandonarPartida=function(nick,partida){
-		//esto es absurdo
+		partida.puedeAbandonarPartida(nick);
 	}
 	this.atacar=function(nick,partida){
 		//no puede atacar con la partida terminada
