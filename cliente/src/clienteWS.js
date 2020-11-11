@@ -103,6 +103,9 @@ function saltarVotos(){
 	ws3.saltarVoto();
 	ws4.saltarVoto();
 }
-function votaciones2(){
-
+function votar(){
+	ws.votar("juani");
+	ws2.votar("juani");
+	ws3.votar("juani");
+	ws4.votar("juani");
 }

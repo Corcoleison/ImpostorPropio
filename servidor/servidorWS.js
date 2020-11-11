@@ -56,6 +56,7 @@ function ServidorWS(){
 				if(partida.todosHanVotado()){
 					var data={"elegido":partida.elegido,"fase":partida.fase.nombre};
 					cli.enviarATodos(io,codigo,"finalVotacion",data);
+					partida.reiniciarContadores();
 				}
 				else{
 					//enviar la lista de los que han votado
@@ -68,6 +69,7 @@ function ServidorWS(){
 				if(partida.todosHanVotado()){
 					var data={"elegido":partida.elegido,"fase":partida.fase.nombre};
 					cli.enviarATodos(io,codigo,"finalVotacion",data);
+					partida.reiniciarContadores();
 				}
 				else{
 					//enviar la lista de los que han votado

@@ -89,8 +89,8 @@ function Juego(){
 	}
 	this.obtenerEncargo=function(codigo,nick){
 		var res={};
-		var encargo=juego.partidas[codigo].usuarios[nick].encargo;
-		var impostor=juego.partidas[codigo].usuarios[nick].impostor;
+		var encargo=this.partidas[codigo].usuarios[nick].encargo;
+		var impostor=this.partidas[codigo].usuarios[nick].impostor;
 		res={"encargo":encargo,"impostor":impostor};
 		return res;
 	}
@@ -257,10 +257,6 @@ function Partida(num,owner,codigo, juego){
 	this.puedeComenzarVotacion=function(){
 		this.fase = new Votacion();
 	}
-	this.terminarVotacion=function(){
-		this.comprobarFinal();
-		this.reiniciarContadores();
-	}
 	this.gananImpostores=function(){
 		return this.numImpostoresVivos() >= this.numCiudadanosVivos()
 	}
@@ -300,7 +296,7 @@ function Partida(num,owner,codigo, juego){
 	}
 	this.finalVotacion=function(){
 		this.fase=new Jugando();
-		this.reiniciarContadores();
+		//this.reiniciarContadores();
 		this.comprobarFinal();
 	}
 	this.finPartidaImpostores=function(){
@@ -315,9 +311,9 @@ function Partida(num,owner,codigo, juego){
 		if (this.todosHanVotado()){
 			let elegido=this.jugadorMasVotado();
 			if (elegido && elegido.votos>this.numeroSkips()){
+				this.elegido=elegido.nick;
 				elegido.esAtacado();
 				//this.puedeAtacar(elegido.nick);
-				this.elegido=elegido.nick;
 			}
 			this.finalVotacion();
 		}
