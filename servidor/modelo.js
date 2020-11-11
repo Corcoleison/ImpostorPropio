@@ -74,6 +74,7 @@ function Juego(){
 
 	this.lanzarVotacion=function(codigo, nick){
 		var usr=this.partidas[codigo].usuarios[nick];
+		this.reiniciarContadores(codigo);
 		usr.lanzarVotacion();
 	}
 
@@ -93,6 +94,17 @@ function Juego(){
 		var impostor=this.partidas[codigo].usuarios[nick].impostor;
 		res={"encargo":encargo,"impostor":impostor};
 		return res;
+	}
+
+	this.reiniciarContadores=function(codigo){
+		if(this.partidas[codigo])
+		this.partidas[codigo].reiniciarContadores();
+	}
+
+	this.atacar=function(codigo, nick, atacado){
+		var usr=this.partidas[codigo].usuarios[nick];
+		//usr=this.partida[codigo].obtenerUsuario(nick);
+		usr.atacar(atacado);
 	}
 
 }
@@ -128,6 +140,9 @@ function Partida(num,owner,codigo, juego){
 		//		usuarioAgregado.nick = usuarioAgregado.nick + contador;
 		//	}
 
+	}
+	this.obtenerUsuario=function(nick){
+		return this.usuarios[nick]
 	}
 
 	this.numJugadores=function(){

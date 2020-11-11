@@ -56,7 +56,7 @@ function ServidorWS(){
 				if(partida.todosHanVotado()){
 					var data={"elegido":partida.elegido,"fase":partida.fase.nombre};
 					cli.enviarATodos(io,codigo,"finalVotacion",data);
-					partida.reiniciarContadores();
+					//partida.reiniciarContadores();
 				}
 				else{
 					//enviar la lista de los que han votado
@@ -69,7 +69,7 @@ function ServidorWS(){
 				if(partida.todosHanVotado()){
 					var data={"elegido":partida.elegido,"fase":partida.fase.nombre};
 					cli.enviarATodos(io,codigo,"finalVotacion",data);
-					partida.reiniciarContadores();
+					//partida.reiniciarContadores();
 				}
 				else{
 					//enviar la lista de los que han votado
@@ -78,6 +78,12 @@ function ServidorWS(){
 			});
 			socket.on('obtenerEncargo', function(codigo, nick) {
 				cli.enviarRemitente(socket,"recibirEncargo", juego.obtenerEncargo(codigo,nick));
+			});
+			socket.on('atacar', function(codigo, nick, atacado) {
+				juego.atacar(codigo, nick, atacado);
+				var usr_atacado=juego.partidas[codigo].obtenerUsuario(atacado)
+				var data={"Atacado":atacado,"estado":usr_atacado.estado.nombre};
+				cli.enviarRemitente(socket,"atacado", data);
 			});
 		});
 	}
