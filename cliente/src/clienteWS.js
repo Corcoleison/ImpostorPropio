@@ -81,7 +81,10 @@ function ClienteWS(){
 		this.socket.on('recibirEncargo',function(data){
 			console.log(data);
 		});
-		this.socket.on('atacado',function(data){
+		this.socket.on('muereInocente',function(data){
+			console.log(data);
+		});
+		this.socket.on('ganaImpostor',function(data){
 			console.log(data);
 		});
 	}
@@ -114,4 +117,10 @@ function votar(){
 	ws2.votar("juani");
 	ws3.votar("juani");
 	ws4.votar("juani");
+}
+function obtenerEncargos(){
+	ws.obtenerEncargo();
+	ws2.obtenerEncargo();
+	ws3.obtenerEncargo();
+	ws4.obtenerEncargo();
 }

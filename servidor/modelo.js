@@ -92,7 +92,7 @@ function Juego(){
 		var res={};
 		var encargo=this.partidas[codigo].usuarios[nick].encargo;
 		var impostor=this.partidas[codigo].usuarios[nick].impostor;
-		res={"encargo":encargo,"impostor":impostor};
+		res={"nick":nick,"encargo":encargo,"impostor":impostor};
 		return res;
 	}
 
