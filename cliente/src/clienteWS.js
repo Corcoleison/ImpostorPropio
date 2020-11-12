@@ -84,7 +84,7 @@ function ClienteWS(){
 		this.socket.on('muereInocente',function(data){
 			console.log(data);
 		});
-		this.socket.on('ganaImpostor',function(data){
+		this.socket.on('final',function(data){
 			console.log(data);
 		});
 	}
