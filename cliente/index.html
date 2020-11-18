@@ -14,13 +14,16 @@
 <body>
 <div class="container">
 	<h3>Impostor App</h3>
-  <div id="crearPartida"> </div>
+  	<div id="crearPartida"> </div>
+  	<div id="unirAPartida"> </div>
+  	<div id="esperando"> </div>
 </div>
 <script>
 	var rest=new ClienteRest();
 	var ws=new ClienteWS();
 	var cw=new ControlWeb($);
 	cw.mostrarCrearPartida();
+	ws.listaPartidasDisponibles();
 </script>
 </body>
 </html>
