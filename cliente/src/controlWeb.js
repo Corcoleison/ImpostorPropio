@@ -4,11 +4,11 @@ function ControlWeb($){
 		var cadena='<div id="mostrarCP">';
 		cadena=cadena+'<div class="form-group">';
 		cadena=cadena+'<label for="nick">Nick:</label>';
-		cadena=cadena+'<input type="text" class="form-control" id="nick">';
+		cadena=cadena+'<input value="player"  type="text" class="form-control" id="nick">';
 		cadena=cadena+'</div>';
 		cadena=cadena+'<div class="form-group">';
 		cadena=cadena+'<label for="num">Numero:</label>';
-		cadena=cadena+'<input type="text" class="form-control" id="num">';
+		cadena=cadena+'<input value="4" type="number" class="form-control" id="num"  min="4" max="10">';
 		cadena=cadena+'</div>';
 		cadena=cadena+'<button type="button" id="btnCrear" class="btn btn-primary">Crear Partida</button>';
 		cadena=cadena+'</div>';
@@ -18,8 +18,12 @@ function ControlWeb($){
 		$('#btnCrear').on('click',function(){
 			var nick=$('#nick').val();
 			var num=$("#num").val();
-			$("#mostrarCP").remove();
-			ws.crearPartida(nick,num);
+			$("#mostrarCP").hide();
+			if(nick != ""){
+				ws.crearPartida(nick,num);
+			}else{
+				$("#mostrarCP").show();
+			}
 			//mostrarEsperandoRival
 		});
 	}
@@ -29,6 +33,9 @@ function ControlWeb($){
 		var cadena="<div id='mER'>";
 		cadena=cadena+"<img src='cliente/img/waitingS.gif' class='img-responsive center-block'>";
 		cadena=cadena+"</div>";
+		$('#encabezado').remove();
+		$('#mUAP').remove();
+		$("#mostrarCP").remove();
 		$('#esperando').append(cadena);
 	}
 
@@ -57,7 +64,13 @@ function ControlWeb($){
 			var nick=$('#nick').val();
 			var codigo=StoreValue[0];
 			$("#mUAP").remove();
-			ws.unirAPartida(codigo,nick);
+			if(codigo!=undefined && nick!=""){
+				ws.unirAPartida(codigo,nick);
+			}
+			else{
+				ws.listaPartidasDisponibles();
+			}
+			
 			//mostrarEsperandoRival
 		});
 	}

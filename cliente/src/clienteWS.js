@@ -58,6 +58,7 @@ function ClienteWS(){
 		this.socket.on('unidoAPartida',function(data){
 			cli.codigo=data.codigo;
 			console.log(data);
+			cw.mostrarEsperandoRival();
 		});
 		this.socket.on('nuevoJugador',function(nick){
 			console.log(nick+" se une a la partida");
