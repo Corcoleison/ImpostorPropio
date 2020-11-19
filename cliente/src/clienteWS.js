@@ -50,7 +50,9 @@ function ClienteWS(){
 			console.log(data);
 			if(data.codigo!="Error"){
 				cw.mostrarEsperandoRival();
+				cw.mostrarIniciarPartida();
 			}
+
 			//console.log("codigo partida: "+data.codigo);
 			//console.log("propietario: "+data.owner);
 

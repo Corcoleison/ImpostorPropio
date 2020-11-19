@@ -3,6 +3,7 @@ function ControlWeb($){
 	this.mostrarCrearPartida=function(){
 		var cadena='<div id="mostrarCP">';
 		cadena=cadena+'<div class="form-group">';
+		cadena=cadena+'<h3>Crear Partida</h3>';
 		cadena=cadena+'<label for="nick">Nick:</label>';
 		cadena=cadena+'<input value="player"  type="text" class="form-control" id="nick">';
 		cadena=cadena+'</div>';
@@ -27,24 +28,30 @@ function ControlWeb($){
 			//mostrarEsperandoRival
 		});
 	}
+	this.limpiar=function(){
+		$('#encabezado').remove();
+		$('#mUAP').remove();
+		$("#mostrarCP").remove();
+	}
 
 	this.mostrarEsperandoRival=function(){
 		$('#mER').remove();
 		var cadena="<div id='mER'>";
 		cadena=cadena+"<img src='cliente/img/waitingS.gif' class='img-responsive center-block'>";
 		cadena=cadena+"</div>";
-		$('#encabezado').remove();
-		$('#mUAP').remove();
-		$("#mostrarCP").remove();
+		this.limpiar();
 		$('#esperando').append(cadena);
 	}
 
 	this.mostrarUnirAPartida=function(lista){
 		$('#mUAP').remove();
 		var cadena='<div id="mUAP">';
+		cadena=cadena+'<h3>Unirse a una Partida</h3>';
 		cadena=cadena+'<div class="list-group">';
 		for(var i=0;i<lista.length;i++){
-	  		cadena=cadena+'<a href="#" value="'+lista[i].codigo+'" class="list-group-item">'+lista[i].codigo+' huecos:'+lista[i].huecos+'</a>';
+			var maximo=lista[i].maximo
+			var numJugadores=maximo-(lista[i].huecos)
+	  		cadena=cadena+'<a href="#" value="'+lista[i].codigo+'" class="list-group-item">'+lista[i].codigo+' <span class="badge">'+numJugadores+'/'+maximo+'</span></a>';
 	  	}
 		cadena=cadena+'</div>';
 		cadena=cadena+'<button type="button" id="btnUnir" class="btn btn-primary">Unir a Partida</button>';
@@ -73,6 +80,34 @@ function ControlWeb($){
 			
 			//mostrarEsperandoRival
 		});
+	}
+
+	this.mostrarIniciarPartida=function(){
+		$('#mIP').remove();
+		var cadena='<div id="mostrarIP">';
+		cadena=cadena+'</div>';
+		cadena=cadena+'<button type="button" id="btnIniciar" class="btn btn-primary">Iniciar Partida</button>';
+		cadena=cadena+'</div>';
+
+		$('#esperando').append(cadena);
+
+		$('#btnIniciar').on('click',function(){
+			ws.iniciarPartida();
+		});
+	}
+
+	this.mostrarParticipantes=function(lista){
+		var cadena='<div id="mUAP">';
+		cadena=cadena+'<h3>Unirse a una Partida</h3>';
+		cadena=cadena+'<div class="list-group">';
+		for(var i=0;i<lista.length;i++){
+			var maximo=lista[i].maximo
+			var numJugadores=maximo-(lista[i].huecos)
+	  		cadena=cadena+'<a href="#" value="'+lista[i].codigo+'" class="list-group-item">'+lista[i].codigo+' <span class="badge">'+numJugadores+'/'+maximo+'</span></a>';
+	  	}
+		cadena=cadena+'</div>';
+		cadena=cadena+'<button type="button" id="btnUnir" class="btn btn-primary">Unir a Partida</button>';
+		cadena=cadena+'</div>';
 	}
 
 }
