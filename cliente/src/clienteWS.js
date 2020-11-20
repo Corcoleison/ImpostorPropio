@@ -38,6 +38,9 @@ function ClienteWS(){
 	this.atacar=function(atacado){
 		this.socket.emit("atacar", this.codigo, this.nick, atacado);
 	}
+	this.listarParticipantes=function(){
+		this.socket.emit("listarParticipantes", this.codigo);
+	}
 	//servidor WS dentro del cliente
 	this.lanzarSocketSrv=function(){
 		var cli = this;
@@ -64,6 +67,7 @@ function ClienteWS(){
 		});
 		this.socket.on('nuevoJugador',function(nick){
 			console.log(nick+" se une a la partida");
+			cw.actualizarJugadores();
 			//cli.iniciarPartida();
 		});
 		this.socket.on('partidaIniciada',function(fase){
@@ -93,6 +97,10 @@ function ClienteWS(){
 		});
 		this.socket.on('final',function(data){
 			console.log(data);
+		});
+		this.socket.on('recibirListaParticipantes',function(lista){
+			console.log(lista);
+			cw.mostrarParticipantes(lista);
 		});
 	}
 

@@ -45,12 +45,14 @@ function Juego(){
 		var lista = [];
 		var huecos = 0;
 		var maximo = 0;
+		var owner = "";
 		for (var key in this.partidas){
 			var partida = this.partidas[key];
 			huecos=partida.obtenerHuecos();
+			owner=partida.nickOwner;
 			maximo = partida.maximo;
 			if(huecos>0){
-				lista.push({"codigo":key,"huecos":huecos, "maximo":maximo})
+				lista.push({"codigo":key,"huecos":huecos, "maximo":maximo,"owner":owner})
 			}
 		}
 		return lista;
@@ -111,18 +113,11 @@ function Juego(){
 
 	this.listarParticipantes=function(codigo){
 		var lista = [];
-		var huecos = 0;
-		var maximo = 0;
-		var partida = this.partidas[codigo]
-		for (var key in this.partidas){
-			var partida = this.partidas[key];
-			huecos=partida.obtenerHuecos();
-			maximo = partida.maximo;
-			if(huecos>0){
-				lista.push({"codigo":key,"huecos":huecos, "maximo":maximo})
-			}
+		var partida = this.partidas[codigo];
+		if (partida){
+			lista = partida.devolverNicks();
 		}
-		return lista;
+		return lista
 	}
 
 }
@@ -379,6 +374,13 @@ function Partida(num,owner,codigo, juego){
 			if(this.usuarios[key].estado.nombre=="vivo" && this.usuarios[key].haVotado){
 				lista.push(key);
 			}
+		}
+		return lista;
+	}
+	this.devolverNicks=function(){
+		var lista=[];
+		for(var key in this.usuarios){
+			lista.push({"nick":key});
 		}
 		return lista;
 	}

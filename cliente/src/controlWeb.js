@@ -41,6 +41,7 @@ function ControlWeb($){
 		cadena=cadena+"</div>";
 		this.limpiar();
 		$('#esperando').append(cadena);
+		ws.listarParticipantes();
 	}
 
 	this.mostrarUnirAPartida=function(lista){
@@ -51,7 +52,7 @@ function ControlWeb($){
 		for(var i=0;i<lista.length;i++){
 			var maximo=lista[i].maximo
 			var numJugadores=maximo-(lista[i].huecos)
-	  		cadena=cadena+'<a href="#" value="'+lista[i].codigo+'" class="list-group-item">'+lista[i].codigo+' <span class="badge">'+numJugadores+'/'+maximo+'</span></a>';
+	  		cadena=cadena+'<a href="#" value="'+lista[i].codigo+'" class="list-group-item">'+lista[i].codigo+' Host: '+lista[i].owner+' <span class="badge">'+numJugadores+'/'+maximo+'</span></a>';
 	  	}
 		cadena=cadena+'</div>';
 		cadena=cadena+'<button type="button" id="btnUnir" class="btn btn-primary">Unir a Partida</button>';
@@ -97,17 +98,22 @@ function ControlWeb($){
 	}
 
 	this.mostrarParticipantes=function(lista){
-		var cadena='<div id="mUAP">';
-		cadena=cadena+'<h3>Unirse a una Partida</h3>';
+		$('#mP').remove();
+		var cadena='<div id="mP">';
+		cadena=cadena+'<h3>Listado Participantes</h3>';
 		cadena=cadena+'<div class="list-group">';
 		for(var i=0;i<lista.length;i++){
-			var maximo=lista[i].maximo
-			var numJugadores=maximo-(lista[i].huecos)
-	  		cadena=cadena+'<a href="#" value="'+lista[i].codigo+'" class="list-group-item">'+lista[i].codigo+' <span class="badge">'+numJugadores+'/'+maximo+'</span></a>';
+	  		cadena=cadena+'<li value="'+lista[i].nick+'" class="list-group-item">'+lista[i].nick+'</li>';
 	  	}
 		cadena=cadena+'</div>';
-		cadena=cadena+'<button type="button" id="btnUnir" class="btn btn-primary">Unir a Partida</button>';
+		//<input width="30" height="30" type="image" id="btnRefrescar" src="cliente/img/refresh.png" />
 		cadena=cadena+'</div>';
+
+		$('#uniendo').append(cadena);
+	}
+
+	this.actualizarJugadores=function(){
+		ws.listarParticipantes();
 	}
 
 }

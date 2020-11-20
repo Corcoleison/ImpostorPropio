@@ -18,7 +18,7 @@ function ServidorWS(){
 				var codigo=juego.crearPartida(numero,nick);
 				socket.join(codigo);
 				console.log('usuario nick: '+nick+" crea partida codigo: "+codigo);
-				cli.enviarRemitente(socket,"partidaCreada",{"codigo":codigo,"owner":nick})	        		        
+				cli.enviarRemitente(socket,"partidaCreada",{"codigo":codigo,"owner":nick});      		        
 			});
 			socket.on('unirAPartida', function(codigo,nick) {
 				//console.log('usuario nick: '+nick+" se une a partida: "+codigo);
@@ -92,6 +92,10 @@ function ServidorWS(){
 					//avisar al inocente
 					cli.enviarRemitente(socket,"muereInocente", partida.fase.nombre);
 				}
+			});
+			socket.on('listarParticipantes', function(codigo) {
+				var lista = juego.listarParticipantes(codigo);
+				cli.enviarRemitente(socket,"recibirListaParticipantes", lista);     		        
 			});
 		});
 	}
