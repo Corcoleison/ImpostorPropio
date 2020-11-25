@@ -146,118 +146,7 @@ describe("El juego del impostor", function() {
 				expect(juego.partidas[codigo]).toBe(undefined);
 			});
 		});
-
-		describe("Durante la partida", function() {
-			beforeEach(function() {
-				juego.unirAPartida(codigo, "pablo");
-				juego.unirAPartida(codigo, "tomas");
-				juego.unirAPartida(codigo, "jose");
-				juego.iniciarPartida(codigo, nick);
-				usuarios = partida.codigo.usuarios;
-				numImpostores = partida.numImpostoresVivos(); //asi sabemos quien es el impostor
-				//he creado este metodo porque se podia atacar a si mismo y nadie moriria por la
-				//condicion que le he puesto de que no ataque a si mismo
-				ciudadanos = partida.devolverCiudadanosVivos();
-				impostor = partida.identificarImpostor();
-			});
-
-			// it("Comprobar que hay un impostor", function() {
-			// 	expect(numImpostores).not.toEqual(0);
-			// });
-
-			// it("El impostor ataca, muere un ciudadano", function() {
-			// 	expect(partida.usuarios["pepe"].estado.nombre).toEqual("vivo");
-			// 	//Lo he tenido que hacer de esta manera porque como la asignacion de impostor es al azar
-			// 	//puede atacarse a si mismo en algun momento y fallaria el test
-			// 	impostor.atacar(ciudadanos[0].nick); 
-			// 	expect(partida.usuarios[ciudadanos[0].nick].estado.nombre).toEqual("muerto");
-			// });
-
-			// it("ganan impostores", function() {
-			// 	expect(partida.usuarios["pepe"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["pablo"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["tomas"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["jose"].estado.nombre).toEqual("vivo");
-			// 	impostor = partida.identificarImpostor();
-			// 	//Da igual que ataque a todos, puesto que no sabemos ahora mismo quien es el impostor, 
-			// 	//le he puesto una condicion para que no se ataque a si mismo en el metodo Atacar
-			// 	impostor.atacar("pepe");
-			// 	impostor.atacar("pablo");
-			// 	impostor.atacar("tomas");
-			// 	impostor.atacar("jose");
-			// 	expect(partida.fase.nombre).toEqual("final");
-			// 	expect(partida.fase.ganadores).toEqual("impostores");
-			// });
-			// it("votaciones: todos saltan el voto, nadie muere, la partida sigue", function() {
-			// 	expect(partida.fase.nombre).toEqual("jugando");
-			// 	expect(partida.usuarios["pepe"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["pablo"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["tomas"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["jose"].estado.nombre).toEqual("vivo");
-			// 	partida.comenzarVotacion();
-			// 	expect(partida.fase.nombre).toEqual("votacion");
-			// 	partida.usuarios["pepe"].skipear();
-			// 	expect(partida.usuarios["pepe"].skip).toBe(true);
-			// 	partida.usuarios["pablo"].skipear();
-			// 	expect(partida.usuarios["pablo"].skip).toBe(true);
-			// 	partida.usuarios["tomas"].skipear();
-			// 	expect(partida.usuarios["tomas"].skip).toBe(true);
-			// 	partida.usuarios["jose"].skipear();
-			// 	expect(partida.usuarios["jose"].skip).toBe(true);
-			// 	expect(partida.numImpostoresVivos()).toEqual(1);
-			// 	expect(partida.numCiudadanosVivos()).toEqual(3);
-			// 	expect(partida.gananCiudadanos()).toBe(false);
-			// 	expect(partida.gananImpostores()).toBe(false);
-			// 	partida.eliminarMasVotado();
-			// 	expect(partida.numImpostoresVivos()).toEqual(1);
-			// 	expect(partida.numCiudadanosVivos()).toEqual(3);
-			// 	expect(partida.gananCiudadanos()).toBe(false);
-			// 	expect(partida.gananImpostores()).toBe(false);
-			// 	expect(partida.fase.nombre).toEqual("jugando");
-			// 	expect(partida.usuarios["pepe"].skip).toBe(false);
-			// 	expect(partida.usuarios["pablo"].skip).toBe(false);
-			// 	expect(partida.usuarios["tomas"].skip).toBe(false);
-			// 	expect(partida.usuarios["jose"].skip).toBe(false);
-			// 	expect(partida.usuarios["pepe"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["pablo"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["tomas"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["jose"].estado.nombre).toEqual("vivo");
-			// });
-			// it("votaciones: impostor pillado, la partida termina, gana el pueblo", function() {
-			// 	expect(partida.fase.nombre).toEqual("jugando");
-			// 	expect(partida.usuarios["pepe"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["pablo"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["tomas"].estado.nombre).toEqual("vivo");
-			// 	expect(partida.usuarios["jose"].estado.nombre).toEqual("vivo");
-			// 	partida.comenzarVotacion();
-			// 	expect(partida.fase.nombre).toEqual("votacion");
-			// 	ciudadanos[0].votar(impostor.nick);
-			// 	expect(ciudadanos[0].skip).toBe(false);
-			// 	expect(ciudadanos[0].haVotado).toBe(true);
-			// 	expect(impostor.votos).toEqual(1);
-			// 	ciudadanos[1].votar(impostor.nick);
-			// 	expect(ciudadanos[1].haVotado).toBe(true);
-			// 	expect(ciudadanos[1].skip).toBe(false);
-			// 	expect(impostor.votos).toEqual(2);
-			// 	ciudadanos[2].votar(impostor.nick);
-			// 	expect(ciudadanos[2].skip).toBe(false);
-			// 	expect(ciudadanos[2].haVotado).toBe(true);
-			// 	expect(impostor.votos).toEqual(3);
-			// 	expect(partida.numImpostoresVivos()).toEqual(1);
-			// 	expect(partida.numCiudadanosVivos()).toEqual(3);
-			// 	expect(partida.gananCiudadanos()).toBe(false);
-			// 	expect(partida.gananImpostores()).toBe(false);
-			// 	partida.eliminarMasVotado();
-			// 	expect(partida.numImpostoresVivos()).toEqual(0);
-			// 	expect(partida.numCiudadanosVivos()).toEqual(3);
-			// 	expect(partida.gananCiudadanos()).toBe(true);
-			// 	expect(partida.gananImpostores()).toBe(false);
-			// 	expect(partida.fase.nombre).toEqual("final");
-			// 	expect(partida.fase.ganadores).toEqual("ciudadanos");
-			// 	expect(impostor.estado.nombre).toEqual("muerto");
-			// });
-		});
-
+		
 		describe("las votaciones",function(){
 			beforeEach(function(){
 				juego.unirAPartida(codigo, "ana");
@@ -365,6 +254,5 @@ describe("El juego del impostor", function() {
 				expect(partida.fase.ganadores).toEqual("impostores");
 			})
 		});
-
 	}); 
 });
