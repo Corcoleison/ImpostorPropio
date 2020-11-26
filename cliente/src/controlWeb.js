@@ -116,4 +116,9 @@ function ControlWeb($){
 		ws.listarParticipantes();
 	}
 
+	this.limpiarLog=function(){
+		$('#esperando').remove();
+		$('#uniendo').remove();
+	}
+
 }

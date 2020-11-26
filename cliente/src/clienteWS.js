@@ -70,8 +70,14 @@ function ClienteWS(){
 			cw.actualizarJugadores();
 			//cli.iniciarPartida();
 		});
+		this.socket.on('esperando',function(fase){
+			console.log("esperando: "+fase);
+		});
 		this.socket.on('partidaIniciada',function(fase){
 			console.log("Partida está en fase: "+fase);
+			lanzarJuego();
+			cw.limpiarLog();
+			cli.obtenerEncargo();
 		});
 		this.socket.on('recibirListaPartidasDisponibles',function(lista){
 			console.log(lista);

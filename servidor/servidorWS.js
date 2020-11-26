@@ -35,7 +35,12 @@ function ServidorWS(){
 				//controlar si nick es el owner de la partida desde modelo.js
 				juego.iniciarPartida(codigo, nick);
 				var fase = juego.partidas[codigo].fase.nombre;
-				cli.enviarATodos(io,codigo,"partidaIniciada",fase);        		        
+				if (fase =="jugando"){
+					cli.enviarATodos(io,codigo,"partidaIniciada",fase);
+				}
+				else{
+					cli.enviarRemitente(socket,"esperando", fase);
+				}
 			});
 			socket.on('listaPartidasDisponibles', function() {
 				var lista = juego.listarPartidasDisponibles();

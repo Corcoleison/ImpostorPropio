@@ -4,6 +4,10 @@
  *  - Tuxemon, https://github.com/Tuxemon/Tuxemon
  */
 
+ function lanzarJuego(){
+  game = new Phaser.Game(config);
+ }
+
 const config = {
   type: Phaser.AUTO,
   width: 800,
@@ -23,9 +27,11 @@ const config = {
   }
 };
 
-const game = new Phaser.Game(config);
+//const game = new Phaser.Game(config);
 let cursors;
 let player;
+let jugadores;
+let recursos = [{"nombre":"ana",frame=0},{nombre:"pepe",frame:3}];
 let showDebug = false;
 
 function preload() {
@@ -38,8 +44,9 @@ function preload() {
   // If you don't use an atlas, you can do the same thing with a spritesheet, see:
   //  https://labs.phaser.io/view.html?src=src/animation/single%20sprite%20sheet.js
   //this.load.atlas("atlas", "cliente/assets/atlas/atlas.png", "cliente/assets/atlas/atlas.json");
-  this.load.spritesheet("rojo","cliente/assets/images/personajeRojo.png",{frameWidth:32,frameHeight:32});
-  
+  //this.load.spritesheet("rojo","cliente/assets/images/personajeRojo.png",{frameWidth:32,frameHeight:32});
+  //this.load.spritesheet("azul","cliente/assets/images/personajeAzul.png",{frameWidth:40,frameHeight:37});
+  this.load.spritesheet("varios","cliente/assets/images/personajeRojo.png",{frameWidth:32,frameHeight:32});
   // repetir por cada personaje diferente
 }
 
@@ -73,63 +80,15 @@ function create() {
   //  .setSize(30, 40)
   //  .setOffset(0, 24);
 
-  player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y,"rojo");
+  player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y,"varios",recursos[0].frame);
 
   // Watch the player and worldLayer for collisions, for the duration of the scene:
   this.physics.add.collider(player, worldLayer);
-
-  // Create the player's walking animations from the texture atlas. These are stored in the global
-  // animation manager so any sprite can access them.
-  // const anims = this.anims;
-  // anims.create({
-  //   key: "misa-left-walk",
-  //   frames: anims.generateFrameNames("atlas", {
-  //     prefix: "misa-left-walk.",
-  //     start: 0,
-  //     end: 3,
-  //     zeroPad: 3
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // });
-  // anims.create({
-  //   key: "misa-right-walk",
-  //   frames: anims.generateFrameNames("atlas", {
-  //     prefix: "misa-right-walk.",
-  //     start: 0,
-  //     end: 3,
-  //     zeroPad: 3
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // });
-  // anims.create({
-  //   key: "misa-front-walk",
-  //   frames: anims.generateFrameNames("atlas", {
-  //     prefix: "misa-front-walk.",
-  //     start: 0,
-  //     end: 3,
-  //     zeroPad: 3
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // });
-  // anims.create({
-  //   key: "misa-back-walk",
-  //   frames: anims.generateFrameNames("atlas", {
-  //     prefix: "misa-back-walk.",
-  //     start: 0,
-  //     end: 3,
-  //     zeroPad: 3
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // });
-
+  let nombre=recursos[0].nombre;
   const anims = this.anims;
       anims.create({
-        key: "rojo-left-walk",
-        frames: anims.generateFrameNames("rojo", {
+        key: nombre+"-left-walk",
+        frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
           start: 8,
           end: 11,
@@ -139,7 +98,7 @@ function create() {
         repeat: -1
       });
       anims.create({
-        key: "rojo-right-walk",
+        key: nombre+"-right-walk",
         frames: anims.generateFrameNames("rojo", {
           //prefix: "misa-left-walk.",
           start: 12,
@@ -150,7 +109,7 @@ function create() {
         repeat: -1
       });
       anims.create({
-        key: "rojo-front-walk",
+        key: nombre+"-front-walk",
         frames: anims.generateFrameNames("rojo", {
           //prefix: "misa-left-walk.",
           start: 0,
@@ -161,7 +120,7 @@ function create() {
         repeat: -1
       });
       anims.create({
-        key: "rojo-back-walk",
+        key: nombre+"-back-walk",
         frames: anims.generateFrameNames("rojo", {
           //prefix: "misa-left-walk.",
           start: 4,
@@ -177,35 +136,6 @@ function create() {
   camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
   cursors = this.input.keyboard.createCursorKeys();
-
-  // Help text that has a "fixed" position on the screen
-  // this.add
-  //   .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-  //     font: "18px monospace",
-  //     fill: "#000000",
-  //     padding: { x: 20, y: 10 },
-  //     backgroundColor: "#ffffff"
-  //   })
-  //   .setScrollFactor(0)
-  //   .setDepth(30);
-
-  // // Debug graphics
-  // this.input.keyboard.once("keydown_D", event => {
-  //   // Turn on physics debugging to show player's hitbox
-  //   this.physics.world.createDebugGraphic();
-
-  // //   // Create worldLayer collision graphic above the player, but below the help text
-  // //   const graphics = this.add
-  // //     .graphics()
-  // //     .setAlpha(0.75)
-  // //     .setDepth(20);
-  // //   worldLayer.renderDebug(graphics, {
-  // //     tileColor: null, // Color of non-colliding tiles
-  // //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-  // //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-  // //   });
-
-  // });
 }
 
 function update(time, delta) {
