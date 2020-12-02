@@ -10,6 +10,9 @@ function ServidorWS(){
     this.enviarATodosMenosRemitente=function(socket,nombre,mens,datos){
         socket.broadcast.to(nombre).emit(mens,datos)
     };
+    this.enviarGlobal=function(socket,mensaje,datos){
+        socket.broadcast.emit(mensaje,datos);
+    };
 	this.lanzarSocketSrv=function(io,juego){
 		var cli=this;
 		io.on('connection',function(socket){		    
@@ -18,7 +21,9 @@ function ServidorWS(){
 				var codigo=juego.crearPartida(numero,nick);
 				socket.join(codigo);
 				console.log('usuario nick: '+nick+" crea partida codigo: "+codigo);
-				cli.enviarRemitente(socket,"partidaCreada",{"codigo":codigo,"owner":nick});      		        
+				cli.enviarRemitente(socket,"partidaCreada",{"codigo":codigo,"owner":nick});
+				var lista = juego.listarPartidasDisponibles();
+				cli.enviarGlobal(socket,"recibirListaPartidasDisponibles",lista);
 			});
 			socket.on('unirAPartida', function(codigo,nick) {
 				//console.log('usuario nick: '+nick+" se une a partida: "+codigo);
@@ -26,8 +31,8 @@ function ServidorWS(){
 				var res=juego.unirAPartida(codigo,nick);
 				socket.join(codigo);
 				var owner = juego.partidas[codigo].nickOwner;
-				console.log('usuario: '+nick+" se une a partida: "+codigo);
-				cli.enviarRemitente(socket,"unidoAPartida",{"codigo":res,"owner":owner});
+				console.log('usuario: '+res.nick+" se une a partida: "+res.codigo);
+				cli.enviarRemitente(socket,"unidoAPartida",res);
 				cli.enviarATodosMenosRemitente(socket,codigo,"nuevoJugador",nick);	        		        
 			});
 			socket.on('iniciarPartida', function(codigo,nick) {
@@ -101,6 +106,18 @@ function ServidorWS(){
 			socket.on('listarParticipantes', function(codigo) {
 				var lista = juego.listarParticipantes(codigo);
 				cli.enviarRemitente(socket,"recibirListaParticipantes", lista);     		        
+			});
+			socket.on('estoyDentro', function(nick,codigo) {
+				//var usr=juego.obtenerJugador(nick,codigo);
+				// var numero=juego.partidas[codigo].usuarios[nick].numJugador;
+				// var datos = {nick:nick,numJugador:numero};
+				// cli.enviarATodosMenosRemitente(socket,codigo,"dibujarRemoto",datos); 
+				var lista = juego.obtenerListaJugadores(codigo);
+				cli.enviarRemitente(socket,"dibujarRemoto", lista);       
+			});
+			socket.on('movimiento', function(codigo, nick, numJugador, direccion) {
+				var datos ={nick:nick,numJugador:numJugador,direccion:direccion};
+				cli.enviarATodosMenosRemitente(socket,codigo,"moverRemoto",datos);
 			});
 		});
 	}

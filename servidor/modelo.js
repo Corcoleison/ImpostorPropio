@@ -4,10 +4,10 @@ function Juego(){
 	this.unirAPartida=function(cod, nick){
 		//var res = -1
 		if (this.partidas[cod]){
-			this.partidas[cod].agregarUsuario(nick);
+			res = this.partidas[cod].agregarUsuario(nick);
 			//var res = "Exito al agregar"
 		}
-		return cod;
+		return res;
 	}
 
 	this.eliminarPartida=function(cod){
@@ -120,6 +120,10 @@ function Juego(){
 		return lista
 	}
 
+	this.obtenerListaJugadores=function(codigo){
+		return this.partidas[codigo].obtenerListaJugadores();
+	}
+
 }
 
 function Partida(num,owner,codigo, juego){
@@ -130,9 +134,9 @@ function Partida(num,owner,codigo, juego){
 	this.fase=new Inicial();
 	this.usuarios={};
 	this.elegido="no hay nadie elegido";
-	this.encargos=["jardines","calles","mobiliario","basuras"];
+	this.encargos=["jardines","calles","mobiliario","basuras", "bombero"];
 	this.agregarUsuario=function(nick){
-		this.fase.agregarUsuario(nick,this)
+		return this.fase.agregarUsuario(nick,this)
 	}
 	this.puedeAgregarUsuario=function(nick){
 		let nuevo = nick;
@@ -143,6 +147,14 @@ function Partida(num,owner,codigo, juego){
 		}
 		this.usuarios[nuevo]=new Usuario(nuevo);
 		this.usuarios[nuevo].partida = this;
+		var numero = this.numJugadores() - 1;
+		this.usuarios[nuevo].numJugador = numero;
+		if (this.comprobarMinimo()){
+		 	this.fase=new Completado();
+		}
+		return {"codigo":this.codigo,"nick":nuevo,"numJugador":numero};
+
+
 		//this.comprobarMinimo();
 		
 		//Mi solucion para lo de agregar
@@ -384,6 +396,14 @@ function Partida(num,owner,codigo, juego){
 		}
 		return lista;
 	}
+	this.obtenerListaJugadores=function(){
+		var lista=[]
+		for(var key in this.usuarios){
+			var numero = this.usuarios[key].numJugador;
+			lista.push({nick:key, numJugador:numero});
+		}
+		return lista;
+	}
 
 	this.agregarUsuario(owner);
 }
@@ -392,10 +412,7 @@ function Inicial(){
 	this.nombre="inicial";
 
 	this.agregarUsuario=function(nick,partida){
-		partida.puedeAgregarUsuario(nick);
-		if (partida.comprobarMinimo()){
-			partida.fase=new Completado();
-		}		
+		return partida.puedeAgregarUsuario(nick);	
 	}
 	this.iniciarPartida=function(partida){
 		console.log("Faltan jugadores");
@@ -563,6 +580,7 @@ function Usuario(nick,juego){
 	this.skip = false;
 	this.votos = 0;
 	this.partida;
+	this.numJugador;
 	this.haVotado=false;
 	this.estado = new Vivo();
 	this.impostor=false;
