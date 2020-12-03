@@ -52,7 +52,7 @@ function lanzarJuego(){
     //this.load.atlas("atlas", "cliente/assets/atlas/atlas.png", "cliente/assets/atlas/atlas.json");
     //this.load.spritesheet("gabe","cliente/assets/images/gabe.png",{frameWidth:24,frameHeight:24});
     //this.load.spritesheet("gabe","cliente/assets/images/male01-2.png",{frameWidth:32,frameHeight:32});
-    this.load.spritesheet("varios","cliente/assets/images/sprites_monton.png",{frameWidth:24,frameHeight:27});
+    this.load.spritesheet("varios","cliente/assets/images/defecto.png",{frameWidth:24,frameHeight:32});
   }
 
   function create() {
