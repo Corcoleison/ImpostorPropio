@@ -12,27 +12,38 @@
 	<script src="cliente/src/controlWeb.js"></script>
 	<script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
     <script src="cliente/src/game.js"></script>
+
+    <style>
+  	.bg-1 {
+    	background: url(cliente/img/lobos.jpg);
+    	height: 180px;
+    	background-position: center;
+  		background-repeat: no-repeat;
+  		background-size: cover;
+  		color: #ffffff;
+  	}
+  </style>
 </head>
 <body style="background-color:darksalmon">
-<div class="container">
+<div class="container-fluid bg-1 text-center">
 	<h3 style="text-align:center">Impostor App</h3>
-	<img id="encabezado" src='cliente/img/lobos.jpg' class='img-responsive center-block'>
-	&nbsp;
-	<div class="row">
-		<div class="col-sm-6" id="crearPartida"> </div>
-		&nbsp;
-		&nbsp;
-		&nbsp;
-  		<div class="col-sm-6" id="unirAPartida"> </div>
-	</div>
-	<div class="row">
-  		<div class="col-sm-6" id="esperando"> </div>
-  		<div class="col-sm-6" id="uniendo"> </div>
-  	</div>
-  	<div class="row">
-  		<div id="game-container"></div>
-  	</div>
 </div>
+	<div>
+		<div class="row">
+			<div class="col-sm-6" id="crearPartida"> </div>
+			&nbsp;
+			&nbsp;
+			&nbsp;
+	  		<div class="col-sm-6" id="unirAPartida"> </div>
+		</div>
+		<div class="row">
+	  		<div class="col-sm-6" id="esperando"> </div>
+	  		<div class="col-sm-6" id="uniendo"> </div>
+	  	</div>
+	  	<div class="row">
+	  		<div class="col-sm12" id="game-container"></div>
+	  	</div>
+	</div>
 <script>
 	var rest=new ClienteRest();
 	var ws=new ClienteWS();
