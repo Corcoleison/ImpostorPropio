@@ -340,10 +340,18 @@ function lanzarJuego(){
     crear.physics.add.collider(jugadores[nick], worldLayer);
   }
 
+  function mover(nick,x,y){
+    var remoto = jugadores[nick];
+    if(remoto){
+      remoto.setX(x);
+      remoto.setY(y);
+    }
+  }
+
   function moverRemoto(direccion,nick,numJugador){
     var remoto = jugadores[nick];
     const speed = 175;
-    //const prevVelocity = player.body.velocity.clone();
+    const prevVelocity = player.body.velocity.clone();
 
     const nombre=recursos[numJugador].sprite;
 
@@ -401,19 +409,19 @@ function lanzarJuego(){
     // Horizontal movement
     if (cursors.left.isDown) {
       player.body.setVelocityX(-speed);
-      ws.movimiento("left");
+      //ws.movimiento("left");
     } else if (cursors.right.isDown) {
       player.body.setVelocityX(speed);
-      ws.movimiento("right");
+      //ws.movimiento("right");
     }
 
     // Vertical movement
     if (cursors.up.isDown) {
       player.body.setVelocityY(-speed);
-      ws.movimiento("up");
+      //ws.movimiento("up");
     } else if (cursors.down.isDown) {
       player.body.setVelocityY(speed);
-      ws.movimiento("down");
+      //ws.movimiento("down");
     }
 
     // Normalize and scale the velocity so that player can't move faster along a diagonal
@@ -430,6 +438,8 @@ function lanzarJuego(){
       player.anims.play(nombre+"-front-walk", true);
     } else {
       player.anims.stop();
+
+      ws.movimiento(player.body.x,player.body.y);
 
       // If we were moving, pick and idle frame to use
       // if (prevVelocity.x < 0) player.setTexture("gabe", "gabe-left-walk");
