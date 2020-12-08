@@ -41,8 +41,10 @@ function lanzarJuego(){
   var recursos=[{frame:0,sprite:"ana"},{frame:3,sprite:"pepe"},{frame:6,sprite:"tom"},{frame:8,sprite:"rayo"}];
 
   function preload() {
-    this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
-    this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/tuxemon-town.json");
+    //this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
+    //this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/tuxemon-town.json");
+    this.load.image("tiles", "cliente/assets/tilesets/PathAndObjects.png");
+    this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/Prueba.json");
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -61,7 +63,8 @@ function lanzarJuego(){
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
-    const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
+    //const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
+    const tileset = map.addTilesetImage("PathAndObjects", "tiles");
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
@@ -340,10 +343,18 @@ function lanzarJuego(){
     crear.physics.add.collider(jugadores[nick], worldLayer);
   }
 
+  function mover(nick,x,y){
+    var remoto = jugadores[nick];
+    if(remoto){
+      remoto.setX(x);
+      remoto.setY(y);
+    }
+  }
+
   function moverRemoto(direccion,nick,numJugador){
     var remoto = jugadores[nick];
     const speed = 175;
-    //const prevVelocity = player.body.velocity.clone();
+    const prevVelocity = player.body.velocity.clone();
 
     const nombre=recursos[numJugador].sprite;
 
@@ -401,19 +412,19 @@ function lanzarJuego(){
     // Horizontal movement
     if (cursors.left.isDown) {
       player.body.setVelocityX(-speed);
-      ws.movimiento("left");
+      //ws.movimiento("left");
     } else if (cursors.right.isDown) {
       player.body.setVelocityX(speed);
-      ws.movimiento("right");
+      //ws.movimiento("right");
     }
 
     // Vertical movement
     if (cursors.up.isDown) {
       player.body.setVelocityY(-speed);
-      ws.movimiento("up");
+      //ws.movimiento("up");
     } else if (cursors.down.isDown) {
       player.body.setVelocityY(speed);
-      ws.movimiento("down");
+      //ws.movimiento("down");
     }
 
     // Normalize and scale the velocity so that player can't move faster along a diagonal
@@ -430,6 +441,8 @@ function lanzarJuego(){
       player.anims.play(nombre+"-front-walk", true);
     } else {
       player.anims.stop();
+
+      ws.movimiento(player.body.x,player.body.y);
 
       // If we were moving, pick and idle frame to use
       // if (prevVelocity.x < 0) player.setTexture("gabe", "gabe-left-walk");

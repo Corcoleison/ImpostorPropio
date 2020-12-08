@@ -175,7 +175,7 @@ function Partida(num,owner,codigo, juego){
 	}
 
 	this.comprobarMinimo=function () {
-		return Object.keys(this.usuarios).length >= 4
+		return Object.keys(this.usuarios).length >= 2
 	}
 
 	this.comprobarMaximo=function () {
@@ -683,7 +683,7 @@ function randomInt(low, high) {
 }
 
 function numeroValido(num) {
-	if(!(num<4 || num>10)){
+	if(!(num<2 || num>10)){
 		return true;
 	}else{
 		return false;

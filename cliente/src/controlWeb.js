@@ -9,7 +9,7 @@ function ControlWeb($){
 		cadena=cadena+'</div>';
 		cadena=cadena+'<div class="form-group">';
 		cadena=cadena+'<label for="num">Numero:</label>';
-		cadena=cadena+'<input value="4" type="number" class="form-control" id="num"  min="4" max="10">';
+		cadena=cadena+'<input value="2" type="number" class="form-control" id="num"  min="2" max="10">';
 		cadena=cadena+'</div>';
 		cadena=cadena+'<button type="button" id="btnCrear" class="btn btn-primary">Crear Partida</button>';
 		cadena=cadena+'</div>';
