@@ -18,7 +18,7 @@ describe("El juego del impostor", function() {
 	});
 
 	it("Comprobar valores de la partida", function() {
-		codigo=juego.crearPartida(3, nick);
+		codigo=juego.crearPartida(1, nick); //Como hemos bajado el minimo de jugadores a 2 lo modifico para que pase el test
 		expect(codigo).toEqual("Error");
 		codigo=juego.crearPartida(11, nick);
 		expect(codigo).toEqual("Error");
@@ -137,9 +137,10 @@ describe("El juego del impostor", function() {
 				partida.usuarios["pablo"].abandonarPartida();
 				expect(Object.keys(partida.usuarios).length==3).toBe(true);
 				partida.usuarios["tomas"].abandonarPartida();
-				expect(partida.fase.nombre=="inicial").toBe(true);
+				//Antes aqui estaba el equal inicial, pero al bajar el minimo de jugadores a 2, tiene que abandonar otro jugador mas, creo
 				expect(Object.keys(partida.usuarios).length==2).toBe(true);
 				partida.usuarios["jose"].abandonarPartida();
+				expect(partida.fase.nombre).toEqual("inicial");
 				partida.usuarios["pepe"].abandonarPartida();
 				expect(partida.numJugadores()).toEqual(0);
 				juego.eliminarPartida(codigo);

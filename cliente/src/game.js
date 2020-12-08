@@ -41,8 +41,10 @@ function lanzarJuego(){
   var recursos=[{frame:0,sprite:"ana"},{frame:3,sprite:"pepe"},{frame:6,sprite:"tom"},{frame:8,sprite:"rayo"}];
 
   function preload() {
-    this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
-    this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/tuxemon-town.json");
+    //this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
+    //this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/tuxemon-town.json");
+    this.load.image("tiles", "cliente/assets/tilesets/PathAndObjects.png");
+    this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/Prueba.json");
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -61,7 +63,8 @@ function lanzarJuego(){
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
-    const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
+    //const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
+    const tileset = map.addTilesetImage("PathAndObjects", "tiles");
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
