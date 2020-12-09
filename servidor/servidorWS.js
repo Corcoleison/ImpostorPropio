@@ -100,7 +100,8 @@ function ServidorWS(){
 					cli.enviarATodos(io,codigo,"final",data);
 				}else{
 					//avisar al inocente
-					cli.enviarRemitente(socket,"muereInocente", partida.fase.nombre);
+					//cli.enviarRemitente(socket,"muereInocente", partida.fase.nombre);
+					cli.enviarATodos(io,codigo,"muereInocente", atacado);
 				}
 			});
 			socket.on('listarParticipantes', function(codigo) {

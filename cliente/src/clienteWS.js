@@ -2,6 +2,7 @@ function ClienteWS(){
 	this.socket=undefined;
 	this.nick=undefined;
 	this.codigo=undefined;
+	this.impostor;
 	this.numJugador=undefined;
 	this.ini=function(){
 		this.socket=io.connect();
@@ -109,9 +110,14 @@ function ClienteWS(){
 		});
 		this.socket.on('recibirEncargo',function(data){
 			console.log(data);
+			cli.impostor = data.impostor;
+			if (cli.impostor){
+				$('#avisarImpostor').modal("show");
+				//crearColision();
+			}
 		});
-		this.socket.on('muereInocente',function(data){
-			console.log(data);
+		this.socket.on('muereInocente',function(inocente){
+			console.log('muere '+inocente);
 		});
 		this.socket.on('final',function(data){
 			console.log(data);
@@ -127,6 +133,7 @@ function ClienteWS(){
 					lanzarJugadorRemoto(lista[i].nick,lista[i].numJugador);
 				}
 			}
+			crearColision();
 		});
 		this.socket.on("moverRemoto",function(datos){
 			mover(datos);

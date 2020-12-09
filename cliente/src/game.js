@@ -39,6 +39,7 @@ function lanzarJuego(){
   var crear;
   var spawnPoint;
   var recursos=[{frame:0,sprite:"ana"},{frame:3,sprite:"pepe"},{frame:6,sprite:"tom"},{frame:8,sprite:"rayo"}];
+  var remotos;
 
   function preload() {
     //this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
@@ -55,6 +56,7 @@ function lanzarJuego(){
     //this.load.spritesheet("gabe","cliente/assets/images/gabe.png",{frameWidth:24,frameHeight:24});
     //this.load.spritesheet("gabe","cliente/assets/images/male01-2.png",{frameWidth:32,frameHeight:32});
     this.load.spritesheet("varios","cliente/assets/images/defecto.png",{frameWidth:24,frameHeight:32});
+    //this.load.spritesheet("muertos","cliente/assets/images/muertos.png",{frameWidth:24,frameHeight:32});
   }
 
   function create() {
@@ -321,8 +323,26 @@ function lanzarJuego(){
     // camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     cursors = crear.input.keyboard.createCursorKeys();
+    remotos = crear.add.group();
+    teclaA=crear.input.keyboard.addKey('a');
     lanzarJugador(ws.numJugador);
     ws.estoyDentro();
+  }
+
+  function crearColision(){
+    if (crear && ws.impostor){
+      crear.physics.add.overlap(player,remotos,kill)
+    }
+  }
+
+  function kill(sprite, inocente){
+    //dibujar el inocente muerto
+    //avisar del ataque
+    //console.log("atacando a ", inocente);
+    var nick = inocente.nick;
+    if(teclaA.isDown){
+      ws.atacar(nick);
+    }
   }
 
   function lanzarJugador(numJugador){
@@ -341,6 +361,8 @@ function lanzarJuego(){
     var frame = recursos[numJugador].frame;
     jugadores[nick]=crear.physics.add.sprite(spawnPoint.x, spawnPoint.y,"varios",frame);   
     crear.physics.add.collider(jugadores[nick], worldLayer);
+    jugadores[nick].nick = nick;
+    remotos.add(jugadores[nick]);
   }
 
   function mover(datos)
