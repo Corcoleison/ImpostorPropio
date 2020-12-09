@@ -45,8 +45,8 @@ function ClienteWS(){
 	this.listarParticipantes=function(){
 		this.socket.emit("listarParticipantes", this.codigo);
 	}
-	this.movimiento=function(x,y){
-		this.socket.emit("movimiento", this.codigo, this.nick, this.numJugador, x,y);
+	this.movimiento=function(direccion,x,y){
+		this.socket.emit("movimiento",this.nick,this.codigo,this.numJugador,direccion,x,y);
 	}
 	//servidor WS dentro del cliente
 	this.lanzarSocketSrv=function(){
@@ -128,9 +128,8 @@ function ClienteWS(){
 				}
 			}
 		});
-		this.socket.on('moverRemoto',function(datos){
-			mover(datos.nick,datos.x,datos.y);
-			//moverRemoto()
+		this.socket.on("moverRemoto",function(datos){
+			mover(datos);
 		});
 	}
 
