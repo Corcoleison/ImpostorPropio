@@ -454,7 +454,7 @@ function Completado(){
 	}
 	this.agregarUsuario=function(nick,partida){
 		if(partida.comprobarMaximo()){
-			partida.puedeAgregarUsuario(nick);
+			return partida.puedeAgregarUsuario(nick);
 		}else{
 			console.log("Lo siento partida llena");
 		}
