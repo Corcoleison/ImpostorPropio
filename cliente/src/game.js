@@ -477,7 +477,7 @@ function lanzarJuego(){
       //ws.movimiento("down");
       direccion="down";
     }
-    ws.movimiento(direccion,player.body.x,player.body.y);
+    ws.movimiento(direccion,player.x,player.y);
 
     // Normalize and scale the velocity so that player can't move faster along a diagonal
     player.body.velocity.normalize().scale(speed);
