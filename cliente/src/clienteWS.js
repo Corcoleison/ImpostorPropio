@@ -4,6 +4,8 @@ function ClienteWS(){
 	this.codigo=undefined;
 	this.impostor;
 	this.numJugador=undefined;
+	this.estado;
+	this.encargo;
 	this.ini=function(){
 		this.socket=io.connect();
 		this.lanzarSocketSrv();
@@ -63,6 +65,7 @@ function ClienteWS(){
 				cw.mostrarEsperandoRival();
 				cw.mostrarIniciarPartida();
 				cli.numJugador=0;
+				cli.estado="vivo";
 			}
 
 			//console.log("codigo partida: "+data.codigo);
@@ -73,6 +76,7 @@ function ClienteWS(){
 			cli.codigo=data.codigo;
 			cli.nick = data.nick;
 			cli.numJugador = data.numJugador;
+			cli.estado="vivo";
 			console.log(data);
 			cw.mostrarEsperandoRival();
 		});
@@ -101,6 +105,7 @@ function ClienteWS(){
 		});
 		this.socket.on('votacion',function(data){
 			console.log(data);
+			//dibujarVotacion(lista)
 		});
 		this.socket.on('finalVotacion',function(data){
 			console.log(data);
@@ -111,6 +116,7 @@ function ClienteWS(){
 		this.socket.on('recibirEncargo',function(data){
 			console.log(data);
 			cli.impostor = data.impostor;
+			cli.encargo = data.encargo;
 			if (cli.impostor){
 				$('#avisarImpostor').modal("show");
 				//crearColision();
@@ -118,6 +124,10 @@ function ClienteWS(){
 		});
 		this.socket.on('muereInocente',function(inocente){
 			console.log('muere '+inocente);
+			if(cli.nick==inocente){
+				cli.estado="muerto";
+			}
+			dibujarMuereInocente(inocente);
 		});
 		this.socket.on('final',function(data){
 			console.log(data);

@@ -40,6 +40,7 @@ function lanzarJuego(){
   var spawnPoint;
   var recursos=[{frame:0,sprite:"ana"},{frame:3,sprite:"pepe"},{frame:6,sprite:"tom"},{frame:8,sprite:"rayo"}];
   var remotos;
+  var muertos;
 
   function preload() {
     //this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
@@ -56,7 +57,7 @@ function lanzarJuego(){
     //this.load.spritesheet("gabe","cliente/assets/images/gabe.png",{frameWidth:24,frameHeight:24});
     //this.load.spritesheet("gabe","cliente/assets/images/male01-2.png",{frameWidth:32,frameHeight:32});
     this.load.spritesheet("varios","cliente/assets/images/defecto.png",{frameWidth:24,frameHeight:32});
-    //this.load.spritesheet("muertos","cliente/assets/images/muertos.png",{frameWidth:24,frameHeight:32});
+    this.load.spritesheet("muertos","cliente/assets/images/muertos.png",{frameWidth:24,frameHeight:32});
   }
 
   function create() {
@@ -71,9 +72,11 @@ function lanzarJuego(){
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
     worldLayer = map.createStaticLayer("World", tileset, 0, 0);
+    capaTareas = map.createStaticLayer("capaTareas", tileset, 0, 0);
     const aboveLayer = map.createStaticLayer("Above Player", tileset, 0, 0);
 
     worldLayer.setCollisionByProperty({ collides: true });
+    capaTareas.setCollisionByProperty({ collides: true });
 
     // By default, everything gets depth sorted on the screen in the order we created things. Here, we
     // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
@@ -324,8 +327,11 @@ function lanzarJuego(){
 
     cursors = crear.input.keyboard.createCursorKeys();
     remotos = crear.add.group();
+    muertos = crear.add.group();
     teclaA=crear.input.keyboard.addKey('a');
-    lanzarJugador(ws.numJugador);
+    teclaV=crear.input.keyboard.addKey('v');
+    teclaT=crear.input.keyboard.addKey('t');
+    lanzarJugador(ws.nick,ws.numJugador,ws.numJugador);
     ws.estoyDentro();
   }
 
@@ -345,12 +351,50 @@ function lanzarJuego(){
     }
   }
 
-  function lanzarJugador(numJugador){
+  function dibujarMuereInocente(inocente){
+    var x=jugadores[inocente].x;
+    var y=jugadores[inocente].y;
+    var numJugador = jugadores[inocente].numJugador;
+
+    var muerto = crear.physics.add.sprite(x, y,"muertos",recursos[numJugador].frame);
+
+    muertos.add(muerto);
+    //jugadores[inocente].setTexture("muertos",recursos[numJugador].frame);
+    //otra alternativa = añadir jugadores[inocente] al grupo muertos
+    //
+
+    crear.physics.add.overlap(player,muertos,votacion);
+  }
+
+  function votacion(sprite,muerto){
+    //comprobar si el jugador local pulsa la tecla de votacion "v"
+    //en ese caso, llamamos al servidor
+    if(teclaV.isDown){
+      ws.lanzarVotacion();
+    }
+  }
+
+  function tareas(sprite,tarea){
+    //¿El jugador puede realizar la tarea?
+    //en tal caso, dibujar el modal de la tarea
+    //dibujar la tarea
+    tarea.nombre="jardines";
+    if (ws.encargo==tarea.nombre){
+      console.log("realizar tarea "+ws.encargo);
+      //ws.realizarTarea(); TO-DO
+    }
+    
+  }
+
+  function lanzarJugador(nick,numJugador){
     player = crear.physics.add.sprite(spawnPoint.x, spawnPoint.y,"varios",recursos[numJugador].frame);
     // Watch the player and worldLayer for collisions, for the duration of the scene:
     crear.physics.add.collider(player, worldLayer);
+    crear.physics.add.collider(player, capaTareas, tareas);
     //crear.physics.add.collider(player2, worldLayer);
-
+    jugadores[nick] = player;
+    jugadores[nick].nick = nick;
+    jugadores[nick].numJugador = numJugador;
     camera = crear.cameras.main;
     camera.startFollow(player);
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -362,6 +406,7 @@ function lanzarJuego(){
     jugadores[nick]=crear.physics.add.sprite(spawnPoint.x, spawnPoint.y,"varios",frame);   
     crear.physics.add.collider(jugadores[nick], worldLayer);
     jugadores[nick].nick = nick;
+    jugadores[nick].numJugador = numJugador;
     remotos.add(jugadores[nick]);
   }
 

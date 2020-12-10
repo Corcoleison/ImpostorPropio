@@ -1,4 +1,5 @@
-function Juego(){
+function Juego(min){
+	this.min=min;
 	this.partidas={};//que coleccion?
 	
 	this.unirAPartida=function(cod, nick){
@@ -16,7 +17,7 @@ function Juego(){
 
 	this.crearPartida=function(num,owner){
 		//comprobar límites de num
-		if(numeroValido(num)){
+		if(this.numeroValido(num)){
 			let codigo=this.obtenerCodigo();
 			if (!this.partidas[codigo]){
 				this.partidas[codigo]=new Partida(num,owner,codigo,this);
@@ -28,6 +29,14 @@ function Juego(){
 			let codigo = "Error";
 			return codigo;
 		}
+	}
+
+	this.numeroValido=function(num) {
+	if(!(num<this.min || num>10)){
+		return true;
+	}else{
+		return false;
+	}
 	}
 
 	this.obtenerCodigo=function(){
@@ -175,7 +184,7 @@ function Partida(num,owner,codigo, juego){
 	}
 
 	this.comprobarMinimo=function () {
-		return Object.keys(this.usuarios).length >= 2
+		return Object.keys(this.usuarios).length >= this.juego.min;
 	}
 
 	this.comprobarMaximo=function () {
@@ -682,8 +691,8 @@ function randomInt(low, high) {
 	return Math.floor(Math.random() * (high - low) + low);
 }
 
-function numeroValido(num) {
-	if(!(num<2 || num>10)){
+function numeroValido(num,min) {
+	if(!(num<min || num>10)){
 		return true;
 	}else{
 		return false;

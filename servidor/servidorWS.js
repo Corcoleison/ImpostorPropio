@@ -95,14 +95,13 @@ function ServidorWS(){
 				//var usr_atacado=juego.partidas[codigo].obtenerUsuario(atacado)
 				//var data={"Atacado":atacado,"estado":usr_atacado.estado.nombre};
 				//var data={"Atacado":atacado,"estado":usr_atacado.estado.nombre};
+				cli.enviarATodos(io,codigo,"muereInocente", atacado);
 				if (partida.fase.nombre == "final"){
 					var data={"Fase":partida.fase.nombre,"Ganadores":partida.fase.ganadores};
 					cli.enviarATodos(io,codigo,"final",data);
-				}else{
-					//avisar al inocente
-					//cli.enviarRemitente(socket,"muereInocente", partida.fase.nombre);
-					cli.enviarATodos(io,codigo,"muereInocente", atacado);
 				}
+				//avisar al inocente
+				//cli.enviarRemitente(socket,"muereInocente", partida.fase.nombre);
 			});
 			socket.on('listarParticipantes', function(codigo) {
 				var lista = juego.listarParticipantes(codigo);
