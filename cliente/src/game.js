@@ -38,14 +38,14 @@ function lanzarJuego(){
   let map;
   var crear;
   var spawnPoint;
-  var recursos=[{frame:0,sprite:"ana"},{frame:3,sprite:"pepe"},{frame:6,sprite:"tom"},{frame:8,sprite:"rayo"}];
+  var recursos=[{frame:0,sprite:"ana"},{frame:3,sprite:"pepe"},{frame:6,sprite:"tom"},{frame:36,sprite:"rayo"}];
   var remotos;
   var muertos;
 
   function preload() {
     //this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
     //this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/tuxemon-town.json");
-    this.load.image("tiles", "cliente/assets/tilesets/PathAndObjects.png");
+    this.load.image("tiles", "cliente/assets/tilesets/pirata_medieval.png");
     this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/Prueba.json");
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
@@ -56,7 +56,7 @@ function lanzarJuego(){
     //this.load.atlas("atlas", "cliente/assets/atlas/atlas.png", "cliente/assets/atlas/atlas.json");
     //this.load.spritesheet("gabe","cliente/assets/images/gabe.png",{frameWidth:24,frameHeight:24});
     //this.load.spritesheet("gabe","cliente/assets/images/male01-2.png",{frameWidth:32,frameHeight:32});
-    this.load.spritesheet("varios","cliente/assets/images/defecto.png",{frameWidth:24,frameHeight:32});
+    this.load.spritesheet("varios","cliente/assets/images/guerreros.png",{frameWidth:48,frameHeight:64});
     this.load.spritesheet("muertos","cliente/assets/images/muertos.png",{frameWidth:24,frameHeight:32});
   }
 
@@ -67,9 +67,10 @@ function lanzarJuego(){
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     //const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
-    const tileset = map.addTilesetImage("PathAndObjects", "tiles");
+    const tileset = map.addTilesetImage("pirata_medieval", "tiles");
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
+    const decoracion = map.createStaticLayer("decoracion", tileset, 0, 0);
     const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
     worldLayer = map.createStaticLayer("World", tileset, 0, 0);
     capaTareas = map.createStaticLayer("capaTareas", tileset, 0, 0);
@@ -82,6 +83,7 @@ function lanzarJuego(){
     // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
     // Higher depths will sit on top of lower depth objects.
     aboveLayer.setDepth(10);
+    decoracion.setDepth(11);
 
     // Object layers in Tiled let you embed extra info into a map - like a spawn point or custom
     // collision shapes. In the tmx file, there's an object layer with a point named "Spawn Point"
@@ -147,16 +149,16 @@ function lanzarJuego(){
       anims2.create({
         key: "ana-left-walk",
         frames: anims.generateFrameNames("varios", {
-          start: 36,
-          end: 38,
+          start: 27,
+          end: 29,
         }),
         repeat: -1
       });
       anims2.create({
         key: "ana-right-walk",
         frames: anims.generateFrameNames("varios", {
-          start: 12,
-          end: 14,
+          start: 9,
+          end: 11,
         }),
         repeat: -1
       });
@@ -164,8 +166,8 @@ function lanzarJuego(){
         key: "ana-front-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 24,
-          end: 26,
+          start: 18,
+          end: 20,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -188,8 +190,8 @@ function lanzarJuego(){
         key: "pepe-left-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 39,
-          end: 41,
+          start: 30,
+          end: 32,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -199,8 +201,8 @@ function lanzarJuego(){
         key: "pepe-right-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 15,
-          end: 17,
+          start: 12,
+          end: 14,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -210,8 +212,8 @@ function lanzarJuego(){
         key: "pepe-front-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 27,
-          end: 29,
+          start: 21,
+          end: 23,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -234,8 +236,8 @@ function lanzarJuego(){
         key: "tom-left-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 39,
-          end: 41,
+          start: 33,
+          end: 35,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -256,8 +258,8 @@ function lanzarJuego(){
         key: "tom-front-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 27,
-          end: 29,
+          start: 24,
+          end: 26,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -267,8 +269,8 @@ function lanzarJuego(){
         key: "tom-back-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 3,
-          end: 5,
+          start: 6,
+          end: 8,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -280,8 +282,8 @@ function lanzarJuego(){
         key: "rayo-left-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 39,
-          end: 41,
+          start: 63,
+          end: 65,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -291,8 +293,8 @@ function lanzarJuego(){
         key: "rayo-right-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 15,
-          end: 17,
+          start: 45,
+          end: 47,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -302,8 +304,8 @@ function lanzarJuego(){
         key: "rayo-front-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 27,
-          end: 29,
+          start: 54,
+          end: 56,
           //zeroPad: 3
         }),
         //frameRate: 10,
@@ -313,8 +315,8 @@ function lanzarJuego(){
         key: "rayo-back-walk",
         frames: anims.generateFrameNames("varios", {
           //prefix: "misa-left-walk.",
-          start: 3,
-          end: 5,
+          start: 36,
+          end: 38,
           //zeroPad: 3
         }),
         //frameRate: 10,
