@@ -107,7 +107,10 @@ function ClienteWS(){
 		this.socket.on('votacion',function(fase){
 			console.log(fase);
 			//dibujarVotacion(lista)
-			$('#avisarVotacion').modal("show");
+			if (fase == "votacion"){
+				$('#avisarVotacion').modal("show");
+			}
+			
 		});
 		this.socket.on('finalVotacion',function(data){
 			console.log(data);
