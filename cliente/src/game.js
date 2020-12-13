@@ -41,6 +41,9 @@ function lanzarJuego(){
   var recursos=[{frame:0,sprite:"ana"},{frame:3,sprite:"pepe"},{frame:6,sprite:"tom"},{frame:36,sprite:"rayo"}];
   var remotos;
   var muertos;
+  var followText;
+  var followTextRemoto;
+  var followTextRemotoMuerto;
 
   function preload() {
     //this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
@@ -56,8 +59,8 @@ function lanzarJuego(){
     //this.load.atlas("atlas", "cliente/assets/atlas/atlas.png", "cliente/assets/atlas/atlas.json");
     //this.load.spritesheet("gabe","cliente/assets/images/gabe.png",{frameWidth:24,frameHeight:24});
     //this.load.spritesheet("gabe","cliente/assets/images/male01-2.png",{frameWidth:32,frameHeight:32});
-    this.load.spritesheet("varios","cliente/assets/images/guerreros.png",{frameWidth:48,frameHeight:64});
-    this.load.spritesheet("muertos","cliente/assets/images/muertos.png",{frameWidth:24,frameHeight:32});
+    this.load.spritesheet("varios","cliente/assets/images/guerreros.png",{frameWidth:32,frameHeight:43});
+    this.load.spritesheet("muertos","cliente/assets/images/guerreros_muertos.png",{frameWidth:32,frameHeight:43});
   }
 
   function create() {
@@ -357,10 +360,15 @@ function lanzarJuego(){
     var x=jugadores[inocente].x;
     var y=jugadores[inocente].y;
     var numJugador = jugadores[inocente].numJugador;
+    
 
     var muerto = crear.physics.add.sprite(x, y,"muertos",recursos[numJugador].frame);
+    followTextRemotoMuerto = crear.add.text(0, 0, jugadores[inocente].nick);
+    followTextRemotoMuerto.setPosition(x-20, y-30);
+    followTextRemotoMuerto.setColor("#8b0000");
 
     muertos.add(muerto);
+
     //jugadores[inocente].setTexture("muertos",recursos[numJugador].frame);
     //otra alternativa = añadir jugadores[inocente] al grupo muertos
     //
@@ -400,6 +408,9 @@ function lanzarJuego(){
     camera = crear.cameras.main;
     camera.startFollow(player);
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    //camera.setSize(200);
+    this.followText = crear.add.text(0, 0, jugadores[nick].nick);
+
 
   }
 
@@ -410,6 +421,7 @@ function lanzarJuego(){
     jugadores[nick].nick = nick;
     jugadores[nick].numJugador = numJugador;
     remotos.add(jugadores[nick]);
+    this.followTextRemoto = crear.add.text(0, 0, jugadores[nick].nick);
   }
 
   function mover(datos)
@@ -440,7 +452,9 @@ function lanzarJuego(){
       } else {
         remoto.anims.stop();
       }
+      followTextRemoto.setPosition(remoto.x-30, remoto.y-40);
     }
+    
   }
 
 
@@ -524,6 +538,7 @@ function lanzarJuego(){
       //ws.movimiento("down");
       direccion="down";
     }
+    followText.setPosition(player.x-30, player.y-40);
     ws.movimiento(direccion,player.x,player.y);
 
     // Normalize and scale the velocity so that player can't move faster along a diagonal
