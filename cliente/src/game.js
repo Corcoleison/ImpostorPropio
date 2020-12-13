@@ -42,7 +42,7 @@ function lanzarJuego(){
   var remotos;
   var muertos;
   var followText;
-  var followTextRemoto;
+  var followTextRemoto=[];
   var followTextRemotoMuerto;
 
   function preload() {
@@ -408,6 +408,7 @@ function lanzarJuego(){
     camera = crear.cameras.main;
     camera.startFollow(player);
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    camera.setZoom(2);
     //camera.setSize(200);
     this.followText = crear.add.text(0, 0, jugadores[nick].nick);
 
@@ -421,7 +422,7 @@ function lanzarJuego(){
     jugadores[nick].nick = nick;
     jugadores[nick].numJugador = numJugador;
     remotos.add(jugadores[nick]);
-    this.followTextRemoto = crear.add.text(0, 0, jugadores[nick].nick);
+    this.followTextRemoto[numJugador] = crear.add.text(0, 0, jugadores[nick].nick);
   }
 
   function mover(datos)
@@ -452,7 +453,7 @@ function lanzarJuego(){
       } else {
         remoto.anims.stop();
       }
-      followTextRemoto.setPosition(remoto.x-30, remoto.y-40);
+      this.followTextRemoto[numJugador].setPosition(remoto.x-30, remoto.y-40);
     }
     
   }

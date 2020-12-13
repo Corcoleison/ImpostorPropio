@@ -116,6 +116,10 @@ function ControlWeb($){
 		ws.listarParticipantes();
 	}
 
+	this.actualizarPartidas=function(){
+		ws.listaPartidasDisponibles();
+	}
+
 	this.limpiarLog=function(){
 		$('#esperando').remove();
 		$('#uniendo').remove();

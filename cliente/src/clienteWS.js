@@ -68,6 +68,7 @@ function ClienteWS(){
 				cli.estado="vivo";
 			}
 
+
 			//console.log("codigo partida: "+data.codigo);
 			//console.log("propietario: "+data.owner);
 
@@ -103,9 +104,10 @@ function ClienteWS(){
 		this.socket.on('recibirListaPartidas',function(lista){
 			console.log(lista);
 		});
-		this.socket.on('votacion',function(data){
-			console.log(data);
+		this.socket.on('votacion',function(fase){
+			console.log(fase);
 			//dibujarVotacion(lista)
+			$('#avisarVotacion').modal("show");
 		});
 		this.socket.on('finalVotacion',function(data){
 			console.log(data);
