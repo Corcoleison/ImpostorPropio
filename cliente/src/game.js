@@ -384,12 +384,8 @@ function lanzarJuego(){
     }
   }
 
-  function tareas(sprite,tarea){
-    //¿El jugador puede realizar la tarea?
-    //en tal caso, dibujar el modal de la tarea
-    //dibujar la tarea
-    tarea.nombre="jardines";
-    if (ws.encargo==tarea.nombre){
+  function tareas(sprite,objeto){
+    if (ws.encargo==objeto.properties.tarea && teclaT.isDown){
       console.log("realizar tarea "+ws.encargo);
       //ws.realizarTarea(); TO-DO
     }
