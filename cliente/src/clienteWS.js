@@ -156,8 +156,9 @@ function ClienteWS(){
 		this.socket.on("moverRemoto",function(datos){
 			mover(datos);
 		});
-		this.socket.on("realizandoTarea",function(res){
-			console.log("encargo "+res.encargo+" realizado veces: "+res.realizado+ " estadoRealizado: "+res.estadoRealizado)
+		this.socket.on("realizandoTarea",function(datos){
+			//console.log("encargo "+res.encargo+" realizado veces: "+res.realizado+ " estadoRealizado: "+res.estadoRealizado)
+			console.log(datos);
 		});
 	}
 

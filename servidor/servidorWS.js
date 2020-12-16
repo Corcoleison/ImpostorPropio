@@ -122,13 +122,17 @@ function ServidorWS(){
 				cli.enviarATodosMenosRemitente(socket,codigo,"moverRemoto",datos);
 			});
 			socket.on('realizarTarea', function(codigo, nick, encargo) {
+				res = juego.realizarTarea(codigo,nick);
 				var partida=juego.partidas[codigo];
 				if (partida.fase.nombre == "final"){
 					var data={"Fase":partida.fase.nombre,"Ganadores":partida.fase.ganadores};
 					cli.enviarATodos(io,codigo,"final",data);
 				}
-				res = juego.realizarTarea(codigo,nick);
-				cli.enviarRemitente(socket,"realizandoTarea", res);
+				//obtener porcentaje para dibujar algo (global o local)
+				percentGlobal = juego.obtenerPercentGlobal(codigo);
+				percentLocal = juego.obtenerPercentTarea(codigo, nick);
+				var datos = {percentGlobal:percentGlobal, percentLocal:percentLocal}
+				cli.enviarRemitente(socket,"realizandoTarea", datos);
 			});
 		});
 	}

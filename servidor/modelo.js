@@ -142,6 +142,13 @@ function Juego(min){
 		return res;
 	}
 
+	this.obtenerPercentTarea=function(codigo, nick){
+		return this.partidas[codigo].usuarios[nick].obtenerPercentTarea(nick);
+	}
+
+	this.obtenerPercentGlobal=function(codigo){
+		return this.partidas[codigo].obtenerPercentGlobal();
+	}
 
 
 }
@@ -252,6 +259,15 @@ function Partida(num,owner,codigo, juego){
 		var i = 0;
 		for(var usr in this.usuarios){
 			if (this.usuarios[usr].impostor == false && this.usuarios[usr].estado.nombre == "vivo"){
+				i++;
+			}
+		}
+		return i
+	}
+	this.numCiudadanos=function(){
+		var i = 0;
+		for(var usr in this.usuarios){
+			if (this.usuarios[usr].impostor == false){
 				i++;
 			}
 		}
@@ -447,6 +463,21 @@ function Partida(num,owner,codigo, juego){
 		}
 		return res
 	}
+
+	this.obtenerPercentTarea=function(nick){
+		return this.usuarios[nick].obtenerPercentTarea();
+	}
+
+	this.obtenerPercentGlobal=function(){
+		var total = 0;
+		for (var key in this.usuarios){
+			total = total+this.obtenerPercentTarea(key);
+		}
+		total = total/this.numJugadores();
+		return total;
+	}
+
+
 
 
 	this.agregarUsuario(owner);
@@ -691,16 +722,23 @@ function Usuario(nick,juego){
 		this.partida.comprobarVotacion();
 	}
 	this.realizarTarea=function(){
-		this.realizado = this.realizado + 1;
-		if (this.realizado >= 10){
-			this.estadoRealizado = true;
-			this.partida.tareaTerminada();
+		if(!this.impostor){
+			this.realizado = this.realizado + 1;
+			if (this.realizado >= 10){
+				this.estadoRealizado = true;
+				this.partida.tareaTerminada();
+			}
+			console.log("usuario: "+this.nick+" realiza "+this.encargo+" realizada numero: "+this.realizado+" estadoRealizado: "+this.estadoRealizado+"");
 		}
-		console.log("usuario: "+this.nick+" realiza "+this.encargo+" realizada numero: "+this.realizado+" estadoRealizado: "+this.estadoRealizado+"");
 	}
 	this.asignarImpostor=function(){
 		this.impostor = true;
 		this.estadoRealizado = true;
+		this.realizado = 10;
+	}
+	this.obtenerPercentTarea=function(){
+		return ((this.realizado*100)/10)
+		
 	}
 }
 
