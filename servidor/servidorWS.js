@@ -121,6 +121,15 @@ function ServidorWS(){
 				var datos ={direccion:direccion,nick:nick,numJugador:numJugador,x:x,y:y};
 				cli.enviarATodosMenosRemitente(socket,codigo,"moverRemoto",datos);
 			});
+			socket.on('realizarTarea', function(codigo, nick, encargo) {
+				var partida=juego.partidas[codigo];
+				if (partida.fase.nombre == "final"){
+					var data={"Fase":partida.fase.nombre,"Ganadores":partida.fase.ganadores};
+					cli.enviarATodos(io,codigo,"final",data);
+				}
+				res = juego.realizarTarea(codigo,nick);
+				cli.enviarRemitente(socket,"realizandoTarea", res);
+			});
 		});
 	}
 

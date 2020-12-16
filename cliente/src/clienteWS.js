@@ -51,6 +51,9 @@ function ClienteWS(){
 	this.movimiento=function(direccion,x,y){
 		this.socket.emit("movimiento",this.nick,this.codigo,this.numJugador,direccion,x,y);
 	}
+	this.realizarTarea=function(){
+		this.socket.emit("realizarTarea", this.codigo, this.nick, this.encargo);
+	}
 	//servidor WS dentro del cliente
 	this.lanzarSocketSrv=function(){
 		var cli = this;
@@ -152,6 +155,9 @@ function ClienteWS(){
 		});
 		this.socket.on("moverRemoto",function(datos){
 			mover(datos);
+		});
+		this.socket.on("realizandoTarea",function(res){
+			console.log("encargo "+res.encargo+" realizado veces: "+res.realizado+ " estadoRealizado: "+res.estadoRealizado)
 		});
 	}
 
