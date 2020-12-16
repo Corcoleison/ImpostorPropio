@@ -254,6 +254,20 @@ describe("El juego del impostor", function() {
 				expect(partida.fase.nombre).toEqual("final");
 				expect(partida.fase.ganadores).toEqual("impostores");
 			})
+			it("realizar tareas",function(){
+				var partida=juego.partidas[codigo];
+				for(var i=0;i<9;i++){
+					for(var key in partida.usuarios){
+						partida.usuarios[key].realizarTarea();
+					}
+					expect(partida.fase.nombre).toEqual("jugando");
+				}
+				for(var key in partida.usuarios){
+						partida.usuarios[key].realizarTarea();
+				}
+				expect(partida.fase.nombre).toEqual("final");
+				expect(partida.fase.ganadores).toEqual("ciudadanos");
+			})
 		});
 	}); 
 });

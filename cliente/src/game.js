@@ -384,20 +384,17 @@ function lanzarJuego(){
     }
   }
 
-  function tareas(sprite,tarea){
-    //¿El jugador puede realizar la tarea?
-    //en tal caso, dibujar el modal de la tarea
-    //dibujar la tarea
-    tarea.nombre="jardines";
-    if (ws.encargo==tarea.nombre){
+  function tareas(sprite,objeto){
+    if (ws.encargo==objeto.properties.tarea && teclaT.isDown){
       console.log("realizar tarea "+ws.encargo);
-      //ws.realizarTarea(); TO-DO
+      ws.realizarTarea();
     }
     
   }
 
   function lanzarJugador(nick,numJugador){
-    player = crear.physics.add.sprite(spawnPoint.x, spawnPoint.y,"varios",recursos[numJugador].frame);
+    var x = spawnPoint.x+numJugador*32*2;
+    player = crear.physics.add.sprite(x, spawnPoint.y,"varios",recursos[numJugador].frame);
     // Watch the player and worldLayer for collisions, for the duration of the scene:
     crear.physics.add.collider(player, worldLayer);
     crear.physics.add.collider(player, capaTareas, tareas);
@@ -416,8 +413,9 @@ function lanzarJuego(){
   }
 
   function lanzarJugadorRemoto(nick, numJugador){
+    var x = spawnPoint.x+numJugador*32*2;
     var frame = recursos[numJugador].frame;
-    jugadores[nick]=crear.physics.add.sprite(spawnPoint.x, spawnPoint.y,"varios",frame);   
+    jugadores[nick]=crear.physics.add.sprite(x, spawnPoint.y,"varios",frame);   
     crear.physics.add.collider(jugadores[nick], worldLayer);
     jugadores[nick].nick = nick;
     jugadores[nick].numJugador = numJugador;
