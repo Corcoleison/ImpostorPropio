@@ -125,4 +125,34 @@ function ControlWeb($){
 		$('#uniendo').remove();
 	}
 
+	this.limpiarJuego=function(){
+		$('#mostrarRE').remove();
+		$('#game-container').remove();
+		var cadena='<div id="mostrarRE">';
+		cadena=cadena+'<button type="button" id="btnReiniciar" class="btn btn-primary">REINICIAR</button>';
+		cadena=cadena+'</div>';
+		$('#bloqueCentral').append(cadena);
+
+		$('#btnReiniciar').on('click',function(){
+			location.reload();
+			return false;
+		});
+	}
+
+	this.mostrarModalSimple=function(msg){
+		$('#avisarImpostor').remove();
+		var cadena="<p id='avisarImpostor'>"+msg+'</p>';
+		$('#contenidoModal').append(cadena);
+		$('#modalGeneral').modal("show");
+	}
+
+	this.mostrarModalTarea=function(cadenaTarea){
+		$('#avisarImpostor').remove();
+		$('#tarea').remove();
+		var cadena="<p id='tarea'>"+cadenaTarea+'</p>';
+		$('#contenidoModal').append(cadena);
+		$('#modalGeneral').modal("show");
+	}
+
+
 }

@@ -44,6 +44,9 @@ function lanzarJuego(){
   var followText;
   var followTextRemoto=[];
   var followTextRemotoMuerto;
+  var tareasOn=true;
+  var ataquesOn=true;
+  var final=false;
 
   function preload() {
     //this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
@@ -342,7 +345,7 @@ function lanzarJuego(){
 
   function crearColision(){
     if (crear && ws.impostor){
-      crear.physics.add.overlap(player,remotos,kill)
+      crear.physics.add.overlap(player,remotos,kill,()=>{return ataquesOn});
     }
   }
 
@@ -352,6 +355,7 @@ function lanzarJuego(){
     //console.log("atacando a ", inocente);
     var nick = inocente.nick;
     if(teclaA.isDown){
+      ataquesOn = false;
       ws.atacar(nick);
     }
   }
@@ -386,8 +390,10 @@ function lanzarJuego(){
 
   function tareas(sprite,objeto){
     if (ws.encargo==objeto.properties.tarea && teclaT.isDown){
+      tareasOn=false;
       console.log("realizar tarea "+ws.encargo);
-      ws.realizarTarea();
+      //ws.realizarTarea();  //o hacer la llamada dentro de cw
+      cw.mostrarModalTarea(ws.encargo);
     }
     
   }
@@ -397,7 +403,7 @@ function lanzarJuego(){
     player = crear.physics.add.sprite(x, spawnPoint.y,"varios",recursos[numJugador].frame);
     // Watch the player and worldLayer for collisions, for the duration of the scene:
     crear.physics.add.collider(player, worldLayer);
-    crear.physics.add.collider(player, capaTareas, tareas);
+    crear.physics.add.collider(player, capaTareas, tareas,()=>{return tareasOn});
     //crear.physics.add.collider(player2, worldLayer);
     jugadores[nick] = player;
     jugadores[nick].nick = nick;
@@ -434,7 +440,7 @@ function lanzarJuego(){
     const speed = 175;
     //const prevVelocity = player.body.velocity.clone();
     const nombre=recursos[numJugador].sprite;
-   if (remoto)
+   if (remoto && !final)
     {
       remoto.body.setVelocity(0);
       remoto.setX(x);
@@ -456,54 +462,11 @@ function lanzarJuego(){
     
   }
 
-
-//   function moverRemoto(direccion,nick,numJugador){
-//     var remoto = jugadores[nick];
-//     const speed = 175;
-//     const prevVelocity = player.body.velocity.clone();
-
-//     const nombre=recursos[numJugador].sprite;
-
-//     // Stop any previous movement from the last frame
-//     remoto.body.setVelocity(0);
-//     //player2.body.setVelocity(0);
-
-//     // Horizontal movement
-//     if (direccion == "left") {
-//       remoto.body.setVelocityX(-speed);
-//     } else if (direccion == "right") {
-//       remoto.body.setVelocityX(speed);
-//     }
-
-//     // Vertical movement
-//     if (direccion == "up") {
-//       remoto.body.setVelocityY(-speed);
-//     } else if (direccion == "down") {
-//       remoto.body.setVelocityY(speed);
-//     }
-
-//     // Normalize and scale the velocity so that player can't move faster along a diagonal
-//     player.body.velocity.normalize().scale(speed);
-
-//     // Update the animation last and give left/right animations precedence over up/down animations
-//     if (direccion == "left") {
-//       remoto.anims.play(nombre+"-left-walk", true);
-//     } else if (direccion == "right") {
-//       remoto.anims.play(nombre+"-right-walk", true);
-//     } else if (direccion == "up") {
-//       remoto.anims.play(nombre+"-back-walk", true);
-//     } else if (direccion == "down") {
-//       remoto.anims.play(nombre+"-front-walk", true);
-//     } else {
-//       remoto.anims.stop();
-
-//       // If we were moving, pick and idle frame to use
-//       // if (prevVelocity.x < 0) player.setTexture("gabe", "gabe-left-walk");
-//       // else if (prevVelocity.x > 0) player.setTexture("gabe", "gabe-right-walk");
-//       // else if (prevVelocity.y < 0) player.setTexture("gabe", "gabe-back-walk");
-//       // else if (prevVelocity.y > 0) player.setTexture("gabe", "gabe-front-walk");
-//   }
-// }
+  function finPartida(data){
+    final=true;
+    //remoto = undefined;
+    cw.mostrarModalSimple("Fin de la partida... Ganan: "+data);
+  }
 
   function update(time, delta) {
     var direccion="stop";
@@ -511,53 +474,54 @@ function lanzarJuego(){
     //const prevVelocity = player.body.velocity.clone();
 
     const nombre=recursos[ws.numJugador].sprite;
+    if(!final){
+      // Stop any previous movement from the last frame
+      player.body.setVelocity(0);
+      //player2.body.setVelocity(0);
 
-    // Stop any previous movement from the last frame
-    player.body.setVelocity(0);
-    //player2.body.setVelocity(0);
+      // Horizontal movement
+      if (cursors.left.isDown) {
+        player.body.setVelocityX(-speed);
+        //ws.movimiento("left");
+        direccion="left";
+      } else if (cursors.right.isDown) {
+        player.body.setVelocityX(speed);
+        //ws.movimiento("right");
+        direccion="right";
+      }
 
-    // Horizontal movement
-    if (cursors.left.isDown) {
-      player.body.setVelocityX(-speed);
-      //ws.movimiento("left");
-      direccion="left";
-    } else if (cursors.right.isDown) {
-      player.body.setVelocityX(speed);
-      //ws.movimiento("right");
-      direccion="right";
-    }
+      // Vertical movement
+      if (cursors.up.isDown) {
+        player.body.setVelocityY(-speed);
+        //ws.movimiento("up");
+        direccion="up";
+      } else if (cursors.down.isDown) {
+        player.body.setVelocityY(speed);
+        //ws.movimiento("down");
+        direccion="down";
+      }
+      followText.setPosition(player.x-30, player.y-40);
+      ws.movimiento(direccion,player.x,player.y);
 
-    // Vertical movement
-    if (cursors.up.isDown) {
-      player.body.setVelocityY(-speed);
-      //ws.movimiento("up");
-      direccion="up";
-    } else if (cursors.down.isDown) {
-      player.body.setVelocityY(speed);
-      //ws.movimiento("down");
-      direccion="down";
-    }
-    followText.setPosition(player.x-30, player.y-40);
-    ws.movimiento(direccion,player.x,player.y);
+      // Normalize and scale the velocity so that player can't move faster along a diagonal
+      player.body.velocity.normalize().scale(speed);
 
-    // Normalize and scale the velocity so that player can't move faster along a diagonal
-    player.body.velocity.normalize().scale(speed);
-
-    // Update the animation last and give left/right animations precedence over up/down animations
-    if (cursors.left.isDown) {
-      player.anims.play(nombre+"-left-walk", true);
-    } else if (cursors.right.isDown) {
-      player.anims.play(nombre+"-right-walk", true);
-    } else if (cursors.up.isDown) {
-      player.anims.play(nombre+"-back-walk", true);
-    } else if (cursors.down.isDown) {
-      player.anims.play(nombre+"-front-walk", true);
-    } else {
-      player.anims.stop();
-      // If we were moving, pick and idle frame to use
-      // if (prevVelocity.x < 0) player.setTexture("gabe", "gabe-left-walk");
-      // else if (prevVelocity.x > 0) player.setTexture("gabe", "gabe-right-walk");
-      // else if (prevVelocity.y < 0) player.setTexture("gabe", "gabe-back-walk");
-      // else if (prevVelocity.y > 0) player.setTexture("gabe", "gabe-front-walk");
-    }
+      // Update the animation last and give left/right animations precedence over up/down animations
+      if (cursors.left.isDown) {
+        player.anims.play(nombre+"-left-walk", true);
+      } else if (cursors.right.isDown) {
+        player.anims.play(nombre+"-right-walk", true);
+      } else if (cursors.up.isDown) {
+        player.anims.play(nombre+"-back-walk", true);
+      } else if (cursors.down.isDown) {
+        player.anims.play(nombre+"-front-walk", true);
+      } else {
+        player.anims.stop();
+        // If we were moving, pick and idle frame to use
+        // if (prevVelocity.x < 0) player.setTexture("gabe", "gabe-left-walk");
+        // else if (prevVelocity.x > 0) player.setTexture("gabe", "gabe-right-walk");
+        // else if (prevVelocity.y < 0) player.setTexture("gabe", "gabe-back-walk");
+        // else if (prevVelocity.y > 0) player.setTexture("gabe", "gabe-front-walk");
+      }
+  }
   }

@@ -126,7 +126,8 @@ function ClienteWS(){
 			cli.impostor = data.impostor;
 			cli.encargo = data.encargo;
 			if (cli.impostor){
-				$('#avisarImpostor').modal("show");
+				//$('#avisarImpostor').modal("show");
+				cw.mostrarModalSimple('Eres el impostor. Tu objetivo es matar a los demas');
 				//crearColision();
 			}
 		});
@@ -139,6 +140,7 @@ function ClienteWS(){
 		});
 		this.socket.on('final',function(data){
 			console.log(data);
+			finPartida(data.Ganadores);
 		});
 		this.socket.on('recibirListaParticipantes',function(lista){
 			console.log(lista);
@@ -159,6 +161,12 @@ function ClienteWS(){
 		this.socket.on("realizandoTarea",function(datos){
 			//console.log("encargo "+res.encargo+" realizado veces: "+res.realizado+ " estadoRealizado: "+res.estadoRealizado)
 			console.log(datos);
+			//tareasOn=true;
+		});
+		this.socket.on("hasAtacado",function(fase){
+			if(fase=="jugando"){
+				ataquesOn=true;
+			}
 		});
 	}
 

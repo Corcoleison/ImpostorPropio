@@ -98,6 +98,7 @@ function ServidorWS(){
 				//var data={"Atacado":atacado,"estado":usr_atacado.estado.nombre};
 				//var data={"Atacado":atacado,"estado":usr_atacado.estado.nombre};
 				cli.enviarATodos(io,codigo,"muereInocente", atacado);
+				cli.enviarRemitente(socket,"hasAtacado",partida.fase.nombre);
 				if (partida.fase.nombre == "final"){
 					var data={"Fase":partida.fase.nombre,"Ganadores":partida.fase.ganadores};
 					cli.enviarATodos(io,codigo,"final",data);
