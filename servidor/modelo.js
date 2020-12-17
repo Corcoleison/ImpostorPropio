@@ -677,6 +677,7 @@ function Usuario(nick,juego){
 	this.encargo="ninguno";
 	this.realizado=0;
 	this.estadoRealizado=false;
+	this.maxTarea=10;
 	this.crearPartida=function(num){
 		return this.juego.crearPartida(num,this);
 	}
@@ -724,20 +725,21 @@ function Usuario(nick,juego){
 	this.realizarTarea=function(){
 		if(!this.impostor){
 			this.realizado = this.realizado + 1;
-			if (this.realizado >= 10){
+			if (this.realizado >= this.maxTarea){
 				this.estadoRealizado = true;
 				this.partida.tareaTerminada();
 			}
 			console.log("usuario: "+this.nick+" realiza "+this.encargo+" realizada numero: "+this.realizado+" estadoRealizado: "+this.estadoRealizado+"");
 		}
+
 	}
 	this.asignarImpostor=function(){
 		this.impostor = true;
 		this.estadoRealizado = true;
-		this.realizado = 10;
+		this.realizado = this.maxTarea;
 	}
 	this.obtenerPercentTarea=function(){
-		return ((this.realizado*100)/10)
+		return ((this.realizado*100)/this.maxTarea)
 		
 	}
 }

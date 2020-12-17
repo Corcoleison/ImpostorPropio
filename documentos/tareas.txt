@@ -10,3 +10,22 @@ basuras
 -empaquetado como app de escritorio (ElectronJS)
 -empaquetado como app movil (IONIC, cordova)
 -chat
+
+Ampliaciones:
+- Interfaz gráfica y canvas
+- Nuevas funciones:
+	- chat
+	- elegir entre mapas
+	- modificar skin
+	- permitir varias tareas
+	- cambiar el diseño de objetos de las tareas
+	- cambiar la lógica
+	- partida privada
+-Nuevos clientes:
+	-App móvil
+	-App escritorio
+	-Usar AngularJS o ReactJS
+-Web:
+	-Cookies o LocalStorage
+-Persistencia:
+	-Almacenar datos de las partidas y clientes (IP)
