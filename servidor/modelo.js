@@ -258,7 +258,7 @@ function Partida(num,owner,codigo, juego){
 	this.numCiudadanosVivos=function(){
 		var i = 0;
 		for(var usr in this.usuarios){
-			if (this.usuarios[usr].impostor == false && this.usuarios[usr].estado.nombre == "vivo"){
+			if (this.usuarios[usr].impostor == false && this.usuarios[usr].estadoVivo()){//.nombre == "vivo"){
 				i++;
 			}
 		}
@@ -276,7 +276,7 @@ function Partida(num,owner,codigo, juego){
 	this.numImpostoresVivos=function(){
 		var i=0;
 		for(var usr in this.usuarios){
-			if (this.usuarios[usr].impostor == true && this.usuarios[usr].estado.nombre == "vivo"){
+			if (this.usuarios[usr].impostor == true && this.usuarios[usr].estadoVivo()){//nombre == "vivo"){
 				i++;
 			}
 		}
@@ -286,7 +286,7 @@ function Partida(num,owner,codigo, juego){
 		var i=0;
 		var impostor;
 		for(var usr in this.usuarios){
-			if (this.usuarios[usr].impostor == true && this.usuarios[usr].estado.nombre == "vivo"){
+			if (this.usuarios[usr].impostor == true && this.usuarios[usr].estadoVivo()){//nombre == "vivo"){
 				impostor = this.usuarios[usr];
 			}
 		}
@@ -296,7 +296,7 @@ function Partida(num,owner,codigo, juego){
 		var i=0;
 		var ciudadanos = [];
 		for(var usr in this.usuarios){
-			if (this.usuarios[usr].impostor == false && this.usuarios[usr].estado.nombre == "vivo"){
+			if (this.usuarios[usr].impostor == false && this.usuarios[usr].estadoVivo()){//.nombre == "vivo"){
 				ciudadanos[i] = this.usuarios[usr];
 				i++;
 			}
@@ -314,7 +314,7 @@ function Partida(num,owner,codigo, juego){
 		var votos = 0;
 		var masVotado="No hay nadie mas votado";
 		for(var usr in this.usuarios){
-			if (this.usuarios[usr].votos > votos && this.usuarios[usr].estado.nombre == "vivo"){
+			if (this.usuarios[usr].votos > votos && this.usuarios[usr].estadoVivo()){//.nombre == "vivo"){
 				votos = this.usuarios[usr].votos;
 				masVotado = this.usuarios[usr];
 			}
@@ -344,7 +344,7 @@ function Partida(num,owner,codigo, juego){
 	this.numeroSkips=function(){
 		var i = 0;
 		for(var usr in this.usuarios){
-			if (this.usuarios[usr].skip == true && this.usuarios[usr].estado.nombre == "vivo"){
+			if (this.usuarios[usr].skip == true && this.usuarios[usr].estadoVivo()){//.nombre == "vivo"){
 				i++;
 			}
 		}
@@ -353,7 +353,7 @@ function Partida(num,owner,codigo, juego){
 	this.reiniciarContadores=function(){
 		this.elegido="No hay nadie elegido"
 		for(var usr in this.usuarios){
-			if (this.usuarios[usr].estado.nombre == "vivo"){
+			if (this.usuarios[usr].estadoVivo()){//.nombre == "vivo"){
 				this.usuarios[usr].skip = false;
 				this.usuarios[usr].votos = 0;
 				this.usuarios[usr].haVotado = false;
@@ -410,7 +410,7 @@ function Partida(num,owner,codigo, juego){
 	this.todosHanVotado=function(){
 		let res=true;
 		for(var key in this.usuarios){
-			if(this.usuarios[key].estado.nombre=="vivo" && !this.usuarios[key].haVotado){
+			if(this.usuarios[key].estadoVivo() && !this.usuarios[key].haVotado){
 				res=false;
 				break;
 			}
@@ -420,7 +420,7 @@ function Partida(num,owner,codigo, juego){
 	this.listaHanVotado=function(){
 		var lista=[];
 		for(var key in this.usuarios){
-			if(this.usuarios[key].estado.nombre=="vivo" && this.usuarios[key].haVotado){
+			if(this.usuarios[key].estadoVivo() && this.usuarios[key].haVotado){
 				lista.push(key);
 			}
 		}
@@ -430,6 +430,16 @@ function Partida(num,owner,codigo, juego){
 		var lista=[];
 		for(var key in this.usuarios){
 			lista.push({"nick":key});
+		}
+		return lista;
+	}
+	this.obtenerListaJugadoresVivos=function(){
+		var lista=[]
+		for(var key in this.usuarios){
+			if(this.usuarios[key].estadoVivo()){
+				var numero = this.usuarios[key].numJugador;
+				lista.push({nick:key, numJugador:numero});
+			}
 		}
 		return lista;
 	}
@@ -476,6 +486,7 @@ function Partida(num,owner,codigo, juego){
 		total = total/this.numJugadores();
 		return total;
 	}
+
 
 
 
@@ -681,6 +692,9 @@ function Usuario(nick,juego){
 	this.crearPartida=function(num){
 		return this.juego.crearPartida(num,this);
 	}
+	this.estadoVivo=function(){
+		return this.estado.estadoVivo();
+	}
 	this.iniciarPartida=function(){
 		this.partida.iniciarPartida();
 	}
@@ -766,6 +780,9 @@ function Vivo(){
 	this.skipear=function(usr){
 		usr.puedeSkipear();
 	}
+	this.estadoVivo=function(){
+		return true;
+	}
 }
 
 function Muerto(){
@@ -787,6 +804,9 @@ function Muerto(){
 	}
 	this.skipear=function(usr){
 		//
+	}
+	this.estadoVivo=function(){
+		return false;
 	}
 	
 }

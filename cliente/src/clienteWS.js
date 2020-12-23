@@ -107,19 +107,20 @@ function ClienteWS(){
 		this.socket.on('recibirListaPartidas',function(lista){
 			console.log(lista);
 		});
-		this.socket.on('votacion',function(fase){
-			console.log(fase);
-			//dibujarVotacion(lista)
-			if (fase == "votacion"){
-				$('#avisarVotacion').modal("show");
-			}
+		this.socket.on('votacion',function(lista){
+			console.log(lista);
+			cw.mostrarModalVotacion(lista);
 			
 		});
 		this.socket.on('finalVotacion',function(data){
 			console.log(data);
+			$('#modalGeneral').modal('toggle');
+			//mostrar otro
+			cw.mostrarModalSimple("La votacion ha acabado Elegido: "+data.elegido+" Fase: "+data.fase);
 		});
 		this.socket.on('haVotado',function(data){
 			console.log(data);
+			//actualizar la lista
 		});
 		this.socket.on('recibirEncargo',function(data){
 			console.log(data);

@@ -58,9 +58,11 @@ function ServidorWS(){
 				cli.enviarRemitente(socket,"recibirListaPartidas", lista);     		        
 			});
 			socket.on('lanzarVotacion', function(codigo, nick) {
+				var partida=juego.partidas[codigo];
 				juego.lanzarVotacion(codigo,nick);
 				var fase=juego.partidas[codigo].fase.nombre;
-				cli.enviarATodos(io,codigo,"votacion",fase);
+				var lista=partida.obtenerListaJugadoresVivos();
+				cli.enviarATodos(io,codigo,"votacion",lista);
 			});
 			socket.on('saltarVoto', function(codigo, nick) {
 				var partida=juego.partidas[codigo];
