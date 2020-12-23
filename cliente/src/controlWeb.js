@@ -140,19 +140,58 @@ function ControlWeb($){
 	}
 
 	this.mostrarModalSimple=function(msg){
-		$('#avisarImpostor').remove();
+		this.limpiarModal();
 		var cadena="<p id='avisarImpostor'>"+msg+'</p>';
 		$('#contenidoModal').append(cadena);
+		$("#pie").append('<button type="button" id="cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>');
 		$('#modalGeneral').modal("show");
 	}
 
 	this.mostrarModalTarea=function(cadenaTarea){
-		$('#avisarImpostor').remove();
-		$('#tarea').remove();
+		this.limpiarModal();
 		var cadena="<p id='tarea'>"+cadenaTarea+'</p>';
 		$('#contenidoModal').append(cadena);
+		$("#pie").append('<button type="button" id="cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>');
 		$('#modalGeneral').modal("show");
 	}
+
+	this.mostrarModalVotacion=function(lista){
+		this.limpiarModal();
+		var cadena = '<div id="votacion"><h3>Votacion</h3>';
+		cadena=cadena+'<div class="input-group">';
+		for(var i=0;i<lista.length;i++){
+	  		cadena=cadena+'<div><input type="radio" name="optradio" value="'+lista[i].nick+'">'+lista[i].nick+'</div>';
+	  	}
+	  	cadena=cadena+'<div><input type="radio" name="optradio" value="-1">Saltar voto</div>'
+		cadena=cadena+'</div>';
+		$('#contenidoModal').append(cadena);
+		$("#pie").append('<button type="button" id="votar" class="btn btn-secondary">Votar</button>');
+		$('#modalGeneral').modal("show");
+
+		var sospechoso=undefined;
+		$('.input-group input').on('change', function() {
+		   sospechoso=$('input[name=optradio]:checked', '.input-group').val();
+		});
+
+		$('#votar').on('click',function(){
+			if(sospechoso!=-1){
+				ws.votar(sospechoso);
+			}
+			else{
+				ws.saltarVoto();
+			}
+		});
+	}
+
+	this.limpiarModal=function(){
+		$('#avisarImpostor').remove();
+		$('#tarea').remove();
+		$("#cerrar").remove();
+		$("#votacion").remove();
+		$("#votar").remove();
+	}
+
+
 
 
 }
