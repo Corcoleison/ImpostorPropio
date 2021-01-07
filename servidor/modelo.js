@@ -1,6 +1,9 @@
+var cad=require('./cad.js');
+
 function Juego(min){
 	this.min=min;
 	this.partidas={};//que coleccion?
+	this.cad=new cad.Cad();
 	
 	this.unirAPartida=function(cod, nick){
 		//var res = -1
@@ -150,6 +153,9 @@ function Juego(min){
 		return this.partidas[codigo].obtenerPercentGlobal();
 	}
 
+	this.cad.connect(function(db){
+		console.log("conectado a Atlas");
+	})
 
 }
 
