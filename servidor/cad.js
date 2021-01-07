@@ -79,7 +79,7 @@ function Cad(){
     this.connect=function(callback){
 	    var cad=this;		
         //mongodb+srv://clase:clase@cluster0.7l0bv.mongodb.net/ImpostorPropio?retryWrites=true&w=majority
-		mongo.connect("mongodb+srv://clase:clase@cluster0.7l0bv.mongodb.net/ImpostorPropio?retryWrites=true&w=majority",{useUnifiedTopology: true },function(err, database){
+		mongo.connect("mongodb+srv://clase:clase2021@cluster0.7l0bv.mongodb.net/ImpostorPropio?retryWrites=true&w=majority",{useUnifiedTopology: true },function(err, database){
             if (err){
                 console.log("No pudo conectar a la base de datos");
             }

@@ -40,27 +40,33 @@ app.get('/game', function (request, response) {
 // 	var usr=new modelo.Usuario(nick);
 // });
 
-app.get('/crearPartida/:nick/:numero', function(request, response){
-	var nick=request.params.nick;
-	var num=parseInt(request.params.numero);
-	//ojo, nick nulo o numero
-	//var usr=new modelo.Usuario(nick);
-	var codigo = juego.crearPartida(num,nick);
+// app.get('/crearPartida/:nick/:numero', function(request, response){
+// 	var nick=request.params.nick;
+// 	var num=parseInt(request.params.numero);
+// 	//ojo, nick nulo o numero
+// 	//var usr=new modelo.Usuario(nick);
+// 	var codigo = juego.crearPartida(num,nick);
 
-	response.send({"codigo":codigo});
-});
+// 	response.send({"codigo":codigo});
+// });
 
-app.get('/unirAPartida/:codigo/:nick', function(request, response){
-	var nick=request.params.nick;
-	var codigo=request.params.codigo;
-	var res=juego.unirAPartida(codigo,nick);
-	response.send({"res":res});
-});
+// app.get('/unirAPartida/:codigo/:nick', function(request, response){
+// 	var nick=request.params.nick;
+// 	var codigo=request.params.codigo;
+// 	var res=juego.unirAPartida(codigo,nick);
+// 	response.send({"res":res});
+// });
 
 app.get('/listarPartidasDisponibles', function(request, response){
 	var lista=juego.listarPartidasDisponibles();
 	response.send(lista);
 });
+
+//obtener todos creadas
+
+//eliminar partidas
+
+//obtener partidas en una fecha
 
 server.listen(app.get('port'), function () {
 	console.log('Node esta escuchando en el puerto', app.get('port'));
