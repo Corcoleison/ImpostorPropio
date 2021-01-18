@@ -392,8 +392,9 @@ function lanzarJuego(){
     if (ws.encargo==objeto.properties.tarea && teclaT.isDown){
       tareasOn=false;
       console.log("realizar tarea "+ws.encargo);
-      //ws.realizarTarea();  //o hacer la llamada dentro de cw
-      cw.mostrarModalTarea(ws.encargo);
+      ws.realizarTarea();  //o hacer la llamada dentro de cw
+      //cw.mostrarModalTarea(ws.encargo);
+      tareasOn=true;
     }
     
   }
