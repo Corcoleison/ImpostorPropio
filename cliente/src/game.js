@@ -41,12 +41,14 @@ function lanzarJuego(){
   var recursos=[{frame:0,sprite:"ana"},{frame:3,sprite:"pepe"},{frame:6,sprite:"tom"},{frame:36,sprite:"rayo"}];
   var remotos;
   var muertos;
+  var listaMuertos={};
   var followText;
   var followTextRemoto=[];
   var followTextRemotoMuerto;
   var textHelp;
   var tareasOn=true;
   var ataquesOn=true;
+  var votacionOn=true;
   var final=false;
 
   function preload() {
@@ -377,28 +379,47 @@ function lanzarJuego(){
     var y=jugadores[inocente].y;
     var numJugador = jugadores[inocente].numJugador;
     
+    if(!listaMuertos[inocente]){
+      var muerto = crear.physics.add.sprite(x, y,"muertos",recursos[numJugador].frame);
+      muerto.nick = inocente;
+      listaMuertos[inocente]=muerto;
+      followTextRemotoMuerto = crear.add.text(0, 0, jugadores[inocente].nick);
+      followTextRemotoMuerto.setPosition(x-20, y-30);
+      followTextRemotoMuerto.setColor("#8b0000");
+      listaMuertos[inocente].titulo=followTextRemotoMuerto;
 
-    var muerto = crear.physics.add.sprite(x, y,"muertos",recursos[numJugador].frame);
-    followTextRemotoMuerto = crear.add.text(0, 0, jugadores[inocente].nick);
-    followTextRemotoMuerto.setPosition(x-20, y-30);
-    followTextRemotoMuerto.setColor("#8b0000");
+      muertos.add(muerto);
 
-    muertos.add(muerto);
+      //jugadores[inocente].setTexture("muertos",recursos[numJugador].frame);
+      //otra alternativa = añadir jugadores[inocente] al grupo muertos
+      //
 
-    //jugadores[inocente].setTexture("muertos",recursos[numJugador].frame);
-    //otra alternativa = añadir jugadores[inocente] al grupo muertos
-    //
+      crear.physics.add.overlap(player,muertos,votacion, ()=>{return votacionOn});
 
-    crear.physics.add.overlap(player,muertos,votacion);
+    }
+    
   }
 
   function votacion(sprite,muerto){
     //comprobar si el jugador local pulsa la tecla de votacion "v"
     //en ese caso, llamamos al servidor
     if(teclaV.isDown){
+      votacionOn = false;
       ws.lanzarVotacion();
-      //muertos.remove(muerto, true); Así quitamos el cadaver (pero de momento solo en el que lanza la votacion)
+      ws.limpiarMuerto(muerto.nick);
+      //muertos.remove(muerto, true); //Así quitamos el cadaver (pero de momento solo en el que lanza la votacion)
     }
+  }
+
+  function borrarMuerto(nickMuerto){
+    //console.log("NickMuerto en borrar Muerto de gamejs: ",nickMuerto);
+    if(listaMuertos[nickMuerto]){
+      listaMuertos[nickMuerto].setActive(false).setVisible(false);
+      listaMuertos[nickMuerto].titulo.setActive(false).setVisible(false);
+      //muertos.killAndHide(listaMuertos["player2"])
+      //listaMuertos["player2"].setActive(false).setVisible(false);
+    }
+    
   }
 
   function tareas(sprite,objeto){
