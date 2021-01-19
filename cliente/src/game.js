@@ -44,6 +44,7 @@ function lanzarJuego(){
   var followText;
   var followTextRemoto=[];
   var followTextRemotoMuerto;
+  var textHelp;
   var tareasOn=true;
   var ataquesOn=true;
   var final=false;
@@ -342,6 +343,8 @@ function lanzarJuego(){
     teclaESC=crear.input.keyboard.addKey('esc');
     lanzarJugador(ws.nick,ws.numJugador,ws.numJugador);
     ws.estoyDentro();
+
+    this.textHelp = crear.add.text(0, 0, "Pulsa H para Ayuda");
 
     //this.input.keyboard.on('keydown_ESC', this.pausarPartida(), this);
 

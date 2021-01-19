@@ -1,8 +1,7 @@
 var cad=require('./cad.js');
 
 function Juego(min, test){
-	this.min=min;
-	this.test=test;
+	this.min=min[0];
 	this.partidas={};//que coleccion?
 	this.cad=new cad.Cad();
 	
@@ -29,12 +28,14 @@ function Juego(min, test){
 
 	this.crearPartida=function(num,owner){
 		//comprobar límites de num
+		//console.log("Min deberia ser esto" , this.min[0]);
+		//console.log("el argumento test esto ",test);
 		if(this.numeroValido(num)){
 			let codigo=this.obtenerCodigo();
 			if (!this.partidas[codigo]){
 				this.partidas[codigo]=new Partida(num,owner,codigo,this);
 				var fase=this.partidas[codigo].fase.nombre;
-				this.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){})
+				this.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){});
 				//owner.partida=this.partidas[codigo];
 			}
 			return codigo;
@@ -188,7 +189,7 @@ function Juego(min, test){
 		}
 	}
 
-	if(this.test=="noTest"){
+	if(test=="noTest"){
 			this.cad.connect(function(db){
 			console.log("conectado a Atlas");
 		})
