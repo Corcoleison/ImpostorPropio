@@ -11,7 +11,7 @@ function ControlWeb($){
 		cadena=cadena+'<label for="num">Numero:</label>';
 		cadena=cadena+'<input value="'+min+'" type="number" class="form-control" id="num"  min="'+min+'" max="10">';
 		cadena=cadena+'</div>';
-		cadena=cadena+'<p>Selecciona el mapa:</p>';
+		cadena=cadena+'<label>Mapa:</label>';
 		cadena=cadena+'<div id="rates" class="input-group">';
   		cadena=cadena+'<div><input type="radio" id="r1" name="rate" value="piratas" checked="checked"> Piratas</div>';
   		cadena=cadena+'<div><input type="radio" id="r2" name="rate" value="rural"> Rural</div>';
