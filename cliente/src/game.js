@@ -50,6 +50,7 @@ function lanzarJuego(){
   var ataquesOn=true;
   var votacionOn=true;
   var final=false;
+  var musicaFondo;
 
   function preload() {
     //this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
@@ -67,6 +68,9 @@ function lanzarJuego(){
     //this.load.spritesheet("gabe","cliente/assets/images/male01-2.png",{frameWidth:32,frameHeight:32});
     this.load.spritesheet("varios","cliente/assets/images/guerreros.png",{frameWidth:32,frameHeight:43});
     this.load.spritesheet("muertos","cliente/assets/images/guerreros_muertos.png",{frameWidth:32,frameHeight:43});
+
+    //musica
+    this.load.audio('fondo', ['cliente/audio/musica_fondo.mp3', 'cliente/audio/musica_fondo.ogg']);
   }
 
   function create() {
@@ -348,6 +352,10 @@ function lanzarJuego(){
     ws.estoyDentro();
 
     //this.input.keyboard.on('keydown_ESC', this.pausarPartida(), this);
+
+    //musica
+    this.musicaFondo = this.sound.add("fondo", { loop: true });
+    this.musicaFondo.play();
 
   }
 
