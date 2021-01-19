@@ -1,7 +1,7 @@
 var cad=require('./cad.js');
 
-function Juego(min){
-	this.min=min;
+function Juego(min, test){
+	this.min=min[0];
 	this.partidas={};//que coleccion?
 	this.cad=new cad.Cad();
 	
@@ -14,16 +14,28 @@ function Juego(min){
 		return res;
 	}
 
+	this.abandonarPartida=function(cod, nick){
+		//var res = -1
+		if (this.partidas[cod]){
+			res = this.partidas[cod].abandonarPartida(nick);
+			//var res = "Exito al agregar"
+		}
+	}
+
 	this.eliminarPartida=function(cod){
 			delete this.partidas[cod];
 	}
 
 	this.crearPartida=function(num,owner){
 		//comprobar límites de num
+		//console.log("Min deberia ser esto" , this.min[0]);
+		//console.log("el argumento test esto ",test);
 		if(this.numeroValido(num)){
 			let codigo=this.obtenerCodigo();
 			if (!this.partidas[codigo]){
 				this.partidas[codigo]=new Partida(num,owner,codigo,this);
+				var fase=this.partidas[codigo].fase.nombre;
+				this.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){});
 				//owner.partida=this.partidas[codigo];
 			}
 			return codigo;
@@ -153,9 +165,42 @@ function Juego(min){
 		return this.partidas[codigo].obtenerPercentGlobal();
 	}
 
-	this.cad.connect(function(db){
-		console.log("conectado a Atlas");
-	})
+	this.partidasCreadas=function(admin,callback){
+		if(admin=="1234"){
+			this.cad.obtenerPartidaCriterio({fase:"inicial"},function(lista){
+				if(lista){
+					callback(lista);
+				}else{
+					callback({})
+				}
+			});
+		}
+	}
+
+	this.partidasFinalizadas=function(admin,callback){
+		if(admin=="1234"){
+			this.cad.obtenerPartidaCriterio({fase:"final"},function(lista){
+				if(lista){
+					callback(lista);
+				}else{
+					callback({})
+				}
+			});
+		}
+	}
+
+	if(test=="noTest"){
+			this.cad.connect(function(db){
+			console.log("conectado a Atlas");
+		})
+	}
+
+	this.calcularJugadoresPorAbandono=function(codigo){
+		var partida = this.partidas[codigo];
+		if (partida){
+			partida.calcularJugadoresPorAbandono();
+		}
+	}
 
 }
 
@@ -184,6 +229,9 @@ function Partida(num,owner,codigo, juego){
 		this.usuarios[nuevo].numJugador = numero;
 		if (this.comprobarMinimo()){
 		 	this.fase=new Completado();
+		 	//var fase=this.fase.nombre;
+			//this.juego.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){})
+
 		}
 		return {"codigo":this.codigo,"nick":nuevo,"numJugador":numero};
 
@@ -385,10 +433,14 @@ function Partida(num,owner,codigo, juego){
 	this.finPartidaImpostores=function(){
 		this.fase = new Final();
 		this.fase.ganadores = "impostores";
+		var fase=this.fase.nombre;
+		this.juego.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){})
 	}
 	this.finPartidaCiudadanos=function(){
 		this.fase = new Final();
 		this.fase.ganadores = "ciudadanos";
+		var fase=this.fase.nombre;
+		this.juego.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){})
 	}
 	this.comprobarVotacion=function(){
 		if (this.todosHanVotado()){
@@ -491,6 +543,22 @@ function Partida(num,owner,codigo, juego){
 		}
 		total = total/this.numJugadores();
 		return total;
+	}
+
+	this.calcularJugadoresPorAbandono=function(){
+		ganador = undefined;
+		if(this.numJugadores() < this.juego.min){
+			for(var key in this.usuarios){
+				if(this.usuarios[key].impostor == true){
+					ganadores = "impostor"
+				}
+			}
+			if (ganadores == "impostor"){
+				this.finPartidaImpostores();
+			}else{
+				this.finPartidaCiudadanos();
+			}
+		}
 	}
 
 

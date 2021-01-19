@@ -10,6 +10,7 @@ var wss=require("./servidor/servidorWS.js");
 var servidorWS=new wss.ServidorWS();
 
 var min=process.argv.slice(2);
+var test=process.argv.slice(3);
 
 
 
@@ -19,7 +20,7 @@ app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var juego=new modelo.Juego(min);
+var juego=new modelo.Juego(min, test);
 
 
 app.get('/', function (request, response) {
@@ -61,6 +62,27 @@ app.get('/listarPartidasDisponibles', function(request, response){
 	var lista=juego.listarPartidasDisponibles();
 	response.send(lista);
 });
+
+app.get('/listarPartidas', function(request, response){
+	var lista=juego.listarPartidas();
+	response.send(lista);
+});
+
+app.get("/partidasCreadas/:admin",function(request,response){
+	var admin=request.params.admin;
+	juego.partidasCreadas(admin,function(lista){
+		response.send(lista);
+	});
+});
+
+app.get("/partidasFinalizadas/:admin",function(request,response){
+	var admin=request.params.admin;
+	juego.partidasFinalizadas(admin,function(lista){
+		response.send(lista);
+	});
+});
+
+//app.get("/partidasFinalizadas/:admin")
 
 //obtener todos creadas
 

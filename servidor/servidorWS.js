@@ -141,6 +141,21 @@ function ServidorWS(){
 				var datos = {percentGlobal:percentGlobal, percentLocal:percentLocal}
 				cli.enviarRemitente(socket,"realizandoTarea", datos);
 			});
+			socket.on('abandonarPartida', function(nick, codigo) {
+				var partida = juego.partidas[codigo];
+				juego.abandonarPartida(codigo,nick);
+				var fase=partida.fase.nombre;
+				cli.enviarATodos(io,codigo,"jugadorAbandona",nick);
+				if(fase!="jugando"){
+					juego.calcularJugadoresPorAbandono(codigo);
+					var data={"Fase":partida.fase.nombre,"Ganadores":partida.fase.ganadores};
+					cli.enviarATodos(io,codigo,"final",data);
+					juego.eliminarPartida(codigo); // para evitar problemas de que después pueda unirse a una partida que de error
+				}
+				else{
+					socket.leave(codigo);
+				}
+			});
 		});
 	}
 

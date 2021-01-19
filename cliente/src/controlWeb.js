@@ -189,6 +189,20 @@ function ControlWeb($){
 		$("#cerrar").remove();
 		$("#votacion").remove();
 		$("#votar").remove();
+		$("#abandono").remove();
+		$("#abandonar").remove();
+	}
+
+	this.mostrarModalAbandonar=function(lista){
+		this.limpiarModal();
+		var cadena = '<div id="abandono"><h3>Abandonar</h3>';
+		$('#contenidoModal').append(cadena);
+		$("#pie").append('<button type="button" id="abandonar" class="btn btn-secondary">Abandonar Partida</button>');
+		$('#modalGeneral').modal("show");
+
+		$('#abandonar').on('click',function(){
+			ws.abandonarPartida();
+		});
 	}
 
 
