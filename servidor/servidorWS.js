@@ -83,6 +83,10 @@ function ServidorWS(){
 				if(partida.todosHanVotado()){
 					var data={"elegido":partida.elegido,"fase":partida.fase.nombre};
 					cli.enviarATodos(io,codigo,"finalVotacion",data);
+					if (partida.fase.nombre == "final"){
+						var data={"Fase":partida.fase.nombre,"Ganadores":partida.fase.ganadores};
+						cli.enviarATodos(io,codigo,"final",data);
+					}
 					//partida.reiniciarContadores();
 				}
 				else{

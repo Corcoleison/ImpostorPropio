@@ -131,9 +131,9 @@ describe("El juego del impostor", function() {
 				expect(partida.fase.nombre=="completado").toBe(true);
 				juego.iniciarPartida(codigo, nick);
 				expect(partida.fase.nombre=="jugando").toBe(true);
-				expect(partida.usuarios["pablo"].encargo).not.toEqual("ninguno");
-				expect(partida.usuarios["tomas"].encargo).not.toEqual("ninguno");
-				expect(partida.usuarios["jose"].encargo).not.toEqual("ninguno");
+				expect(partida.usuarios["pablo"].encargo).toEqual("calles");
+				expect(partida.usuarios["tomas"].encargo).toEqual("mobiliario");
+				expect(partida.usuarios["jose"].encargo).toEqual("basuras");
 				partida.usuarios["pablo"].abandonarPartida();
 				expect(Object.keys(partida.usuarios).length==3).toBe(true);
 				partida.usuarios["tomas"].abandonarPartida();

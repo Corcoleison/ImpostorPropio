@@ -1,6 +1,9 @@
+var cad=require('./cad.js');
+
 function Juego(min){
 	this.min=min;
 	this.partidas={};//que coleccion?
+	this.cad=new cad.Cad();
 	
 	this.unirAPartida=function(cod, nick){
 		//var res = -1
@@ -150,6 +153,9 @@ function Juego(min){
 		return this.partidas[codigo].obtenerPercentGlobal();
 	}
 
+	this.cad.connect(function(db){
+		console.log("conectado a Atlas");
+	})
 
 }
 
@@ -233,10 +239,10 @@ function Partida(num,owner,codigo, juego){
 		this.fase=new Jugando();
 	}
 	this.asignarEncargos=function(){
+		i=0;
 		for(var usr in this.usuarios){
-			i=0;
 			this.usuarios[usr].encargo=this.encargos[i];
-			i+1;
+			i=i+1;
 		}
 	}
 	this.asignarImpostor=function(){
@@ -737,7 +743,7 @@ function Usuario(nick,juego){
 		this.partida.comprobarVotacion();
 	}
 	this.realizarTarea=function(){
-		if(!this.impostor){
+		if(!this.impostor && this.realizado < this.maxTarea){
 			this.realizado = this.realizado + 1;
 			if (this.realizado >= this.maxTarea){
 				this.estadoRealizado = true;

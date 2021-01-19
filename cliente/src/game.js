@@ -385,6 +385,7 @@ function lanzarJuego(){
     //en ese caso, llamamos al servidor
     if(teclaV.isDown){
       ws.lanzarVotacion();
+      //muertos.remove(muerto, true); Así quitamos el cadaver (pero de momento solo en el que lanza la votacion)
     }
   }
 
@@ -392,8 +393,9 @@ function lanzarJuego(){
     if (ws.encargo==objeto.properties.tarea && teclaT.isDown){
       tareasOn=false;
       console.log("realizar tarea "+ws.encargo);
-      //ws.realizarTarea();  //o hacer la llamada dentro de cw
+      ws.realizarTarea();  //o hacer la llamada dentro de cw
       cw.mostrarModalTarea(ws.encargo);
+      tareasOn=true;
     }
     
   }
