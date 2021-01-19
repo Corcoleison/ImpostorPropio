@@ -27,6 +27,9 @@ function ClienteWS(){
 	this.listaPartidas=function(){
 		this.socket.emit("listaPartidas");
 	}
+	this.abandonarPartida=function(){
+		this.socket.emit("abandonarPartida",this.nick,this.codigo);
+	}
 	this.estoyDentro=function(){
 		this.socket.emit("estoyDentro",this.nick,this.codigo);
 	}
@@ -168,6 +171,9 @@ function ClienteWS(){
 			if(fase=="jugando"){
 				ataquesOn=true;
 			}
+		});
+		this.socket.on("jugadorAbandona",function(data){
+			console.log(data);
 		});
 	}
 

@@ -39,7 +39,7 @@ function Cad(){
                 callback(undefined);
             }
             else{
-                callback(partida[0]);
+                callback(partida);
             }
         });
     };

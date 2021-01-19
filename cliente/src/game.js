@@ -339,9 +339,19 @@ function lanzarJuego(){
     teclaA=crear.input.keyboard.addKey('a');
     teclaV=crear.input.keyboard.addKey('v');
     teclaT=crear.input.keyboard.addKey('t');
+    teclaESC=crear.input.keyboard.addKey('esc');
     lanzarJugador(ws.nick,ws.numJugador,ws.numJugador);
     ws.estoyDentro();
+
+    //this.input.keyboard.on('keydown_ESC', this.pausarPartida(), this);
+
   }
+
+ 
+
+  // pausarPartida(){
+  //   cw.mostrarModalAbandonar();
+  // }
 
   function crearColision(){
     if (crear && ws.impostor){
@@ -525,5 +535,11 @@ function lanzarJuego(){
         // else if (prevVelocity.y < 0) player.setTexture("gabe", "gabe-back-walk");
         // else if (prevVelocity.y > 0) player.setTexture("gabe", "gabe-front-walk");
       }
+
+       if(teclaESC.isDown){
+      cw.mostrarModalAbandonar();
+  }
+
+
   }
   }
