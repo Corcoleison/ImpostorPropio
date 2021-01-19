@@ -1,7 +1,7 @@
 var cad=require('./cad.js');
 
 function Juego(min, test){
-	this.min=min[0];
+	this.min=min;
 	this.test = test;
 	this.partidas={};//que coleccion?
 	this.cad=new cad.Cad();
@@ -29,9 +29,9 @@ function Juego(min, test){
 
 	this.crearPartida=function(num,owner){
 		//comprobar límites de num
-		console.log("Min: " , this.min);
-		console.log("Min[0]: " , this.min[0]);
-		console.log("Argumento Test:  ",this.test);
+		//console.log("Min: " , this.min);
+		//console.log("Min[0]: " , this.min[0]);
+		//console.log("Argumento Test:  ",this.test);
 		if(this.numeroValido(num)){
 			let codigo=this.obtenerCodigo();
 			if (!this.partidas[codigo]){

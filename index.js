@@ -9,8 +9,7 @@ var modelo=require("./servidor/modelo.js");
 var wss=require("./servidor/servidorWS.js");
 var servidorWS=new wss.ServidorWS();
 
-var min=process.argv.slice(2);
-var test=process.argv.slice(3);
+var args=process.argv.slice(2);
 
 
 
@@ -20,7 +19,7 @@ app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var juego=new modelo.Juego(min, test);
+var juego=new modelo.Juego(args[0], args[1]);
 
 
 app.get('/', function (request, response) {
