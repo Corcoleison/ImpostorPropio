@@ -170,7 +170,7 @@ function Juego(min, test){
 	}
 
 	this.partidasCreadas=function(admin,callback){
-		if(admin=="1234"){
+		if(admin=="1234" && this.test=="noTest"){
 			this.cad.obtenerPartidaCriterio({fase:"inicial"},function(lista){
 				if(lista){
 					callback(lista);
@@ -182,7 +182,7 @@ function Juego(min, test){
 	}
 
 	this.partidasFinalizadas=function(admin,callback){
-		if(admin=="1234"){
+		if(admin=="1234" && this.test=="noTest"){
 			this.cad.obtenerPartidaCriterio({fase:"final"},function(lista){
 				if(lista){
 					callback(lista);
