@@ -2,6 +2,7 @@ var cad=require('./cad.js');
 
 function Juego(min, test){
 	this.min=min[0];
+	this.test = test;
 	this.partidas={};//que coleccion?
 	this.cad=new cad.Cad();
 	
@@ -28,14 +29,17 @@ function Juego(min, test){
 
 	this.crearPartida=function(num,owner){
 		//comprobar límites de num
-		//console.log("Min deberia ser esto" , this.min[0]);
-		//console.log("el argumento test esto ",test);
+		console.log("Min: " , this.min);
+		console.log("Min[0]: " , this.min[0]);
+		console.log("Argumento Test:  ",this.test);
 		if(this.numeroValido(num)){
 			let codigo=this.obtenerCodigo();
 			if (!this.partidas[codigo]){
 				this.partidas[codigo]=new Partida(num,owner,codigo,this);
-				var fase=this.partidas[codigo].fase.nombre;
-				this.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){});
+				if(this.test=="noTest"){
+					var fase=this.partidas[codigo].fase.nombre;
+					this.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){});
+				}
 				//owner.partida=this.partidas[codigo];
 			}
 			return codigo;
@@ -189,7 +193,7 @@ function Juego(min, test){
 		}
 	}
 
-	if(test=="noTest"){
+	if(this.test=="noTest"){
 			this.cad.connect(function(db){
 			console.log("conectado a Atlas");
 		})
@@ -433,14 +437,19 @@ function Partida(num,owner,codigo, juego){
 	this.finPartidaImpostores=function(){
 		this.fase = new Final();
 		this.fase.ganadores = "impostores";
-		var fase=this.fase.nombre;
-		this.juego.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){})
+		if(this.juego.test=="noTest"){
+			var fase=this.fase.nombre;
+			this.juego.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){})
+		}
+		
 	}
 	this.finPartidaCiudadanos=function(){
 		this.fase = new Final();
 		this.fase.ganadores = "ciudadanos";
-		var fase=this.fase.nombre;
-		this.juego.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){})
+		if(this.juego.test=="noTest"){
+			var fase=this.fase.nombre;
+			this.juego.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){})
+		}
 	}
 	this.comprobarVotacion=function(){
 		if (this.todosHanVotado()){
