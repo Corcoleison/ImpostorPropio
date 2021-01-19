@@ -167,6 +167,10 @@ function ControlWeb($){
 		$('#contenidoModal').append(cadena);
 		$("#pie").append('<button type="button" id="votar" class="btn btn-secondary">Votar</button>');
 		$('#modalGeneral').modal("show");
+		$('#modalGeneral').modal({
+    		backdrop: 'static',
+    		keyboard: false
+		});
 
 		var sospechoso=undefined;
 		$('.input-group input').on('change', function() {
@@ -198,6 +202,7 @@ function ControlWeb($){
 		var cadena = '<div id="abandono"><h3>Abandonar</h3>';
 		$('#contenidoModal').append(cadena);
 		$("#pie").append('<button type="button" id="abandonar" class="btn btn-secondary">Abandonar Partida</button>');
+		$("#pie").append('<button type="button" id="cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>');
 		$('#modalGeneral').modal("show");
 
 		$('#abandonar').on('click',function(){

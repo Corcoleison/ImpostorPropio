@@ -156,6 +156,9 @@ function ServidorWS(){
 					socket.leave(codigo);
 				}
 			});
+			socket.on('limpiarMuerto', function(codigo, nickMuerto) {
+				cli.enviarATodos(io,codigo,"muertoLimpiado",nickMuerto);
+			});
 		});
 	}
 

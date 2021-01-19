@@ -555,7 +555,7 @@ function Partida(num,owner,codigo, juego){
 	}
 
 	this.calcularJugadoresPorAbandono=function(){
-		ganador = undefined;
+		ganadores = undefined;
 		if(this.numJugadores() < this.juego.min){
 			for(var key in this.usuarios){
 				if(this.usuarios[key].impostor == true){

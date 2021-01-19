@@ -57,6 +57,9 @@ function ClienteWS(){
 	this.realizarTarea=function(){
 		this.socket.emit("realizarTarea", this.codigo, this.nick, this.encargo);
 	}
+	this.limpiarMuerto=function(nickMuerto){
+		this.socket.emit("limpiarMuerto", this.codigo, nickMuerto);
+	}
 	//servidor WS dentro del cliente
 	this.lanzarSocketSrv=function(){
 		var cli = this;
@@ -174,6 +177,10 @@ function ClienteWS(){
 		});
 		this.socket.on("jugadorAbandona",function(data){
 			console.log(data);
+		});
+		this.socket.on("muertoLimpiado",function(nickMuerto){
+			console.log(nickMuerto);
+			borrarMuerto(nickMuerto);
 		});
 	}
 
