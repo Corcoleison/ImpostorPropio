@@ -340,11 +340,10 @@ function lanzarJuego(){
     teclaA=crear.input.keyboard.addKey('a');
     teclaV=crear.input.keyboard.addKey('v');
     teclaT=crear.input.keyboard.addKey('t');
+    teclaH=crear.input.keyboard.addKey('h');
     teclaESC=crear.input.keyboard.addKey('esc');
     lanzarJugador(ws.nick,ws.numJugador,ws.numJugador);
     ws.estoyDentro();
-
-    this.textHelp = crear.add.text(0, 0, "Pulsa H para Ayuda");
 
     //this.input.keyboard.on('keydown_ESC', this.pausarPartida(), this);
 
@@ -429,8 +428,13 @@ function lanzarJuego(){
     camera.setZoom(2);
     //camera.setSize(200);
     this.followText = crear.add.text(0, 0, jugadores[nick].nick);
-
-
+    followText.setDepth(13);
+    this.textHelp = crear.add.text(0, 0, "Pulsa H para Ayuda");
+    textHelp.setStyle({
+    fontSize: '14px',
+    fontFamily: 'Arial',
+    color: '#ffffff'});
+    textHelp.setDepth(13);
   }
 
   function lanzarJugadorRemoto(nick, numJugador){
@@ -442,6 +446,7 @@ function lanzarJuego(){
     jugadores[nick].numJugador = numJugador;
     remotos.add(jugadores[nick]);
     this.followTextRemoto[numJugador] = crear.add.text(0, 0, jugadores[nick].nick);
+    this.followTextRemoto[numJugador].setDepth(13);
   }
 
   function mover(datos)
@@ -516,6 +521,7 @@ function lanzarJuego(){
         direccion="down";
       }
       followText.setPosition(player.x-30, player.y-40);
+      textHelp.setPosition(camera.worldView.x, camera.worldView.y);
       ws.movimiento(direccion,player.x,player.y);
 
       // Normalize and scale the velocity so that player can't move faster along a diagonal
@@ -539,9 +545,13 @@ function lanzarJuego(){
         // else if (prevVelocity.y > 0) player.setTexture("gabe", "gabe-front-walk");
       }
 
-       if(teclaESC.isDown){
-      cw.mostrarModalAbandonar();
-  }
+      if(teclaESC.isDown){
+        cw.mostrarModalAbandonar();
+      }
+
+      if(teclaH.isDown){
+        cw.mostrarModalSimple("Tecla A para Atacar (Solo impostor). Tecla T para realizar las tareas. Tecla V para votacion en cadaver. Tecla ESC para abandonar partida.");
+      }
 
 
   }
