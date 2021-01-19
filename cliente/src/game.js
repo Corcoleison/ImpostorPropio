@@ -30,6 +30,9 @@ function lanzarJuego(){
   let game;// = new Phaser.Game(config);
   let cursors;
   let player;
+  let nombreMapa;
+  let rutaTile;
+  let rutaJson;
   //let player2;
   var jugadores=[]; //la coleccion de jugadores remotos
   let showDebug = false;
@@ -52,11 +55,38 @@ function lanzarJuego(){
   var final=false;
   var musicaFondo;
 
+  function elegirMapa(cadena){
+    if (cadena=="rural"){
+      //this.load.image("tiles", "cliente/assets/tilesets/segundo/tuxmon-sample-32px-extruded.png");
+      //this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/segundo.json");
+      rutaTile = "cliente/assets/tilesets/segundo/tuxmon-sample-32px-extruded.png";
+      rutaJson = "cliente/assets/tilemaps/segundo.json";
+      nombreMapa = "tuxmon-sample-32px-extruded";
+    }else{
+      //this.load.image("tiles", "cliente/assets/tilesets/pirata_medieval.png");
+      //this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/Prueba.json");
+      rutaTile = "cliente/assets/tilesets/pirata_medieval.png"
+      rutaJson = "cliente/assets/tilemaps/Prueba.json"
+      nombreMapa = "pirata_medieval";
+    }
+    console.log(nombreMapa);
+    console.log(rutaTile);
+    console.log(rutaJson);
+  }
+
   function preload() {
     //this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
     //this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/tuxemon-town.json");
-    this.load.image("tiles", "cliente/assets/tilesets/pirata_medieval.png");
-    this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/Prueba.json");
+    //this.load.image("tiles", "cliente/assets/tilesets/pirata_medieval.png");
+    //this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/Prueba.json");
+    //this.load.image("tiles", "cliente/assets/tilesets/segundo/tuxmon-sample-32px-extruded.png");
+    //this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/segundo.json");
+    console.log("El ws mapa que le llega al game js: ", ws.mapa);
+    elegirMapa(ws.mapa);
+    this.load.image("tiles", rutaTile);
+    this.load.tilemapTiledJSON("map", rutaJson);
+
+
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -80,7 +110,7 @@ function lanzarJuego(){
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     //const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
-    const tileset = map.addTilesetImage("pirata_medieval", "tiles");
+    const tileset = map.addTilesetImage(nombreMapa, "tiles");
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const decoracion = map.createStaticLayer("decoracion", tileset, 0, 0);
@@ -354,8 +384,8 @@ function lanzarJuego(){
     //this.input.keyboard.on('keydown_ESC', this.pausarPartida(), this);
 
     //musica
-    this.musicaFondo = this.sound.add("fondo", { loop: true });
-    this.musicaFondo.play();
+    musicaFondo = this.sound.add("fondo", { loop: true });
+    musicaFondo.play();
 
   }
 
@@ -515,6 +545,7 @@ function lanzarJuego(){
     final=true;
     //remoto = undefined;
     cw.mostrarModalSimple("Fin de la partida... Ganan: "+data);
+    musicaFondo.stop();
   }
 
   function update(time, delta) {

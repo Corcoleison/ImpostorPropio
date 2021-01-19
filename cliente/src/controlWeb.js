@@ -11,17 +11,28 @@ function ControlWeb($){
 		cadena=cadena+'<label for="num">Numero:</label>';
 		cadena=cadena+'<input value="'+min+'" type="number" class="form-control" id="num"  min="'+min+'" max="10">';
 		cadena=cadena+'</div>';
+		cadena=cadena+'<p>Selecciona el mapa:</p>';
+		cadena=cadena+'<div id="rates" class="input-group">';
+  		cadena=cadena+'<div><input type="radio" id="r1" name="rate" value="piratas" checked="checked"> Piratas</div>';
+  		cadena=cadena+'<div><input type="radio" id="r2" name="rate" value="rural"> Rural</div>';
+		cadena=cadena+'</div>';
 		cadena=cadena+'<button type="button" id="btnCrear" class="btn btn-primary">Crear Partida</button>';
 		cadena=cadena+'</div>';
 
 		$('#crearPartida').append(cadena);
+
+		cadenaMapa=$('input[name=rate]:checked', '.input-group').val();
+		$('.input-group input').on('change', function() {
+		   cadenaMapa=$('input[name=rate]:checked', '.input-group').val();
+		});
 
 		$('#btnCrear').on('click',function(){
 			var nick=$('#nick').val();
 			var num=$("#num").val();
 			$("#mostrarCP").hide();
 			if(nick != ""){
-				ws.crearPartida(nick,num);
+				ws.crearPartida(nick,num,cadenaMapa);
+				console.log(cadenaMapa);
 			}else{
 				$("#mostrarCP").show();
 			}
@@ -52,7 +63,7 @@ function ControlWeb($){
 		for(var i=0;i<lista.length;i++){
 			var maximo=lista[i].maximo
 			var numJugadores=maximo-(lista[i].huecos)
-	  		cadena=cadena+'<a href="#" value="'+lista[i].codigo+'" class="list-group-item">'+lista[i].codigo+' Host: '+lista[i].owner+' <span class="badge">'+numJugadores+'/'+maximo+'</span></a>';
+	  		cadena=cadena+'<a href="#" value="'+lista[i].codigo+'" class="list-group-item">'+lista[i].codigo+' Host: '+lista[i].owner+' Mapa: '+lista[i].mapa+' <span class="badge">'+numJugadores+'/'+maximo+'</span></a>';
 	  	}
 		cadena=cadena+'</div>';
 		cadena=cadena+'<button type="button" id="btnUnir" class="btn btn-primary">Unir a Partida</button>';

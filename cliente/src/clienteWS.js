@@ -6,13 +6,14 @@ function ClienteWS(){
 	this.numJugador=undefined;
 	this.estado;
 	this.encargo;
+	this.mapa;
 	this.ini=function(){
 		this.socket=io.connect();
 		this.lanzarSocketSrv();
 	}
-	this.crearPartida=function(nick, numero){
+	this.crearPartida=function(nick, numero, cadenaMapa){
 		this.nick=nick;
-		this.socket.emit("crearPartida",nick,numero);//{"nick":nick,"numero":numero}
+		this.socket.emit("crearPartida",nick,numero,cadenaMapa);//{"nick":nick,"numero":numero}
 	}
 	this.unirAPartida=function(codigo, nick){
 		this.nick=nick;
@@ -75,6 +76,8 @@ function ClienteWS(){
 				cw.mostrarIniciarPartida();
 				cli.numJugador=0;
 				cli.estado="vivo";
+				console.log("El mapa que intenta meter en cli.mapa (partidaCreada cliWB): ", data.mapa);
+				cli.mapa = data.mapa;
 			}
 
 
@@ -87,6 +90,8 @@ function ClienteWS(){
 			cli.nick = data.nick;
 			cli.numJugador = data.numJugador;
 			cli.estado="vivo";
+			console.log("cadenaMapa en unidoAPartida ClienteWS: ",data.mapa);
+			cli.mapa=data.mapa;
 			console.log(data);
 			cw.mostrarEsperandoRival();
 		});
@@ -182,6 +187,7 @@ function ClienteWS(){
 			console.log(nickMuerto);
 			borrarMuerto(nickMuerto);
 		});
+
 	}
 
 	this.ini();

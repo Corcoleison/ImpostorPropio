@@ -16,12 +16,14 @@ function ServidorWS(){
 	this.lanzarSocketSrv=function(io,juego){
 		var cli=this;
 		io.on('connection',function(socket){		    
-			socket.on('crearPartida', function(nick,numero) {
+			socket.on('crearPartida', function(nick,numero,cadenaMapa) {
 				//var usr=new modelo.Usuario(nick);
 				var codigo=juego.crearPartida(numero,nick);
 				socket.join(codigo);
 				console.log('usuario nick: '+nick+" crea partida codigo: "+codigo);
-				cli.enviarRemitente(socket,"partidaCreada",{"codigo":codigo,"owner":nick});
+				juego.seleccionarMapa(codigo,cadenaMapa);
+				console.log("esto es cadena mapa servidorws: ", cadenaMapa);
+				cli.enviarRemitente(socket,"partidaCreada",{"codigo":codigo,"owner":nick,"mapa":cadenaMapa});
 				var lista = juego.listarPartidasDisponibles();
 				cli.enviarGlobal(socket,"recibirListaPartidasDisponibles",lista);
 			});
@@ -158,6 +160,9 @@ function ServidorWS(){
 			});
 			socket.on('limpiarMuerto', function(codigo, nickMuerto) {
 				cli.enviarATodos(io,codigo,"muertoLimpiado",nickMuerto);
+			});
+			socket.on('elegirMapa', function(codigo, cadenaMapa) {
+				cli.enviarATodos(io,codigo,"mapaElegido",cadenaMapa);
 			});
 		});
 	}
