@@ -6,7 +6,9 @@ describe("El juego del impostor", function() {
 	var nick;
 
 	beforeEach(function() {
-		juego = new modelo.Juego(4, "test");
+		var min=4;
+		var test="test";
+		juego = new modelo.Juego(min, test);
 		//usr = new modelo.Usuario("pepe",juego);
 		nick="pepe";
 	});
