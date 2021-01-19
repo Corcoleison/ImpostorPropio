@@ -79,8 +79,9 @@ function Juego(min, test){
 			huecos=partida.obtenerHuecos();
 			owner=partida.nickOwner;
 			maximo = partida.maximo;
+			mapa = partida.mapa;
 			if(huecos>0){
-				lista.push({"codigo":key,"huecos":huecos, "maximo":maximo,"owner":owner})
+				lista.push({"codigo":key,"huecos":huecos, "maximo":maximo,"owner":owner, "mapa":mapa})
 			}
 		}
 		return lista;
@@ -206,10 +207,18 @@ function Juego(min, test){
 		}
 	}
 
+	this.seleccionarMapa=function(codigo, cadenaMapa){
+		var partida = this.partidas[codigo];
+		if (partida){
+			partida.seleccionarMapa(cadenaMapa);
+		}
+	}
+
 }
 
 function Partida(num,owner,codigo, juego){
 	this.juego = juego;
+	this.mapa;
 	this.maximo=num;
 	this.nickOwner=owner;
 	this.codigo=codigo;
@@ -237,7 +246,7 @@ function Partida(num,owner,codigo, juego){
 			//this.juego.cad.insertarPartida({"codigo":codigo,"nick":owner,"numeroJugadores":num, "fase":fase},function(res){})
 
 		}
-		return {"codigo":this.codigo,"nick":nuevo,"numJugador":numero};
+		return {"codigo":this.codigo,"nick":nuevo,"numJugador":numero, "mapa":this.mapa};
 
 
 		//this.comprobarMinimo();
@@ -251,6 +260,10 @@ function Partida(num,owner,codigo, juego){
 		//	}
 
 	}
+	this.seleccionarMapa=function(cadenaMapa){
+		this.mapa = cadenaMapa;
+	}
+
 	this.obtenerUsuario=function(nick){
 		return this.usuarios[nick]
 	}
