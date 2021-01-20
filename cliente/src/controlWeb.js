@@ -221,6 +221,10 @@ function ControlWeb($){
 		});
 	}
 
+	this.reiniciarPagina=function(){
+		location.reload(true);
+	}
+
 
 
 

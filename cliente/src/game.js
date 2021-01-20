@@ -49,11 +49,16 @@ function lanzarJuego(){
   var followTextRemoto=[];
   var followTextRemotoMuerto;
   var textHelp;
+  var textEncargo;
+  var textImpostor;
   var tareasOn=true;
   var ataquesOn=true;
   var votacionOn=true;
   var final=false;
   var musicaFondo;
+  var volverBoton;
+  var overCiudadanosImagen;
+  var overImpostorImagen;
 
   function elegirMapa(cadena){
     if (cadena=="rural"){
@@ -101,6 +106,11 @@ function lanzarJuego(){
 
     //musica
     this.load.audio('fondo', ['cliente/audio/musica_fondo.mp3', 'cliente/audio/musica_fondo.ogg']);
+
+    //fotos
+    this.load.image('button', 'cliente/img/volverajugar.png');
+    this.load.image('gameoverCiudadanos', 'cliente/img/gameover_ciudadanos.jpg');
+    this.load.image('gameoverImpostor', 'cliente/img/gameover_impostor.jpg');
   }
 
   function create() {
@@ -486,10 +496,21 @@ function lanzarJuego(){
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.setZoom(2);
     //camera.setSize(200);
+    //Textos
     this.followText = crear.add.text(0, 0, jugadores[nick].nick);
     followText.setDepth(13);
     this.textHelp = crear.add.text(0, 0, "Pulsa H para Ayuda");
     textHelp.setStyle({
+    fontSize: '14px',
+    fontFamily: 'Arial',
+    color: '#ffffff'});
+    textHelp.setDepth(13);
+    encargo = ws.encargo
+    if(ws.impostor){
+      encargo = "impostor";
+    }
+    this.textEncargo = crear.add.text(0, 0, "Tarea: "+encargo+"");
+    textEncargo.setStyle({
     fontSize: '14px',
     fontFamily: 'Arial',
     color: '#ffffff'});
@@ -546,6 +567,28 @@ function lanzarJuego(){
     //remoto = undefined;
     cw.mostrarModalSimple("Fin de la partida... Ganan: "+data);
     musicaFondo.stop();
+    if(data == "impostores"){
+      this.overImpostorImagen = crear.add.sprite(50,50, 'gameoverImpostor');
+      screenCenterX = crear.cameras.main.worldView.x + crear.cameras.main.width / 2;
+      screenCenterY = crear.cameras.main.worldView.y + crear.cameras.main.height / 2;
+      this.overImpostorImagen.setPosition(screenCenterX-200, screenCenterY-80);
+      this.overImpostorImagen.setDepth(13);
+    }else{
+      this.overCiudadanosImagen = crear.add.sprite(50,50, 'gameoverCiudadanos');
+      screenCenterX = crear.cameras.main.worldView.x + crear.cameras.main.width / 2;
+      screenCenterY = crear.cameras.main.worldView.y + crear.cameras.main.height / 2;
+      this.overCiudadanosImagen.setPosition(screenCenterX-200, screenCenterY-80);
+      this.overCiudadanosImagen.setDepth(13);
+    }
+    this.volverBoton = crear.add.sprite(100, 100, 'button').setInteractive();
+    this.volverBoton.setDepth(14);
+    this.volverBoton.on('pointerdown', reiniciarPagina); // Start game on click.
+    this.volverBoton.setPosition(player.x, player.y);
+
+  }
+
+  function reiniciarPagina(){
+    cw.reiniciarPagina();
   }
 
   function update(time, delta) {
@@ -582,6 +625,7 @@ function lanzarJuego(){
       }
       followText.setPosition(player.x-30, player.y-40);
       textHelp.setPosition(camera.worldView.x, camera.worldView.y);
+      textEncargo.setPosition(camera.worldView.x+295, camera.worldView.y);
       ws.movimiento(direccion,player.x,player.y);
 
       // Normalize and scale the velocity so that player can't move faster along a diagonal
@@ -612,7 +656,5 @@ function lanzarJuego(){
       if(teclaH.isDown){
         cw.mostrarModalSimple("Tecla A para Atacar (Solo impostor). Tecla T para realizar las tareas. Tecla V para votacion en cadaver. Tecla ESC para abandonar partida.");
       }
-
-
   }
   }
