@@ -7,6 +7,8 @@ function ClienteWS(){
 	this.estado;
 	this.encargo;
 	this.mapa;
+	this.percentGlobal;
+	this.percentLocal;
 	this.ini=function(){
 		this.socket=io.connect();
 		this.lanzarSocketSrv();
@@ -173,6 +175,9 @@ function ClienteWS(){
 		this.socket.on("realizandoTarea",function(datos){
 			//console.log("encargo "+res.encargo+" realizado veces: "+res.realizado+ " estadoRealizado: "+res.estadoRealizado)
 			console.log(datos);
+			cli.percentGlobal = datos.percentGlobal;
+			cli.percentLocal = datos.percentLocal;
+			actualizarValoresTareas(datos.percentGlobal, datos.percentLocal);
 			//tareasOn=true;
 		});
 		this.socket.on("hasAtacado",function(fase){

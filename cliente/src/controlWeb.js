@@ -161,6 +161,9 @@ function ControlWeb($){
 	this.mostrarModalTarea=function(cadenaTarea){
 		this.limpiarModal();
 		var cadena="<p id='tarea'>"+cadenaTarea+'</p>';
+		//cadena=cadena+'<div id="progreso" class="progress">';
+ 		//cadena=cadena+'<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%"> 40% </div>';
+ 		//cadena=cadena+'</div>';
 		$('#contenidoModal').append(cadena);
 		$("#pie").append('<button type="button" id="cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>');
 		$('#modalGeneral').modal("show");
@@ -206,6 +209,7 @@ function ControlWeb($){
 		$("#votar").remove();
 		$("#abandono").remove();
 		$("#abandonar").remove();
+		//$("#progeso").remove();
 	}
 
 	this.mostrarModalAbandonar=function(lista){
