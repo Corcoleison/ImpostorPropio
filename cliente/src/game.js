@@ -59,6 +59,8 @@ function lanzarJuego(){
   var volverBoton;
   var overCiudadanosImagen;
   var overImpostorImagen;
+  var progresoLocalTexto;
+  var progresoGlobalTexto;
 
   function elegirMapa(cadena){
     if (cadena=="rural"){
@@ -471,14 +473,20 @@ function lanzarJuego(){
   }
 
   function tareas(sprite,objeto){
-    if (ws.encargo==objeto.properties.tarea && teclaT.isDown){
+    if (ws.encargo==objeto.properties.tarea && teclaT.isDown && !ws.impostor){
       tareasOn=false;
       console.log("realizar tarea "+ws.encargo);
       ws.realizarTarea();  //o hacer la llamada dentro de cw
       cw.mostrarModalTarea(ws.encargo);
       tareasOn=true;
+    }    
+  }
+
+  function actualizarValoresTareas(percentGlobal, percentLocal){
+    if(!ws.impostor){
+      progresoGlobalTexto.setText("Progreso Global: "+percentGlobal+"%");
+      progresoLocalTexto.setText("Progreso Local: "+percentLocal+"%");
     }
-    
   }
 
   function lanzarJugador(nick,numJugador){
@@ -515,6 +523,20 @@ function lanzarJuego(){
     fontFamily: 'Arial',
     color: '#ffffff'});
     textHelp.setDepth(13);
+    if(!ws.impostor){
+      this.progresoGlobalTexto = crear.add.text(0, 0, "Progreso Global: "+0+"%");
+      progresoGlobalTexto.setStyle({
+      fontSize: '10px',
+      fontFamily: 'Arial',
+      color: '#ffffff'});
+      progresoGlobalTexto.setDepth(13);
+      this.progresoLocalTexto = crear.add.text(0, 0, "Progreso Local: "+0+"%");
+      progresoLocalTexto.setStyle({
+      fontSize: '10px',
+      fontFamily: 'Arial',
+      color: '#ffffff'});
+      progresoLocalTexto.setDepth(13);
+    }
   }
 
   function lanzarJugadorRemoto(nick, numJugador){
@@ -626,6 +648,10 @@ function lanzarJuego(){
       followText.setPosition(player.x-30, player.y-40);
       textHelp.setPosition(camera.worldView.x, camera.worldView.y);
       textEncargo.setPosition(camera.worldView.x+295, camera.worldView.y);
+      if(!ws.impostor){
+        progresoLocalTexto.setPosition(camera.worldView.x+287, camera.worldView.y+15);
+        progresoGlobalTexto.setPosition(camera.worldView.x+287, camera.worldView.y+25);
+      }
       ws.movimiento(direccion,player.x,player.y);
 
       // Normalize and scale the velocity so that player can't move faster along a diagonal
