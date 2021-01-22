@@ -396,7 +396,7 @@ function lanzarJuego(){
     //this.input.keyboard.on('keydown_ESC', this.pausarPartida(), this);
 
     //musica
-    musicaFondo = this.sound.add("fondo", { loop: true });
+    musicaFondo = this.sound.add("fondo", { loop: true, volume:0.1 });
     musicaFondo.play();
 
   }
@@ -428,6 +428,13 @@ function lanzarJuego(){
     var x=jugadores[inocente].x;
     var y=jugadores[inocente].y;
     var numJugador = jugadores[inocente].numJugador;
+
+    if(ws.nick != inocente){
+      jugadores[inocente].setActive(false).setVisible(false);
+      followTextRemoto[numJugador].setActive(false).setVisible(false);
+    }
+
+
     
     if(!listaMuertos[inocente]){
       var muerto = crear.physics.add.sprite(x, y,"muertos",recursos[numJugador].frame);
@@ -489,6 +496,12 @@ function lanzarJuego(){
     }
   }
 
+  function actualizarValoresTareasGlobal(percentGlobal){
+    if(!ws.impostor){
+      progresoGlobalTexto.setText("Progreso Global: "+percentGlobal+"%");
+    }
+  }
+
   function lanzarJugador(nick,numJugador){
     var x = spawnPoint.x+numJugador*32*2;
     player = crear.physics.add.sprite(x, spawnPoint.y,"varios",recursos[numJugador].frame);
@@ -522,7 +535,7 @@ function lanzarJuego(){
     fontSize: '14px',
     fontFamily: 'Arial',
     color: '#ffffff'});
-    textHelp.setDepth(13);
+    textEncargo.setDepth(13);
     if(!ws.impostor){
       this.progresoGlobalTexto = crear.add.text(0, 0, "Progreso Global: "+0+"%");
       progresoGlobalTexto.setStyle({
@@ -682,5 +695,8 @@ function lanzarJuego(){
       if(teclaH.isDown){
         cw.mostrarModalSimple("Tecla A para Atacar (Solo impostor). Tecla T para realizar las tareas. Tecla V para votacion en cadaver. Tecla ESC para abandonar partida.");
       }
+  }else{
+    player.body.setVelocity(0);
   }
+  
   }

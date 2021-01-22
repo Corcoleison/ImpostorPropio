@@ -180,6 +180,12 @@ function ClienteWS(){
 			actualizarValoresTareas(datos.percentGlobal, datos.percentLocal);
 			//tareasOn=true;
 		});
+		this.socket.on("actualizandoTareaGlobal",function(datos){
+			//console.log("encargo "+res.encargo+" realizado veces: "+res.realizado+ " estadoRealizado: "+res.estadoRealizado)
+			if(!ws.impostor){
+				actualizarValoresTareasGlobal(datos.percentGlobal);
+			}
+		});
 		this.socket.on("hasAtacado",function(fase){
 			if(fase=="jugando"){
 				ataquesOn=true;

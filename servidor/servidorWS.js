@@ -142,6 +142,7 @@ function ServidorWS(){
 				percentLocal = juego.obtenerPercentTarea(codigo, nick);
 				var datos = {percentGlobal:percentGlobal, percentLocal:percentLocal}
 				cli.enviarRemitente(socket,"realizandoTarea", datos);
+				cli.enviarATodos(io,codigo,"actualizandoTareaGlobal",datos);
 			});
 			socket.on('abandonarPartida', function(nick, codigo) {
 				var partida = juego.partidas[codigo];
