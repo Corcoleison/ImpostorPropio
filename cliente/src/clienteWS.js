@@ -123,6 +123,7 @@ function ClienteWS(){
 		this.socket.on('votacion',function(lista){
 			console.log(lista);
 			cw.mostrarModalVotacion(lista);
+			reproducirSonidoVotacion();
 			
 		});
 		this.socket.on('finalVotacion',function(data){

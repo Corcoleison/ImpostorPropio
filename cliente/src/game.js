@@ -56,6 +56,9 @@ function lanzarJuego(){
   var votacionOn=true;
   var final=false;
   var musicaFondo;
+  var musicaMuerto;
+  var musicaReport;
+  var musicaSierra;
   var volverBoton;
   var overCiudadanosImagen;
   var overImpostorImagen;
@@ -108,6 +111,9 @@ function lanzarJuego(){
 
     //musica
     this.load.audio('fondo', ['cliente/audio/musica_fondo.mp3', 'cliente/audio/musica_fondo.ogg']);
+    this.load.audio('punch', ['cliente/audio/punch.mp3', 'cliente/audio/punch.ogg']);
+    this.load.audio('report', ['cliente/audio/report.mp3', 'cliente/audio/report.ogg']);
+    this.load.audio('sierra', ['cliente/audio/sierra.mp3', 'cliente/audio/sierra.ogg']);
 
     //fotos
     this.load.image('button', 'cliente/img/volverajugar.png');
@@ -399,6 +405,12 @@ function lanzarJuego(){
     musicaFondo = this.sound.add("fondo", { loop: true, volume:0.1 });
     musicaFondo.play();
 
+    musicaMuerto = this.sound.add("punch", { volume:0.1 });
+    musicaReport = this.sound.add("report", { volume:0.6 });
+    musicaSierra = this.sound.add("sierra", { volume:0.1 });
+
+
+
   }
 
  
@@ -421,6 +433,7 @@ function lanzarJuego(){
     if(teclaA.isDown){
       ataquesOn = false;
       ws.atacar(nick);
+      musicaMuerto.play();
     }
   }
 
@@ -468,6 +481,10 @@ function lanzarJuego(){
     }
   }
 
+  function reproducirSonidoVotacion(){
+    musicaReport.play();
+  }
+
   function borrarMuerto(nickMuerto){
     //console.log("NickMuerto en borrar Muerto de gamejs: ",nickMuerto);
     if(listaMuertos[nickMuerto]){
@@ -484,6 +501,7 @@ function lanzarJuego(){
       tareasOn=false;
       console.log("realizar tarea "+ws.encargo);
       ws.realizarTarea();  //o hacer la llamada dentro de cw
+      musicaSierra.play();
       cw.mostrarModalTarea(ws.encargo);
       tareasOn=true;
     }    
