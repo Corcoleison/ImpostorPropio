@@ -395,6 +395,7 @@ function lanzarJuego(){
     teclaV=crear.input.keyboard.addKey('v');
     teclaT=crear.input.keyboard.addKey('t');
     teclaH=crear.input.keyboard.addKey('h');
+    teclaM=crear.input.keyboard.addKey('m');
     teclaESC=crear.input.keyboard.addKey('esc');
     lanzarJugador(ws.nick,ws.numJugador,ws.numJugador);
     ws.estoyDentro();
@@ -636,7 +637,7 @@ function lanzarJuego(){
     this.volverBoton = crear.add.sprite(100, 100, 'button').setInteractive();
     this.volverBoton.setDepth(14);
     this.volverBoton.on('pointerdown', reiniciarPagina); // Start game on click.
-    this.volverBoton.setPosition(player.x, player.y);
+    this.volverBoton.setPosition(camera.worldView.x+220, camera.worldView.y+155);
 
   }
 
@@ -711,8 +712,14 @@ function lanzarJuego(){
       }
 
       if(teclaH.isDown){
-        cw.mostrarModalSimple("Tecla A para Atacar (Solo impostor). Tecla T para realizar las tareas. Tecla V para votacion en cadaver. Tecla ESC para abandonar partida.");
+        cw.mostrarModalSimple("Tecla A para Atacar (Solo impostor). Tecla T para realizar las tareas. Tecla V para votacion en cadaver. Tecla M para ver el Mapa. Tecla ESC para abandonar partida.");
       }
+
+      if(teclaM.isDown){
+        cw.mostrarModalMapa(ws.mapa);
+      }
+
+
   }else{
     player.body.setVelocity(0);
   }
