@@ -192,8 +192,9 @@ function ClienteWS(){
 				ataquesOn=true;
 			}
 		});
-		this.socket.on("jugadorAbandona",function(data){
-			console.log(data);
+		this.socket.on("jugadorAbandona",function(nick){
+			console.log(nick);
+			cw.mostrarModalSimple("El jugador: "+nick+" ha abandona la partida");
 		});
 		this.socket.on("muertoLimpiado",function(nickMuerto){
 			console.log(nickMuerto);

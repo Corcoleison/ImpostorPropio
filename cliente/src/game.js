@@ -619,7 +619,7 @@ function lanzarJuego(){
   function finPartida(data){
     final=true;
     //remoto = undefined;
-    cw.mostrarModalSimple("Fin de la partida... Ganan: "+data);
+    //cw.mostrarModalSimple("Fin de la partida... Ganan: "+data);
     musicaFondo.stop();
     if(data == "impostores"){
       this.overImpostorImagen = crear.add.sprite(50,50, 'gameoverImpostor');
