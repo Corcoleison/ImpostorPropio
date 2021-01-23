@@ -209,6 +209,8 @@ function ControlWeb($){
 		$("#votar").remove();
 		$("#abandono").remove();
 		$("#abandonar").remove();
+		$("#mapaRural").remove();
+		$("#mapaPiratas").remove();
 		//$("#progeso").remove();
 	}
 
@@ -229,7 +231,18 @@ function ControlWeb($){
 		location.reload(true);
 	}
 
-
+	this.mostrarModalMapa=function(cadenaMapa){
+        this.limpiarModal();
+        if(cadenaMapa=="rural"){
+            var cadena="<img id='mapaRural' src='cliente/img/mapaRural.png' style='max-width:550px'>";
+        }
+        else{
+            var cadena="<img id='mapaPiratas' src='cliente/img/mapaPiratas.png' style='max-width:550px'>";
+        }
+        $('#contenidoModal').append(cadena);
+        $("#pie").append('<button type="button" id="cerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>');
+        $('#modalGeneral').modal("show");
+    }
 
 
 }
