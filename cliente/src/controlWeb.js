@@ -176,7 +176,7 @@ function ControlWeb($){
 		for(var i=0;i<lista.length;i++){
 	  		cadena=cadena+'<div><input type="radio" name="optradio" value="'+lista[i].nick+'">'+lista[i].nick+'</div>';
 	  	}
-	  	cadena=cadena+'<div><input type="radio" name="optradio" value="-1">Saltar voto</div>'
+	  	cadena=cadena+'<div><input type="radio" name="optradio" value="-1" checked>Saltar voto</div>'
 		cadena=cadena+'</div>';
 		$('#contenidoModal').append(cadena);
 		$("#pie").append('<button type="button" id="votar" class="btn btn-secondary">Votar</button>');
@@ -186,7 +186,7 @@ function ControlWeb($){
     		keyboard: false
 		});
 
-		var sospechoso=undefined;
+		var sospechoso=$('input[name=optradio]:checked', '.input-group').val();
 		$('.input-group input').on('change', function() {
 		   sospechoso=$('input[name=optradio]:checked', '.input-group').val();
 		});

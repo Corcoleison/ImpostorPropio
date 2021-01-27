@@ -635,9 +635,9 @@ function lanzarJuego(){
       this.overCiudadanosImagen.setDepth(13);
     }
     this.volverBoton = crear.add.sprite(100, 100, 'button').setInteractive();
-    this.volverBoton.setDepth(14);
-    this.volverBoton.on('pointerdown', reiniciarPagina); // Start game on click.
+    this.volverBoton.setDepth(17);
     this.volverBoton.setPosition(camera.worldView.x+220, camera.worldView.y+155);
+    this.volverBoton.on('pointerdown', reiniciarPagina); // Start game on click.
 
   }
 
@@ -721,6 +721,7 @@ function lanzarJuego(){
 
 
   }else{
+    //volverBoton.setPosition(camera.worldView.x+220, camera.worldView.y+155);
     player.body.setVelocity(0);
   }
   
