@@ -1,2 +1,4 @@
-# ImpostorPropio
-El impostor de procesos pero personal
+# Impostor Videogame
+
+
+Videgame for the subject "Software Engineering Processes"
